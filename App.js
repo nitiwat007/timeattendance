@@ -1,14 +1,25 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'remote-redux-devtools'
+
+import rootReducer from './store/rootReducer'
+import { Router } from 'react-native-router-flux'
+import RouterComponent from './routers/RouterComponent'
+
+const store = createStore(
+  rootReducer
+  // composeWithDevTools(applyMiddleware(thunk))
+)
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+      <Provider store={store}>
+        <RouterComponent />
+      </Provider>
     );
   }
 }
