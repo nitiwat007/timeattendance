@@ -4,6 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Scene, Router } from 'react-native-router-flux';
 
 import Login from '../components/Login'
+import Main from '../components/Main'
 
 // create a component
 class RouterComponent extends Component {
@@ -12,6 +13,7 @@ class RouterComponent extends Component {
             <Router hideNavBar>
                 <Scene>
                     <Scene key='login' component={Login} hideNavBar />
+                    <Scene key='main' component={Main} hideNavBar />
                 </Scene>
             </Router>
         );

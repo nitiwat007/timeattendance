@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'reac
 import PSUPassport from '../apis/psuPassport'
 import { connect } from 'react-redux'
 import { userDetailToStore } from '../store/actions/userDetail'
+import { Actions } from 'react-native-router-flux'
 
 // create a component
 class Login extends Component {
@@ -17,9 +18,13 @@ class Login extends Component {
     }
 
     onSubmit = async () => {
-        let Result = await PSUPassport.GetUserDetails(this.state.username, this.state.password)
-        this.props.userDetailToStore(Result.GetUserDetailsResult[0].string)
-        console.log(Result.GetUserDetailsResult[0].string)
+        await PSUPassport.GetUserDetails(this.state.username, this.state.password).then(Result => {
+            this.props.userDetailToStore(Result.GetUserDetailsResult[0].string)
+            //console.log(Result.GetUserDetailsResult[0].string)
+            Actions.main()
+        }).catch(err => alert('Sorry wrong Username or Password'))
+
+
     }
 
     render() {

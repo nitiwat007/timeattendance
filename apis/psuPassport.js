@@ -8,7 +8,7 @@ export default {
             const credentials = { username, password }
             soap.createClient(url, (err, client) => {
                 client.Authenticate(credentials, (err, result) => {
-                    if (err) return resolve(err)
+                    if (err) return reject(err)
                     return resolve(result)
                 })
             })
@@ -19,7 +19,7 @@ export default {
             const credentials = { username, password }
             soap.createClient(url, (err, client) => {
                 client.GetStaffDetails(credentials, (err, result) => {
-                    if (err) return resolve(err)
+                    if (err) return reject(err)
                     return resolve(result)
                 })
             })
@@ -30,7 +30,7 @@ export default {
             const credentials = { username, password }
             soap.createClient(url, (err, client) => {
                 client.GetStaffID(credentials, (err, result) => {
-                    if (err) return resolve(err)
+                    if (err) return reject(err)
                     return resolve(result)
                 })
             })
@@ -41,7 +41,7 @@ export default {
             const credentials = { username, password }
             soap.createClient(url, (err, client) => {
                 client.GetStudentDetails(credentials, (err, result) => {
-                    if (err) return resolve(err)
+                    if (err) return reject(err)
                     return resolve(result)
                 })
             })
@@ -52,7 +52,7 @@ export default {
             const credentials = { username, password }
             soap.createClient(url, (err, client) => {
                 client.GetUserDetails(credentials, (err, result) => {
-                    if (err) return resolve(err)
+                    if (err) return reject(err)
                     return resolve(result)
                 })
             })
