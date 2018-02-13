@@ -5,6 +5,7 @@ import PSUPassport from '../apis/psuPassport'
 import { connect } from 'react-redux'
 import { userDetailToStore } from '../store/actions/userDetail'
 import { Actions } from 'react-native-router-flux'
+import { USERNAME, PASSWORD } from 'react-native-dotenv'
 
 // create a component
 class Login extends Component {
@@ -12,8 +13,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: ''
+            username: USERNAME,
+            password: PASSWORD
         }
     }
 
