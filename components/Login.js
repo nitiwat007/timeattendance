@@ -12,8 +12,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: 'nitiwat.t',
-            password: 'et$72522184'
+            username: '',
+            password: ''
         }
     }
 
@@ -23,8 +23,6 @@ class Login extends Component {
             //console.log(Result.GetUserDetailsResult[0].string)
             Actions.main()
         }).catch(err => alert('Sorry wrong Username or Password'))
-
-
     }
 
     render() {
