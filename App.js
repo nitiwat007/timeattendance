@@ -10,8 +10,8 @@ import { Router } from 'react-native-router-flux'
 import RouterComponent from './routers/RouterComponent'
 
 const store = createStore(
-  rootReducer
-  // composeWithDevTools(applyMiddleware(thunk))
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
 )
 
 export default class App extends React.Component {

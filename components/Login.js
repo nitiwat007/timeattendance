@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
 import PSUPassport from '../apis/psuPassport'
+import { connect } from 'react-redux'
+import { userDetailToStore } from '../store/actions/userDetail'
 
 // create a component
 class Login extends Component {
@@ -9,14 +11,15 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: ''
+            username: 'nitiwat.t',
+            password: 'et$72522184'
         }
     }
 
-     onSubmit = async () => {
+    onSubmit = async () => {
         let Result = await PSUPassport.GetUserDetails(this.state.username, this.state.password)
-        console.log(Result)
+        this.props.userDetailToStore(Result.GetUserDetailsResult[0].string)
+        console.log(Result.GetUserDetailsResult[0].string)
     }
 
     render() {
@@ -92,4 +95,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Login;
+export default connect(null, { userDetailToStore })(Login);
