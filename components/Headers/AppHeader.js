@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Header, Left, Body, Right, Button, Icon, Title } from 'native-base'
+import { Actions } from 'react-native-router-flux'
 
 // create a component
 class AppHeader extends Component {
@@ -20,7 +21,7 @@ class AppHeader extends Component {
                     <Title style={styles.title}>{title}</Title>
                 </Body>
                 <Right>
-                    <Button iconLeft transparent onPress={() => alert('New Event')}>
+                    <Button iconLeft transparent onPress={() => Actions.newevent()}>
                         <Icon name='ios-add-circle-outline' />
                     </Button>
                 </Right>

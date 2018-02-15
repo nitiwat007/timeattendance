@@ -1,9 +1,9 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
-import PSUPassport from '../apis/psuPassport'
+import PSUPassport from '../../apis/psuPassport'
 import { connect } from 'react-redux'
-import { userDetailToStore } from '../store/actions/userDetail'
+import { userDetailToStore } from '../../store/actions/userDetail'
 import { Actions } from 'react-native-router-flux'
 import { USERNAME, PASSWORD } from 'react-native-dotenv'
 
@@ -30,7 +30,7 @@ class Login extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.viewLogo}>
-                    <Image style={styles.logo} source={require('../resources/images/psulogo.png')} />
+                    <Image style={styles.logo} source={require('../../resources/images/psulogo.png')} />
                     <Text style={styles.systemNane}>Time Attendance</Text>
                 </View>
                 <View style={{ flex: 2 }}>

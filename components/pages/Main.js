@@ -4,11 +4,11 @@ import { View, Text, StyleSheet, ActivityIndicator, Modal } from 'react-native';
 import { Container, Drawer, Content } from 'native-base'
 import { connect } from 'react-redux';
 
-import SideBar from './SideBar'
-import AppHeader from './Headers/AppHeader'
-import EventBox from './EventBox'
+import SideBar from '../SideBar'
+import AppHeader from '../Headers/AppHeader'
+import EventBox from '../EventBox'
 
-import EventApi from '../apis/event'
+import EventApi from '../../apis/event'
 
 // create a component
 class Main extends Component {
@@ -20,7 +20,6 @@ class Main extends Component {
             isLoading: true
         }
     }
-
 
     closeDrawer = () => {
         this.drawer._root.close()
