@@ -11,7 +11,8 @@ import RouterComponent from './routers/RouterComponent'
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
+  applyMiddleware(thunk)
+  //composeWithDevTools(applyMiddleware(thunk))
 )
 
 export default class App extends React.Component {
