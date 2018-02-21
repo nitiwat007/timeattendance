@@ -1,8 +1,9 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Header, Left, Body, Right, Button, Icon, Title } from 'native-base'
 import { Actions } from 'react-native-router-flux'
+import Expo from 'expo'
 
 // create a component
 class AppHeader extends Component {
@@ -11,7 +12,7 @@ class AppHeader extends Component {
         const title = this.props.title
 
         return (
-            <Header>
+            <Header style={styles.header}>
                 <Left>
                     <Button transparent onPress={() => this.props.openDrawer()}>
                         <Icon name='menu' />
@@ -32,6 +33,9 @@ class AppHeader extends Component {
 
 // define your styles
 const styles = StyleSheet.create({
+    header: {
+        marginTop: (Platform.OS === 'android') ? Expo.Constants.statusBarHeight : 0,
+    },
     textButton: {
         fontSize: 12,
         padding: 5,

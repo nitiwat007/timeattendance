@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Modal } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, Modal, ScrollView, RefreshControl } from 'react-native';
 import { Container, Drawer, Content } from 'native-base'
 import { connect } from 'react-redux';
 
@@ -17,7 +17,8 @@ class Main extends Component {
         super(props);
         this.state = {
             events: [],
-            isLoading: true
+            isLoading: true,
+            refreshing: false
         }
     }
 
@@ -39,23 +40,69 @@ class Main extends Component {
                 events: data,
                 isLoading: false
             })
+        }).catch(error => {
+            if (error.response.status = 404) {
+                this.setState({
+                    isLoading: false,
+                    refreshing: false
+                })
+            } else {
+                alert(error.response)
+            }
+        })
+    }
+
+    onRefresh() {
+        const memberID = this.props.userDetail[0]
+        this.setState({ refreshing: true })
+        EventApi.getByMemberID(memberID).then(data => {
+            this.setState({
+                events: data,
+                isLoading: false,
+                refreshing: false
+            })
+        }).catch(error => {
+            if (error.response.status = 404) {
+                this.setState({
+                    isLoading: false,
+                    refreshing: false
+                })
+            } else {
+                alert(error.response.status)
+                this.setState({
+                    isLoading: false,
+                    refreshing: false
+                })
+            }
         })
     }
 
     render() {
 
-        const { events, isLoading } = this.state
+        const { events, isLoading, refreshing } = this.state
 
         return (
             <Drawer ref={(ref) => { this.drawer = ref }} content={<SideBar />} onClose={() => this.closeDrawer()}>
                 <Container>
                     <AppHeader title='หน้าหลัก' openDrawer={this.openDrawer.bind(this)} />
-                    <Content>
-                        {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
-                        {events.map((event, i) =>
-                            <EventBox key={i} title={event.EventNameEN} date={event.EventDate} imgUri={event.EventBannerLink} eventID={event.EventID} />
-                        )}
-                    </Content>
+                    <ScrollView
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={refreshing}
+                                onRefresh={this.onRefresh.bind(this)}
+                                title='loading data'
+                            />
+                        }
+                    >
+                        <Content>
+
+                            {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
+                            {events.map((event, i) =>
+                                <EventBox key={i} title={event.EventNameEN} date={event.EventDate} imgUri={event.EventBannerLink} eventID={event.EventID} />
+                            )}
+
+                        </Content>
+                    </ScrollView>
                 </Container>
             </Drawer>
         );

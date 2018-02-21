@@ -1,18 +1,20 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button } from 'native-base';
+import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button, Icon } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 
 // create a component
 class EventBox extends Component {
 
-    onPress = (eventID)=>{
-        alert(eventID)
+    onPress = (eventID, title) => {
+        Actions.schedule({ EventID: eventID, EventName: title })
     }
 
     render() {
 
         const { title, date, imgUri, eventID } = this.props
+        let dateEvent = new Date(date)
 
         return (
             <Content style={styles.eventContentBox}>
@@ -22,16 +24,21 @@ class EventBox extends Component {
                             <Thumbnail style={styles.eventLogo} square source={require('../resources/images/psulogo.png')} />
                             <Body>
                                 <Text>{title}</Text>
-                                <Text note>{date}</Text>
+                                <Text note>{dateEvent.toDateString()}</Text>
                             </Body>
                         </Left>
+                        <Right>
+                            <Icon name='md-more' />
+                        </Right>
                     </CardItem>
                     <CardItem cardBody>
-                        <Image style={styles.eventImage} source={{ uri: imgUri }} />
+                        {(imgUri != null)
+                            ? <Image style={styles.eventImage} source={{ uri: imgUri }} />
+                            : <Image style={styles.eventImage} source={require('../resources/images/no-image-available.jpg')} />}
                     </CardItem>
                     <CardItem cardBody>
                         <Body>
-                            <Button full light onPress={()=> this.onPress(eventID)}>
+                            <Button full light onPress={() => this.onPress(eventID, title)}>
                                 <Text style={styles.textRegisterButton}>ลงทะเบียน</Text>
                             </Button>
                         </Body>
