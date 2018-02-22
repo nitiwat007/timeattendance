@@ -5,7 +5,7 @@ import { Container, Content, Form, Input, Item, Label, Switch, Button, Icon, Bod
 import DatePicker from 'react-native-datepicker'
 import { Permissions, ImagePicker } from 'expo'
 import { connect } from 'react-redux'
-import axios from 'axios'
+import {Actions} from 'react-native-router-flux'
 
 import AppHeaderBack from '../Headers/AppHeaderBack'
 import EventApi from '../../apis/event'
@@ -85,7 +85,10 @@ class NewEvent extends Component {
             type: `image/${fileType}`,
         })
 
-        EventApi.createEvent(memberID, formData).then(response => alert(response)).catch(error => alert(error.response.data.Message))
+        EventApi.createEvent(memberID, formData).then(response => {
+            alert('Create Event Complete')
+            Actions.main()
+        }).catch(error => alert(error.response.data.Message))
     }
 
     pickImage = async () => {

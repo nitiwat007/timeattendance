@@ -13,7 +13,7 @@ class Schedule extends Component {
 
         return (
             <Container style={styles.container}>
-                <AppHeaderBack title='ตารางเวลา' />
+                <AppHeaderBack title='ตารางเวลา' component='newschedule'/>
                 <Content>
                     <Header style={styles.contentHeader}>
                         <View style={styles.iconContainer}>

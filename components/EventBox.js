@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 
 // create a component
 class EventBox extends Component {
@@ -10,6 +11,26 @@ class EventBox extends Component {
     onPress = (eventID, title) => {
         Actions.schedule({ EventID: eventID, EventName: title })
     }
+
+    setMenuRef = ref => {
+        this.menu = ref;
+    };
+
+    menu = null;
+
+    menuItemAction = (action) => {
+        if (action === 'edit') {
+            Actions.schedule()
+            this.menu.hide()
+        } else if (action === 'remove') {
+            this.menu.hide()
+        }
+
+    };
+
+    showMenu = () => {
+        this.menu.show();
+    };
 
     render() {
 
@@ -19,16 +40,32 @@ class EventBox extends Component {
         return (
             <Content style={styles.eventContentBox}>
                 <Card>
-                    <CardItem>
-                        <Left>
+                    <CardItem style={{ flex: 1, flexDirection: 'row' }}>
+                        <Left style={{ flex: 8 }}>
                             <Thumbnail style={styles.eventLogo} square source={require('../resources/images/psulogo.png')} />
                             <Body>
                                 <Text>{title}</Text>
                                 <Text note>{dateEvent.toDateString()}</Text>
                             </Body>
                         </Left>
-                        <Right>
-                            <Icon name='md-more' />
+                        <Right style={{ flex: 1 }}>
+                            <Menu
+                                ref={this.setMenuRef}
+                                button={
+                                    <Button transparent style={styles.buttonMoreMenu} full large dark onPress={this.showMenu}>
+                                        <Icon name='md-more' />
+                                    </Button>
+                                }
+                            >
+                                <MenuItem onPress={() => this.menuItemAction('edit')}>Edit</MenuItem>
+                                <MenuDivider />
+                                <MenuItem onPress={() => this.menuItemAction('remove')}>Remove</MenuItem>
+                                {/* <MenuItem onPress={this.menuItemAction} disabled>
+                                    Test 3
+                                </MenuItem>
+                                <MenuDivider />
+                                <MenuItem onPress={this.hideMenu}>Test 4</MenuItem> */}
+                            </Menu>
                         </Right>
                     </CardItem>
                     <CardItem cardBody>
@@ -70,6 +107,9 @@ const styles = StyleSheet.create({
     textRegisterButton: {
         color: '#585858',
         fontWeight: 'bold'
+    },
+    buttonMoreMenu: {
+        width: 30
     }
 });
 
