@@ -11,7 +11,7 @@ class NewSchedule extends Component {
             <Container style={styles.container}>
                 <AppHeaderBack title='เพิ่มตารางเวลา' />
                 <Content>
-
+                    
                 </Content>
             </Container>
         );
