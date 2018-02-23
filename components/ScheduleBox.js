@@ -27,10 +27,13 @@ class ScheduleBox extends Component {
         this.menu.show();
     };
 
+    onPress = (ScheduleID) => {
+        Actions.registattendance({ ScheduleID: ScheduleID })
+    }
 
     render() {
 
-        const { ScheduleTitle, ScheduleFrom, ScheduleTo, ScheduleNote } = this.props
+        const { ScheduleTitle, ScheduleFrom, ScheduleTo, ScheduleNote, ScheduleID } = this.props
 
         return (
             <Content style={styles.scheduleContentBox}>
@@ -76,7 +79,7 @@ class ScheduleBox extends Component {
                     </CardItem>
                     <CardItem cardBody style={styles.scheduleSelectItem}>
                         <Body>
-                            <Button full success onPress={() => alert('Select')}>
+                            <Button full success onPress={() => this.onPress(ScheduleID)}>
                                 <Text style={styles.textRegisterButton}>เลือก</Text>
                             </Button>
                         </Body>

@@ -96,6 +96,7 @@ class Schedule extends Component {
                                     ScheduleFrom={schedule.ScheduleFrom}
                                     ScheduleTo={schedule.ScheduleTo}
                                     ScheduleNote={schedule.ScheduleNote}
+                                    ScheduleID={schedule.ScheduleID}
                                 />
                             )}
 
