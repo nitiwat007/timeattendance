@@ -16,10 +16,10 @@ class SideBar extends Component {
     onPress = (key) => {
         switch (key) {
             case 'myevent':
-                alert('กิจกรรมของฉัน')
+                this.props.closeDrawer()
                 break
             case 'myeventrespons':
-                alert('กิจกรรมที่ฉันรับผิดชอบ')
+                Actions.responsibleevent()
                 break
             default: null
         }
@@ -62,7 +62,7 @@ class SideBar extends Component {
                                 <Icon name="ios-folder-outline" />
                             </Left>
                             <Body>
-                                <Text>กิจกรรมของฉัน</Text>
+                                <Text>My Event</Text>
                             </Body>
                             <Right>
                                 <Icon name="arrow-forward" />
@@ -73,7 +73,7 @@ class SideBar extends Component {
                                 <Icon name="ios-folder-outline" />
                             </Left>
                             <Body>
-                                <Text>กิจกรรมที่ฉันรับผิดชอบ</Text>
+                                <Text>My Responsible Event</Text>
                             </Body>
                             <Right>
                                 <Icon name="arrow-forward" />

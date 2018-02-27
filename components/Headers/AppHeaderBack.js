@@ -24,7 +24,7 @@ class AppHeaderBack extends Component {
                     </Button>
                 </Left>
                 <Body>
-                    <Title>{title}</Title>
+                    <Title style={styles.titleText}>{title}</Title>
                 </Body>
                 <Right>
                     {(component === undefined) ? null :
@@ -42,6 +42,9 @@ class AppHeaderBack extends Component {
 const styles = StyleSheet.create({
     header: {
         marginTop: (Platform.OS === 'android') ? Expo.Constants.statusBarHeight : 0,
+    },
+    titleText:{
+        fontSize: 14
     }
 });
 

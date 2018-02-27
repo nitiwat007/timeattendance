@@ -9,6 +9,8 @@ import NewEvent from '../components/pages/NewEvent'
 import Schedule from '../components/pages/Schedule'
 import NewSchedule from '../components/pages/NewSchedule'
 import RegisterAttendance from '../components/pages/RegisterAttendance'
+import RegisterAttendanceForm from '../components/pages/RegisterAttendanceForm'
+import ResponsibleEvent from '../components/pages/ResponsibleEvent'
 
 // create a component
 class RouterComponent extends Component {
@@ -22,6 +24,8 @@ class RouterComponent extends Component {
                     <Scene key='schedule' component={Schedule} hideNavBar />
                     <Scene key='newschedule' component={NewSchedule} hideNavBar />
                     <Scene key='registattendance' component={RegisterAttendance} hideNavBar />
+                    <Scene key='registattendanceform' component={RegisterAttendanceForm} hideNavBar />
+                    <Scene key='responsibleevent' component={ResponsibleEvent} hideNavBar />
                 </Scene>
             </Router>
         );

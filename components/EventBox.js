@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Dimensions } from 'react-native';
 import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
@@ -92,9 +92,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
     },
     eventImage: {
-        height: 300,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').width * 9 / 16,
         width: null,
-        flex: 1
+        flex: 1,
     },
     eventLogo: {
         width: 21,
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     },
     buttonMoreMenu: {
         width: 30
-    }
+    },
 });
 
 //make this component available to the app

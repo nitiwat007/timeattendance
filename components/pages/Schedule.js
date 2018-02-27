@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Label, Switch, Button, Icon, Body, Thumbnail } from 'native-base'
+import { connect } from 'react-redux';
 
 import AppHeaderBack from '../Headers/AppHeaderBack'
 import ScheduleBox from '../ScheduleBox'
@@ -20,8 +21,8 @@ class Schedule extends Component {
     }
 
     onRefresh() {
-        const memberID = 'nitiwat.t'
-        const EventID = 'cc11f90bc1e14291a228afa3762db417'
+        const memberID = this.props.userDetail[0]
+        const { EventID } = this.props
         ScheduleApi.getScheduleByEventID(memberID, EventID).then(data => {
             this.setState({
                 isLoading: false,
@@ -41,8 +42,8 @@ class Schedule extends Component {
     }
 
     componentDidMount() {
-        const memberID = 'nitiwat.t'
-        const EventID = 'cc11f90bc1e14291a228afa3762db417'
+        const memberID = this.props.userDetail[0]
+        const { EventID } = this.props
         ScheduleApi.getScheduleByEventID(memberID, EventID).then(data => {
             this.setState({
                 schedules: data,
@@ -145,5 +146,11 @@ const styles = StyleSheet.create({
     }
 });
 
+function mapStateToProps(state) {
+    return {
+        userDetail: state.userDetail
+    }
+}
+
 //make this component available to the app
-export default Schedule;
+export default connect(mapStateToProps, null)(Schedule);

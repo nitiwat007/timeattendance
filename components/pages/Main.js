@@ -82,9 +82,9 @@ class Main extends Component {
         const { events, isLoading, refreshing } = this.state
 
         return (
-            <Drawer ref={(ref) => { this.drawer = ref }} content={<SideBar />} onClose={() => this.closeDrawer()}>
+            <Drawer ref={(ref) => { this.drawer = ref }} content={<SideBar closeDrawer={this.closeDrawer.bind(this)} />} onClose={() => this.closeDrawer()}>
                 <Container>
-                    <AppHeader title='หน้าหลัก' openDrawer={this.openDrawer.bind(this)} />
+                    <AppHeader title='My Event' openDrawer={this.openDrawer.bind(this)} />
                     <ScrollView
                         refreshControl={
                             <RefreshControl

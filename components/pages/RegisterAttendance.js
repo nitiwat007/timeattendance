@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions, Alert } from 'react-native';
-import { Container, Content, Text } from 'native-base'
+import { Container, Content, Text, Footer, FooterTab, Button, Icon } from 'native-base'
 import AppHeaderBack from '../Headers/AppHeaderBack'
 import { BarCodeScanner, Permissions } from 'expo';
 
@@ -59,28 +59,42 @@ class RegisterAttendance extends Component {
     }
 
     render() {
-        const { ScheduleID } = this.props
+        const { ScheduleID, ScheduleTitle } = this.props
         const { hasCameraPermission } = this.state
         return (
-            <ScrollView style={styles.container} stickyHeaderIndices={[0]}>
-                <View>
-                    <AppHeaderBack title='ลงทะเบียน' />
-                    <Content>
-                        {(hasCameraPermission === null)
-                            ? <Text>Requesting for camera permission</Text>
-                            : (hasCameraPermission === false)
-                                ? <Text style={{ color: '#fff' }}>Camera permission is not granted</Text>
-                                : <BarCodeScanner
-                                    onBarCodeRead={this.handleBarCodeRead}
-                                    style={{
-                                        height: Dimensions.get('window').height / 2,
-                                        width: Dimensions.get('window').width,
-                                    }}
-                                />
-                        }
-                    </Content>
-                </View>
-            </ScrollView>
+            <Container>
+                <ScrollView style={styles.container} stickyHeaderIndices={[0]}>
+                    <View>
+                        <AppHeaderBack title={ScheduleTitle} />
+                        <Content>
+                            {(hasCameraPermission === null)
+                                ? <Text>Requesting for camera permission</Text>
+                                : (hasCameraPermission === false)
+                                    ? <Text style={{ color: '#fff' }}>Camera permission is not granted</Text>
+                                    : <BarCodeScanner
+                                        onBarCodeRead={this.handleBarCodeRead}
+                                        style={{
+                                            height: Dimensions.get('window').height,
+                                            width: Dimensions.get('window').width,
+                                        }}
+                                    />
+                            }
+                        </Content>
+                    </View>
+                </ScrollView>
+                <Footer>
+                    <FooterTab>
+                        <Button vertical active>
+                            <Icon name="md-qr-scanner" />
+                            <Text>QR Code</Text>
+                        </Button>
+                        <Button vertical>
+                            <Icon name="md-document" />
+                            <Text>Form</Text>
+                        </Button>
+                    </FooterTab>
+                </Footer>
+            </Container>
         );
     }
 }

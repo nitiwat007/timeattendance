@@ -9,7 +9,7 @@ class NewSchedule extends Component {
     render() {
         return (
             <Container style={styles.container}>
-                <AppHeaderBack title='เพิ่มตารางเวลา' />
+                <AppHeaderBack title='New Schedule' />
                 <Content>
                     
                 </Content>

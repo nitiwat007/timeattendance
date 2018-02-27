@@ -1,5 +1,13 @@
 {
   "expo": {
-    "sdkVersion": "25.0.0"
+    "name": "Time Attendance",
+    "sdkVersion": "25.0.0",
+    "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "com.psuphuket.timeattendance"
+    },
+    "android": {
+      "package": "com.psuphuket.timeattendance"
+    }
   }
 }

@@ -122,7 +122,7 @@ class NewEvent extends Component {
 
         return (
             <Container style={styles.container}>
-                <AppHeaderBack title='สร้างกิจกรรม' />
+                <AppHeaderBack title='New Event' />
                 <Content>
                     <Form style={styles.form}>
                         <Label>ชื่อกิจกรรม</Label>

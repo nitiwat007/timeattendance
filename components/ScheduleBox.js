@@ -27,8 +27,8 @@ class ScheduleBox extends Component {
         this.menu.show();
     };
 
-    onPress = (ScheduleID) => {
-        Actions.registattendance({ ScheduleID: ScheduleID })
+    onPress = (ScheduleID, ScheduleTitle) => {
+        Actions.registattendance({ ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })
     }
 
     render() {
@@ -79,7 +79,7 @@ class ScheduleBox extends Component {
                     </CardItem>
                     <CardItem cardBody style={styles.scheduleSelectItem}>
                         <Body>
-                            <Button full success onPress={() => this.onPress(ScheduleID)}>
+                            <Button full success onPress={() => this.onPress(ScheduleID, ScheduleTitle)}>
                                 <Text style={styles.textRegisterButton}>เลือก</Text>
                             </Button>
                         </Body>
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#2c3e50',
     },
     scheduleContentBox: {
-        padding: 2
+        padding: 10
     },
     scheduleTitleItem: {
         borderColor: '#E6E6E6',
