@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // justifyContent: 'center',
         // alignItems: 'center',
-        backgroundColor: '#F4F6F6',
+        // backgroundColor: '#F4F6F6',
     },
     form: {
         padding: 10

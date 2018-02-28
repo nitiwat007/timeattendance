@@ -27,13 +27,23 @@ class ScheduleBox extends Component {
         this.menu.show();
     };
 
-    onPress = (ScheduleID, ScheduleTitle) => {
-        Actions.registattendance({ ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })
+    onPress = (ScheduleID, ScheduleTitle, EventID) => {
+        Actions.registattendance({ ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle, EventID: EventID })
     }
 
     render() {
 
-        const { ScheduleTitle, ScheduleFrom, ScheduleTo, ScheduleNote, ScheduleID } = this.props
+        const { ScheduleTitle, ScheduleFrom, ScheduleTo, ScheduleNote, ScheduleID, EventID } = this.props
+        let ScheduleDateTo, ScheduleDateFrom, ScheduleDateTimeTo, ScheduleDateTimeFrom
+        try {
+            ScheduleDateFrom = ScheduleFrom.split('T')[0]
+            ScheduleDateTo = ScheduleTo.split('T')[0]
+            ScheduleDateTimeFrom = ScheduleFrom.split('T')[1]
+            ScheduleDateTimeTo = ScheduleTo.split('T')[1]
+        } catch (error) {
+            alert(error)
+        }
+
 
         return (
             <Content style={styles.scheduleContentBox}>
@@ -62,8 +72,8 @@ class ScheduleBox extends Component {
                     <CardItem style={styles.scheduleDateTimeItem}>
                         <Left>
                             <Body>
-                                <Text>From : <Text note>{ScheduleFrom}</Text></Text>
-                                <Text>To :<Text note>{ScheduleTo}</Text></Text>
+                                <Text>Date : <Text note>{ScheduleDateFrom}</Text> - <Text note>{ScheduleDateTo}</Text></Text>
+                                <Text>Time : <Text note>{ScheduleDateTimeFrom}</Text> - <Text note>{ScheduleDateTimeTo}</Text></Text>
                             </Body>
                         </Left>
                     </CardItem>
@@ -79,8 +89,8 @@ class ScheduleBox extends Component {
                     </CardItem>
                     <CardItem cardBody style={styles.scheduleSelectItem}>
                         <Body>
-                            <Button full success onPress={() => this.onPress(ScheduleID, ScheduleTitle)}>
-                                <Text style={styles.textRegisterButton}>เลือก</Text>
+                            <Button full success onPress={() => this.onPress(ScheduleID, ScheduleTitle, EventID)}>
+                                <Text style={styles.textRegisterButton}>Select</Text>
                             </Button>
                         </Body>
                     </CardItem>
@@ -97,7 +107,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#2c3e50',
     },
     scheduleContentBox: {
-        padding: 10
+        padding: 2
     },
     scheduleTitleItem: {
         borderColor: '#E6E6E6',

@@ -4,6 +4,7 @@ import { View, StyleSheet, ScrollView, Dimensions, Alert } from 'react-native';
 import { Container, Content, Text, Footer, FooterTab, Button, Icon } from 'native-base'
 import AppHeaderBack from '../Headers/AppHeaderBack'
 import { BarCodeScanner, Permissions } from 'expo';
+import { Actions } from 'react-native-router-flux'
 
 // create a component
 class RegisterAttendance extends Component {
@@ -43,6 +44,7 @@ class RegisterAttendance extends Component {
                             this.setState({
                                 Registered: false
                             })
+                            Actions.registattendanceform({ ID: result.data })
                         }
                     },
                     {
@@ -59,7 +61,7 @@ class RegisterAttendance extends Component {
     }
 
     render() {
-        const { ScheduleID, ScheduleTitle } = this.props
+        const { ScheduleID, ScheduleTitle, EventID } = this.props
         const { hasCameraPermission } = this.state
         return (
             <Container>
@@ -84,13 +86,17 @@ class RegisterAttendance extends Component {
                 </ScrollView>
                 <Footer>
                     <FooterTab>
-                        <Button vertical active>
+                        <Button vertical active onPress={() => Actions.registattendance()}>
                             <Icon name="md-qr-scanner" />
                             <Text>QR Code</Text>
                         </Button>
-                        <Button vertical>
+                        <Button vertical onPress={() => Actions.registattendanceform({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-document" />
                             <Text>Form</Text>
+                        </Button>
+                        <Button vertical onPress={()=> alert('Not Implemented')}>
+                            <Icon name="md-people" />
+                            <Text>List</Text>
                         </Button>
                     </FooterTab>
                 </Footer>

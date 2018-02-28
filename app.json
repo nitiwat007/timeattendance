@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Time Attendance",
+    "icon": "./resources/images/eventicon.png",
     "sdkVersion": "25.0.0",
     "version": "1.0.0",
     "ios": {

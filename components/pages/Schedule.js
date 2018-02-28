@@ -93,6 +93,7 @@ class Schedule extends Component {
                             {schedules.map((schedule, i) =>
                                 <ScheduleBox
                                     key={i}
+                                    EventID={EventID}
                                     ScheduleTitle={schedule.ScheduleTitle}
                                     ScheduleFrom={schedule.ScheduleFrom}
                                     ScheduleTo={schedule.ScheduleTo}

@@ -19,6 +19,7 @@ class SideBar extends Component {
                 this.props.closeDrawer()
                 break
             case 'myeventrespons':
+                this.props.closeDrawer()
                 Actions.responsibleevent()
                 break
             default: null
@@ -73,7 +74,7 @@ class SideBar extends Component {
                                 <Icon name="ios-folder-outline" />
                             </Left>
                             <Body>
-                                <Text>My Responsible Event</Text>
+                                <Text>Responsible Event</Text>
                             </Body>
                             <Right>
                                 <Icon name="arrow-forward" />
