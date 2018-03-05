@@ -54,7 +54,7 @@ class ScheduleBox extends Component {
                                 <Text style={styles.titleText}>{ScheduleTitle}</Text>
                             </Body>
                         </Left>
-                        <Right style={{ flex: 1 }}>
+                        {/* <Right style={{ flex: 1 }}>
                             <Menu
                                 ref={this.setMenuRef}
                                 button={
@@ -67,7 +67,7 @@ class ScheduleBox extends Component {
                                 <MenuDivider />
                                 <MenuItem onPress={() => this.menuItemAction('remove')}>Remove</MenuItem>
                             </Menu>
-                        </Right>
+                        </Right> */}
                     </CardItem>
                     <CardItem style={styles.scheduleDateTimeItem}>
                         <Left>

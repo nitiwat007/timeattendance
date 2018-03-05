@@ -68,7 +68,7 @@ class Schedule extends Component {
 
         return (
             <Container style={styles.container}>
-                <AppHeaderBack title='ตารางเวลา' component='newschedule' />
+                <AppHeaderBack title='Schedule' component='newschedule' />
                 <ScrollView
                     refreshControl={
                         <RefreshControl

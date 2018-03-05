@@ -27,11 +27,11 @@ class AppHeaderBack extends Component {
                     <Title style={styles.titleText}>{title}</Title>
                 </Body>
                 <Right>
-                    {(component === undefined) ? null :
+                    {/* {(component === undefined) ? null :
                         <Button iconLeft transparent onPress={() => Actions[component].call()}>
                             <Icon name='ios-add-circle-outline' />
                         </Button>
-                    }
+                    } */}
                 </Right>
             </Header>
         );
@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
         marginTop: (Platform.OS === 'android') ? Expo.Constants.statusBarHeight : 0,
     },
     titleText:{
-        fontSize: 14
+        fontSize: 14,
+        fontWeight: 'bold'
     }
 });
 

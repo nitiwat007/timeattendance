@@ -47,7 +47,7 @@ class EventBox extends Component {
                                 <Text note>{dateEvent.toDateString()}</Text>
                             </Body>
                         </Left>
-                        <Right style={{ flex: 1 }}>
+                        {/* <Right style={{ flex: 1 }}>
                             <Menu
                                 ref={this.setMenuRef}
                                 button={
@@ -59,13 +59,8 @@ class EventBox extends Component {
                                 <MenuItem onPress={() => this.menuItemAction('edit')}>Edit</MenuItem>
                                 <MenuDivider />
                                 <MenuItem onPress={() => this.menuItemAction('remove')}>Remove</MenuItem>
-                                {/* <MenuItem onPress={this.menuItemAction} disabled>
-                                    Test 3
-                                </MenuItem>
-                                <MenuDivider />
-                                <MenuItem onPress={this.hideMenu}>Test 4</MenuItem> */}
                             </Menu>
-                        </Right>
+                        </Right> */}
                     </CardItem>
                     <CardItem cardBody>
                         {(imgUri != null)
@@ -75,7 +70,7 @@ class EventBox extends Component {
                     <CardItem cardBody>
                         <Body>
                             <Button full light onPress={() => this.onPress(eventID, title)}>
-                                <Text style={styles.textRegisterButton}>ลงทะเบียน</Text>
+                                <Text style={styles.textRegisterButton}>Select</Text>
                             </Button>
                         </Body>
                     </CardItem>

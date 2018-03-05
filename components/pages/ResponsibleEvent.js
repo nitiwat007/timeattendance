@@ -1,11 +1,12 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
-import { Container, Content, Text } from 'native-base'
+import { Container, Content, Text, Footer, FooterTab, Button, Icon } from 'native-base'
 import AppHeaderBack from '../Headers/AppHeaderBack'
 import EventApi from '../../apis/event'
 import { connect } from 'react-redux';
 import EventBox from '../EventBox'
+import { Actions } from 'react-native-router-flux'
 
 // create a component
 class ResponsibleEvent extends Component {
@@ -90,6 +91,19 @@ class ResponsibleEvent extends Component {
                         )}
                     </Content>
                 </ScrollView>
+                <Footer>
+                    <FooterTab style={{backgroundColor:"#FFF"}}>
+                        <Button vertical onPress={() => Actions.main()}>
+                            <Icon name="md-home" />
+                            <Text>My Events</Text>
+                        </Button>
+                        <Button vertical active onPress={() => Actions.responsibleevent()}>
+                            <Icon name="md-browsers" />
+                            <Text>Responsible Events</Text>
+                        </Button>
+                    </FooterTab>
+
+                </Footer>
             </Container >
         );
     }

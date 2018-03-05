@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Container, Content, Text, Footer, FooterTab, Icon, Form, Input, Item, Label, Switch, Button } from 'native-base'
-import AppHeaderBack from '../Headers/AppHeaderBack'
+import AppHeaderHome from '../Headers/AppHeaderHome'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 
@@ -33,7 +33,7 @@ class RegisterAttendanceForm extends Component {
         const { ID } = this.state
         return (
             <Container style={styles.container}>
-                <AppHeaderBack title='Registration' />
+                <AppHeaderHome title={ScheduleTitle} />
                 <Content>
                     <Form style={styles.form}>
                         <Label>ID</Label>
@@ -54,7 +54,7 @@ class RegisterAttendanceForm extends Component {
                         </Item>
                         <Label>Note</Label>
                         <Item regular style={styles.formItem}>
-                            <Input style={styles.inputText} />
+                            <Input style={styles.inputTextMulltiline} multiline={true} />
                         </Item>
                         <Button block success style={styles.buttonSubmit} onPress={this.onSubmit}>
                             <Text style={styles.textButtonSubmit}>Submit</Text>
@@ -62,17 +62,17 @@ class RegisterAttendanceForm extends Component {
                     </Form>
                 </Content>
                 <Footer>
-                    <FooterTab>
-                        <Button vertical onPress={() => Actions.registattendance({ ScheduleID: ScheduleID, EventID: EventID, ScheduleTitle: ScheduleTitle })}>
-                            <Icon name="md-qr-scanner" />
-                            <Text>QR Code</Text>
-                        </Button>
-                        <Button vertical active onPress={() => Actions.registattendanceform({ ScheduleID: ScheduleID, EventID: EventID, ScheduleTitle: ScheduleTitle })}>
+                    <FooterTab style={{backgroundColor:"#FFF"}}>                       
+                        <Button vertical active onPress={() => Actions.registattendanceform({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-document" />
                             <Text>Form</Text>
                         </Button>
-                        <Button vertical>
-                            <Icon name="md-people" onPress={()=> alert('Not Implemented')}/>
+                        <Button vertical onPress={() => Actions.registattendance({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                            <Icon name="md-qr-scanner" />
+                            <Text>QR Code</Text>
+                        </Button>
+                        <Button vertical  onPress={() => Actions.registattendancelist({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                            <Icon name="md-people" />
                             <Text>List</Text>
                         </Button>
                     </FooterTab>
@@ -103,6 +103,10 @@ const styles = StyleSheet.create({
     textButtonSubmit: {
         color: '#FFFFFF'
     },
+    inputTextMulltiline: {
+        backgroundColor: '#FFFFFF',
+        height: 100
+    }
 });
 
 function mapStateToProps(state) {

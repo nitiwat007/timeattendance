@@ -1,8 +1,8 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions, Alert, ActivityIndicator } from 'react-native';
 import { Container, Content, Text, Footer, FooterTab, Button, Icon } from 'native-base'
-import AppHeaderBack from '../Headers/AppHeaderBack'
+import AppHeaderHome from '../Headers/AppHeaderHome'
 import { BarCodeScanner, Permissions } from 'expo';
 import { Actions } from 'react-native-router-flux'
 
@@ -13,18 +13,23 @@ class RegisterAttendance extends Component {
         super(props);
         this.state = {
             hasCameraPermission: null,
-            Registered: false
+            Registered: false,
+            isLoading: true
         }
     }
 
     componentDidMount() {
-        this.requestCameraPermission()
+        setTimeout(() => {
+            this.requestCameraPermission()    
+        }, 2000);
+
     }
 
     requestCameraPermission = async () => {
         const { status } = await Permissions.askAsync(Permissions.CAMERA)
         this.setState({
-            hasCameraPermission: status === 'granted'
+            hasCameraPermission: status === 'granted',
+            isLoading:false
         })
     }
 
@@ -62,18 +67,18 @@ class RegisterAttendance extends Component {
 
     render() {
         const { ScheduleID, ScheduleTitle, EventID } = this.props
-        const { hasCameraPermission } = this.state
+        const { hasCameraPermission, isLoading } = this.state
         return (
             <Container>
                 <ScrollView style={styles.container} stickyHeaderIndices={[0]}>
                     <View>
-                        <AppHeaderBack title={ScheduleTitle} />
+                        <AppHeaderHome title={ScheduleTitle} />
                         <Content>
                             {(hasCameraPermission === null)
-                                ? <Text>Requesting for camera permission</Text>
+                                ? (isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />))
                                 : (hasCameraPermission === false)
                                     ? <Text style={{ color: '#fff' }}>Camera permission is not granted</Text>
-                                    : <BarCodeScanner
+                                    : < BarCodeScanner
                                         onBarCodeRead={this.handleBarCodeRead}
                                         style={{
                                             height: Dimensions.get('window').height,
@@ -85,16 +90,16 @@ class RegisterAttendance extends Component {
                     </View>
                 </ScrollView>
                 <Footer>
-                    <FooterTab>
-                        <Button vertical active onPress={() => Actions.registattendance()}>
-                            <Icon name="md-qr-scanner" />
-                            <Text>QR Code</Text>
-                        </Button>
+                    <FooterTab style={{ backgroundColor: "#FFF" }}>
                         <Button vertical onPress={() => Actions.registattendanceform({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-document" />
                             <Text>Form</Text>
                         </Button>
-                        <Button vertical onPress={()=> alert('Not Implemented')}>
+                        <Button vertical active onPress={() => Actions.registattendance({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                            <Icon name="md-qr-scanner" />
+                            <Text>QR Code</Text>
+                        </Button>
+                        <Button vertical onPress={() => Actions.reset('registattendancelist',{ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-people" />
                             <Text>List</Text>
                         </Button>
@@ -111,6 +116,9 @@ const styles = StyleSheet.create({
         flex: 1,
         //backgroundColor: '#2c3e50',
     },
+    ActivityIndicator: {
+        paddingTop: 20
+    }
 });
 
 //make this component available to the app

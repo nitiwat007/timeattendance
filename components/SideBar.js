@@ -44,13 +44,13 @@ class SideBar extends Component {
             <Container style={styles.container}>
                 <Header>
                     <Body style={styles.headerBody}>
-                        <Title style={styles.headerTitle}>จัดการข้อมูล</Title>
+                        <Title style={styles.headerTitle}>Account</Title>
                     </Body>
                 </Header>
                 <Content>
                     <Header style={styles.contentHeader}>
                         <View style={styles.iconContainer}>
-                            <Icon name="ios-contact-outline" />
+                            <Icon name="md-happy" />
                         </View>
                         <View style={styles.detailContainer}>
                             <Text>{fullname}</Text>
@@ -60,10 +60,10 @@ class SideBar extends Component {
                     <List>
                         <ListItem icon button onPress={(this.onPress.bind(this, 'myevent'))}>
                             <Left>
-                                <Icon name="ios-folder-outline" />
+                                <Icon name="md-home" />
                             </Left>
                             <Body>
-                                <Text>My Event</Text>
+                                <Text>My Events</Text>
                             </Body>
                             <Right>
                                 <Icon name="arrow-forward" />
@@ -71,10 +71,10 @@ class SideBar extends Component {
                         </ListItem>
                         <ListItem icon button onPress={(this.onPress.bind(this, 'myeventrespons'))}>
                             <Left>
-                                <Icon name="ios-folder-outline" />
+                                <Icon name="md-browsers" />
                             </Left>
                             <Body>
-                                <Text>Responsible Event</Text>
+                                <Text>Responsible Events</Text>
                             </Body>
                             <Right>
                                 <Icon name="arrow-forward" />
@@ -86,7 +86,7 @@ class SideBar extends Component {
                     <FooterTab style={styles.logout}>
                         <Button onPress={() => this.Logout()}>
                             <Text style={styles.buttonLogout}>
-                                ออกจากระบบ
+                                LOGOUT
                             </Text>
                         </Button>
                     </FooterTab>

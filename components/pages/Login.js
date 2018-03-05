@@ -1,6 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { Text, Footer, FooterTab } from 'native-base'
 import PSUPassport from '../../apis/psuPassport'
 import { connect } from 'react-redux'
 import { userDetailToStore } from '../../store/actions/userDetail'
@@ -32,6 +33,7 @@ class Login extends Component {
                 <View style={styles.viewLogo}>
                     <Image style={styles.logo} source={require('../../resources/images/psulogo.png')} />
                     <Text style={styles.systemNane}>Time Attendance</Text>
+
                 </View>
                 <View style={{ flex: 2 }}>
                     <TextInput
@@ -53,6 +55,9 @@ class Login extends Component {
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
                 </View>
+                <Footer style={styles.footer}>
+                        <Text note style={styles.footerText}>Prince of Songkla University Phuket Campus</Text>
+                </Footer>
             </View>
         );
     }
@@ -78,7 +83,8 @@ const styles = StyleSheet.create({
     },
     systemNane: {
         paddingTop: 20,
-        color: '#000000'
+        fontSize: 16,
+        color:'#2E2E2E'
     },
     input: {
         height: 40,
@@ -95,6 +101,16 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         fontWeight: '700'
+    },
+    footer:{
+        backgroundColor:'#FFFFFF',
+        borderWidth: 0,
+        borderRadius: 0,
+        borderColor: '#FFFFFF',
+        elevation: 0
+    },
+    footerText:{
+        paddingTop:30
     }
 });
 

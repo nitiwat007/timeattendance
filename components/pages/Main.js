@@ -1,8 +1,9 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Modal, ScrollView, RefreshControl } from 'react-native';
-import { Container, Drawer, Content } from 'native-base'
+import { View, StyleSheet, ActivityIndicator, Modal, ScrollView, RefreshControl } from 'react-native';
+import { Container, Drawer, Content, Footer, FooterTab, Button, Icon, Text } from 'native-base'
 import { connect } from 'react-redux';
+import { Actions } from 'react-native-router-flux'
 
 import SideBar from '../SideBar'
 import AppHeader from '../Headers/AppHeader'
@@ -102,7 +103,20 @@ class Main extends Component {
                             )}
 
                         </Content>
+
                     </ScrollView>
+                    <Footer>
+                        <FooterTab style={{backgroundColor:"#FFF"}}>
+                            <Button vertical active onPress={() => Actions.main()}>
+                                <Icon name="md-home" />
+                                <Text>My Events</Text>
+                            </Button>
+                            <Button vertical onPress={() => Actions.responsibleevent()}>
+                                <Icon name="md-browsers" />
+                                <Text>Responsible Events</Text>
+                            </Button>
+                        </FooterTab>
+                    </Footer>
                 </Container>
             </Drawer>
         );

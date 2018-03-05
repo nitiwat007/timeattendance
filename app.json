@@ -4,6 +4,9 @@
     "icon": "./resources/images/eventicon.png",
     "sdkVersion": "25.0.0",
     "version": "1.0.0",
+    "splash": {
+      "image":"./resources/images/splash.png"
+    },
     "ios": {
       "bundleIdentifier": "com.psuphuket.timeattendance"
     },
