@@ -1,11 +1,12 @@
 {
   "expo": {
     "name": "Time Attendance",
-    "icon": "./resources/images/eventicon.png",
+    "icon": "./resources/images/50years.png",
     "sdkVersion": "25.0.0",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "splash": {
-      "image":"./resources/images/splash.png"
+      "image": "./resources/images/splash50.png",
+      "resizeMode": "cover"
     },
     "ios": {
       "bundleIdentifier": "com.psuphuket.timeattendance"

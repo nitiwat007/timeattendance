@@ -35,20 +35,24 @@ class Main extends Component {
             isLoading: true
         })
         const memberID = this.props.userDetail[0]
-
         EventApi.getByMemberID(memberID).then(data => {
             this.setState({
                 events: data,
                 isLoading: false
             })
         }).catch(error => {
+            //console.log(error.response.data.Message)
             if (error.response.status = 404) {
                 this.setState({
                     isLoading: false,
                     refreshing: false
                 })
             } else {
-                alert(error.response)
+                alert(error.response.data.Message)
+                this.setState({
+                    isLoading: false,
+                    refreshing: false
+                })
             }
         })
     }
@@ -65,12 +69,14 @@ class Main extends Component {
         }).catch(error => {
             if (error.response.status = 404) {
                 this.setState({
+                    events:[],
                     isLoading: false,
                     refreshing: false
                 })
             } else {
-                alert(error.response.status)
+                alert(error.response.data.Message)
                 this.setState({
+                    events:[],
                     isLoading: false,
                     refreshing: false
                 })
@@ -98,15 +104,16 @@ class Main extends Component {
                         <Content>
 
                             {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
-                            {events.map((event, i) =>
+
+                            {(events.map((event, i) =>
                                 <EventBox key={i} title={event.EventNameEN} date={event.EventDate} imgUri={event.EventBannerLink} eventID={event.EventID} />
-                            )}
+                            ))}
 
                         </Content>
 
                     </ScrollView>
                     <Footer>
-                        <FooterTab style={{backgroundColor:"#FFF"}}>
+                        <FooterTab style={{ backgroundColor: "#FFF" }}>
                             <Button vertical active onPress={() => Actions.main()}>
                                 <Icon name="md-home" />
                                 <Text>My Events</Text>

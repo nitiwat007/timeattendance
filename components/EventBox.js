@@ -41,7 +41,7 @@ class EventBox extends Component {
                 <Card>
                     <CardItem style={{ flex: 1, flexDirection: 'row' }}>
                         <Left style={{ flex: 8 }}>
-                            <Thumbnail style={styles.eventLogo} square source={require('../resources/images/psulogo.png')} />
+                            <Thumbnail style={styles.eventLogo} square source={require('../resources/images/50years.png')} />
                             <Body>
                                 <Text>{title}</Text>
                                 <Text note>{dateEvent.toDateString()}</Text>
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     eventLogo: {
-        width: 21,
-        height: 40,
+        width:45,
+        height: 45,
     },
     eventContentBox: {
         padding: 2

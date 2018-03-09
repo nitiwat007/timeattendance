@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import { Text, Footer, FooterTab } from 'native-base'
 import PSUPassport from '../../apis/psuPassport'
 import { connect } from 'react-redux'
@@ -14,12 +14,13 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: USERNAME,
-            password: PASSWORD
+            username: '',
+            password: ''
         }
     }
 
     onSubmit = async () => {
+        Keyboard.dismiss()
         await PSUPassport.GetUserDetails(this.state.username, this.state.password).then(Result => {
             this.props.userDetailToStore(Result.GetUserDetailsResult[0].string)
             //console.log(Result.GetUserDetailsResult[0].string)
@@ -31,7 +32,7 @@ class Login extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.viewLogo}>
-                    <Image style={styles.logo} source={require('../../resources/images/psulogo.png')} />
+                    <Image style={styles.logo} source={require('../../resources/images/50years.png')} />
                     <Text style={styles.systemNane}>Time Attendance</Text>
 
                 </View>
@@ -56,7 +57,7 @@ class Login extends Component {
                     </TouchableOpacity>
                 </View>
                 <Footer style={styles.footer}>
-                        <Text note style={styles.footerText}>Prince of Songkla University Phuket Campus</Text>
+                    <Text note style={styles.footerText}>Prince of Songkla University Phuket Campus</Text>
                 </Footer>
             </View>
         );
@@ -78,13 +79,13 @@ const styles = StyleSheet.create({
         paddingTop: 50
     },
     logo: {
-        width: 55,
-        height: 105,
+        width: 100,
+        height: 100,
     },
     systemNane: {
         paddingTop: 20,
         fontSize: 16,
-        color:'#2E2E2E'
+        color: '#2E2E2E'
     },
     input: {
         height: 40,
@@ -102,15 +103,15 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: '700'
     },
-    footer:{
-        backgroundColor:'#FFFFFF',
+    footer: {
+        backgroundColor: '#FFFFFF',
         borderWidth: 0,
         borderRadius: 0,
         borderColor: '#FFFFFF',
         elevation: 0
     },
-    footerText:{
-        paddingTop:30
+    footerText: {
+        paddingTop: 30
     }
 });
 

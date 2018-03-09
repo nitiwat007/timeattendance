@@ -20,7 +20,7 @@ class RegisterAttendance extends Component {
 
     componentDidMount() {
         setTimeout(() => {
-            this.requestCameraPermission()    
+            this.requestCameraPermission()
         }, 2000);
 
     }
@@ -29,39 +29,40 @@ class RegisterAttendance extends Component {
         const { status } = await Permissions.askAsync(Permissions.CAMERA)
         this.setState({
             hasCameraPermission: status === 'granted',
-            isLoading:false
+            isLoading: false
         })
     }
 
     handleBarCodeRead = (result) => {
-        //alert(result.data)
+        const { ScheduleID, ScheduleTitle, EventID } = this.props
         let { Registered } = this.state
         if (!Registered) {
             this.setState({
                 Registered: true
             })
-            Alert.alert(
-                'Confirm Registration',
-                'Do you want to regist ID : ' + result.data,
-                [
-                    {
-                        text: 'Ok', onPress: () => {
-                            this.setState({
-                                Registered: false
-                            })
-                            Actions.registattendanceform({ ID: result.data })
-                        }
-                    },
-                    {
-                        text: 'Cancel', onPress: () => {
-                            this.setState({
-                                Registered: false
-                            })
-                        }, style: 'cancel'
-                    }
-                ],
-                { cancelable: false }
-            )
+            Actions.registattendanceform({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle, ID: result.data })
+            // Alert.alert(
+            //     'Confirm Registration',
+            //     'Do you want to regist ID : ' + result.data,
+            //     [
+            //         {
+            //             text: 'Ok', onPress: () => {
+            //                 this.setState({
+            //                     Registered: false
+            //                 })
+            //                 Actions.registattendanceform({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle, ID: result.data })
+            //             }
+            //         },
+            //         {
+            //             text: 'Cancel', onPress: () => {
+            //                 this.setState({
+            //                     Registered: false
+            //                 })
+            //             }, style: 'cancel'
+            //         }
+            //     ],
+            //     { cancelable: false }
+            // )
         }
     }
 
@@ -90,16 +91,16 @@ class RegisterAttendance extends Component {
                     </View>
                 </ScrollView>
                 <Footer>
-                    <FooterTab style={{ backgroundColor: "#FFF" }}>
-                        <Button vertical onPress={() => Actions.registattendanceform({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                <FooterTab style={{ backgroundColor: "#FFF" }}>
+                        <Button vertical onPress={() => Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-document" />
                             <Text>Form</Text>
                         </Button>
-                        <Button vertical active onPress={() => Actions.registattendance({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical active onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-qr-scanner" />
                             <Text>QR Code</Text>
                         </Button>
-                        <Button vertical onPress={() => Actions.reset('registattendancelist',{ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical  onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-people" />
                             <Text>List</Text>
                         </Button>

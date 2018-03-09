@@ -76,10 +76,9 @@ class Schedule extends Component {
                             onRefresh={this.onRefresh.bind(this)}
                             title='loading data'
                         />
-                    }
-                    stickyHeaderIndices={[0]}
+                    }                   
                 >
-                    <Content>
+                    <Content style={styles.content}>
                         <View style={styles.contentHeader}>
                             <View style={styles.iconContainer}>
                                 <Icon name="md-clipboard" />
@@ -144,6 +143,9 @@ const styles = StyleSheet.create({
     },
     ActivityIndicator: {
         paddingTop: 20
+    },
+    content: {
+        paddingBottom: 10
     }
 });
 

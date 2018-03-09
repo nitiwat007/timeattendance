@@ -134,7 +134,8 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontSize: 16,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        color:'#2E86C1'
     }
 });
 
