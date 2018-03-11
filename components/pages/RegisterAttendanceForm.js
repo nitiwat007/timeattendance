@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, StyleSheet, Keyboard } from 'react-native';
-import { Container, Content, Text, Footer, FooterTab, Icon, Form, Input, Item, Label, Switch, Button } from 'native-base'
+import { Container, Content, Text, Footer, FooterTab, Icon, Form, Input, Item, Label, Switch, Button, Alert } from 'native-base'
 import AppHeaderHome from '../Headers/AppHeaderHome'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'

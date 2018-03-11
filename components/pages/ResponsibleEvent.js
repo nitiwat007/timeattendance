@@ -74,7 +74,7 @@ class ResponsibleEvent extends Component {
 
         return (
             <Container style={styles.container}>
-                <AppHeaderBack title='Responsible Event' />
+                <AppHeaderBack title='Responsible Events' />
                 <ScrollView
                     refreshControl={
                         <RefreshControl

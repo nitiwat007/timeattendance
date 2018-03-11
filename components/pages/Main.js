@@ -91,7 +91,7 @@ class Main extends Component {
         return (
             <Drawer ref={(ref) => { this.drawer = ref }} content={<SideBar closeDrawer={this.closeDrawer.bind(this)} />} onClose={() => this.closeDrawer()}>
                 <Container>
-                    <AppHeader title='My Event' openDrawer={this.openDrawer.bind(this)} />
+                    <AppHeader title='My Events' openDrawer={this.openDrawer.bind(this)} />
                     <ScrollView
                         refreshControl={
                             <RefreshControl

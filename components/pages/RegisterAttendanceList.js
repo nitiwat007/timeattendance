@@ -14,12 +14,14 @@ class RegisterAttendanceList extends Component {
         super(props);
         this.state = {
             attendances: [],
+            attendancesSearch: [],
             memberID: this.props.userDetail[0],
             EventID: this.props.EventID,
             ScheduleID: this.props.ScheduleID,
             ScheduleTitle: this.props.ScheduleTitle,
             isLoading: true,
-            refreshing: false
+            refreshing: false,
+            searchData: ''
         }
     }
 
@@ -29,6 +31,7 @@ class RegisterAttendanceList extends Component {
             //console.log(data)
             this.setState({
                 attendances: data,
+                attendancesSearch: data,
                 isLoading: false,
                 refreshing: false
             })
@@ -53,6 +56,7 @@ class RegisterAttendanceList extends Component {
         AttendanceApi.getAttendances(memberID, EventID, ScheduleID).then(data => {
             this.setState({
                 attendances: data,
+                attendancesSearch: data,
                 isLoading: false,
                 refreshing: false
             })
@@ -72,9 +76,22 @@ class RegisterAttendanceList extends Component {
         })
     }
 
+    onSearch = (event) => {
+        if (event != '') {
+            this.setState({
+                attendances: this.state.attendancesSearch.filter(x => x.AttendeeFullName.match(event))
+            })
+        } else {
+            this.setState({
+                attendances: this.state.attendancesSearch
+            })
+        }
+
+    }
+
     render() {
 
-        const { ScheduleID, EventID, ScheduleTitle, attendances, isLoading, refreshing } = this.state
+        const { ScheduleID, EventID, ScheduleTitle, attendances, isLoading, refreshing, searchData } = this.state
 
         return (
             <Container style={styles.container}>
@@ -90,6 +107,10 @@ class RegisterAttendanceList extends Component {
                 >
                     <Content style={styles.content}>
                         {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
+                        <Item regular style={styles.formItemCode}>
+                            <Input style={styles.inputText} onChangeText={this.onSearch} placeholder='Search' />
+
+                        </Item>
                         <Card>
                             <CardItem>
                                 <Body>
@@ -155,19 +176,19 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    cardAttendance:{
-        marginBottom:30
+    cardAttendance: {
+        marginBottom: 30
     },
     cardItem: {
         borderColor: '#E6E6E6',
         borderBottomWidth: 1,
         borderRadius: 0,
     },
-    cardItemFullname:{
+    cardItemFullname: {
         borderColor: '#E6E6E6',
         borderBottomWidth: 1,
         borderRadius: 0,
-        backgroundColor:'#FAFAFA'
+        backgroundColor: '#FAFAFA'
     },
     content: {
         padding: 10
@@ -183,7 +204,14 @@ const styles = StyleSheet.create({
     },
     textLabelCheckBy: {
         color: '#2E86C1'
-    }
+    },
+    formItemCode: {
+        marginBottom: 15,
+        flex: 2
+    },
+    inputText: {
+        backgroundColor: '#FFFFFF'
+    },
 });
 
 function mapStateToProps(state) {
