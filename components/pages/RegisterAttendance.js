@@ -19,10 +19,13 @@ class RegisterAttendance extends Component {
     }
 
     componentDidMount() {
-        setTimeout(() => {
-            this.requestCameraPermission()
-        }, 2000);
-
+        try {
+            setTimeout(() => {
+                this.requestCameraPermission()
+            }, 2000);
+        } catch (error) {
+            alert(error)
+        }
     }
 
     requestCameraPermission = async () => {
@@ -91,16 +94,16 @@ class RegisterAttendance extends Component {
                     </View>
                 </ScrollView>
                 <Footer>
-                <FooterTab style={{ backgroundColor: "#FFF" }}>
+                    <FooterTab style={{ backgroundColor: "#FFF" }}>
                         <Button vertical onPress={() => Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-document" />
                             <Text>Form</Text>
                         </Button>
                         <Button vertical active onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-qr-scanner" />
-                            <Text>QR Code</Text>
+                            <Text>Scan</Text>
                         </Button>
-                        <Button vertical  onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-people" />
                             <Text>List</Text>
                         </Button>

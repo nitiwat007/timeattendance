@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import { View, StyleSheet, Image, TextInput, TouchableOpacity, Keyboard, ActivityIndicator, AsyncStorage } from 'react-native';
 import { Text, Footer, FooterTab } from 'native-base'
 import PSUPassport from '../../apis/psuPassport'
 import { connect } from 'react-redux'
@@ -15,20 +15,51 @@ class Login extends Component {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            isLoading: false,
+            disabledLoginButton: false
         }
     }
 
     onSubmit = async () => {
+        this.setState({
+            isLoading: true,
+            disabledLoginButton: true
+        })
         Keyboard.dismiss()
         await PSUPassport.GetUserDetails(this.state.username, this.state.password).then(Result => {
+            AsyncStorage.setItem('LoggedIn', 'true')
+            AsyncStorage.setItem('userDetail', JSON.stringify(Result.GetUserDetailsResult[0].string))
             this.props.userDetailToStore(Result.GetUserDetailsResult[0].string)
             //console.log(Result.GetUserDetailsResult[0].string)
+            this.setState({
+                isLoading: false,
+                disabledLoginButton: false
+            })
             Actions.main()
-        }).catch(err => alert('Sorry wrong Username or Password'))
+        }).catch(err => {
+            this.setState({
+                isLoading: false,
+                disabledLoginButton: false
+            })
+            alert('Sorry wrong Username or Password')
+        })
+    }
+
+    async componentDidMount() {
+        const LoggedIn = await AsyncStorage.getItem('LoggedIn')
+
+        if (LoggedIn === 'true') {
+            const userDetail = await AsyncStorage.getItem('userDetail')
+            this.props.userDetailToStore(JSON.parse(userDetail))
+            Actions.main()
+        }
     }
 
     render() {
+
+        const { disabledLoginButton } = this.state
+
         return (
             <View style={styles.container}>
                 <View style={styles.viewLogo}>
@@ -51,8 +82,8 @@ class Login extends Component {
                         placeholder='Password'
                         secureTextEntry={true}
                         onChangeText={(password) => this.setState({ password })} />
-
-                    <TouchableOpacity style={styles.buttonContainer} onPress={this.onSubmit}>
+                    {this.state.isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
+                    <TouchableOpacity disabled={disabledLoginButton} activeOpacity={!disabledLoginButton ? 1 : 0.5} style={styles.buttonContainer} onPress={this.onSubmit}>
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
                 </View>
@@ -112,6 +143,10 @@ const styles = StyleSheet.create({
     },
     footerText: {
         paddingTop: 30
+    },
+    ActivityIndicator: {
+        paddingTop: 20,
+        paddingBottom: 20
     }
 });
 

@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet, Keyboard } from 'react-native';
+import { View, StyleSheet, Keyboard, ActivityIndicator } from 'react-native';
 import { Container, Content, Text, Footer, FooterTab, Icon, Form, Input, Item, Label, Switch, Button, Alert } from 'native-base'
 import AppHeaderHome from '../Headers/AppHeaderHome'
 import { Actions } from 'react-native-router-flux'
@@ -24,7 +24,9 @@ class RegisterAttendanceForm extends Component {
             note: '',
             EventID: this.props.EventID,
             ScheduleID: this.props.ScheduleID,
-            ScheduleTitle: this.props.ScheduleTitle
+            ScheduleTitle: this.props.ScheduleTitle,
+            isLoading: false,
+            disabledButtonPassport: false
         }
     }
 
@@ -75,13 +77,31 @@ class RegisterAttendanceForm extends Component {
     }
 
     onSearch = () => {
+        this.setState({
+            isLoading: true,
+            disabledButtonPassport: true
+        })
         Keyboard.dismiss()
         const { code } = this.state
         if (code !== '') {
-            StudentApi.getStudentInfo(code).then(data => this.setState({ fullname: data.FirstNameTH + ' ' + data.LastNameTH })).catch(error => {
+            StudentApi.getStudentInfo(code).then(data => {
+                this.setState({
+                    fullname: data.FirstNameTH + ' ' + data.LastNameTH,
+                    isLoading: false,
+                    disabledButtonPassport:false
+                })
+            }).catch(error => {
+                this.setState({
+                    isLoading: false,
+                    disabledButtonPassport:false
+                })
                 alert(error.response.data)
             })
         } else {
+            this.setState({
+                isLoading: false,
+                disabledButtonPassport:false
+            })
             alert('Please enter Code.')
         }
     }
@@ -113,7 +133,7 @@ class RegisterAttendanceForm extends Component {
 
     render() {
         const { ScheduleID, EventID, ScheduleTitle } = this.props
-        const { code, attendeeID, fullname, email, phonenumber, note } = this.state
+        const { code, attendeeID, fullname, email, phonenumber, note, disabledButtonPassport } = this.state
         return (
             <Container style={styles.container}>
                 <AppHeaderHome title={ScheduleTitle} />
@@ -125,8 +145,8 @@ class RegisterAttendanceForm extends Component {
                                 <Input style={styles.inputText} value={code} onChangeText={(code) => this.setState({ code })} />
 
                             </Item>
-                            <Button full info style={{ flex: 1, height: 52 }} onPress={this.onSearch}>
-                                <Text>Passport</Text>
+                            <Button disabled={disabledButtonPassport} full info style={{ flex: 1, height: 52 }} onPress={this.onSearch}>
+                                {(this.state.isLoading) ? (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />) : <Text>Passport</Text>}
                             </Button>
                         </View>
                         <Label>Fullname</Label>
@@ -161,7 +181,7 @@ class RegisterAttendanceForm extends Component {
                         </Button>
                         <Button vertical onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-qr-scanner" />
-                            <Text>QR Code</Text>
+                            <Text>Scan</Text>
                         </Button>
                         <Button vertical onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-people" />

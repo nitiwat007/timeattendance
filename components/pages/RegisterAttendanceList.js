@@ -21,7 +21,9 @@ class RegisterAttendanceList extends Component {
             ScheduleTitle: this.props.ScheduleTitle,
             isLoading: true,
             refreshing: false,
-            searchData: ''
+            searchData: '',
+            sortSwitch: false,
+            sortBy: 'Check In'
         }
     }
 
@@ -58,7 +60,9 @@ class RegisterAttendanceList extends Component {
                 attendances: data,
                 attendancesSearch: data,
                 isLoading: false,
-                refreshing: false
+                refreshing: false,
+                sortSwitch: false,
+                sortBy: 'Check In',
             })
         }).catch(error => {
             if (error.response.status = 404) {
@@ -79,11 +83,43 @@ class RegisterAttendanceList extends Component {
     onSearch = (event) => {
         if (event != '') {
             this.setState({
+                sortSwitch: false,
+                sortBy: 'Check In',
                 attendances: this.state.attendancesSearch.filter(x => x.AttendeeFullName.match(event))
             })
         } else {
             this.setState({
+                sortSwitch: false,
+                sortBy: 'Check In',
                 attendances: this.state.attendancesSearch
+            })
+        }
+    }
+
+    // onSortByCheckIn = () => {
+    //     this.setState({
+    //         attendances: this.state.attendances.sort((a, b) => new Date(a.CheckedInDateTime) > new Date(b.CheckedInDateTime) ? -1 : 0)
+    //     })
+
+    // }
+
+    onSort = async () => {
+        this.setState({ isLoading: true })
+        if (this.state.sortSwitch) {
+            let attendancesSorted = await this.state.attendances.sort((a, b) => new Date(a.CheckedInDateTime) > new Date(b.CheckedInDateTime) ? -1 : 0)
+            this.setState({
+                sortSwitch: false,
+                sortBy: 'Check In',
+                attendances: attendancesSorted,
+                isLoading:false
+            })
+        } else {
+            let attendancesSorted = await this.state.attendances.sort((a, b) => new Date(a.CheckedOutDateTime) > new Date(b.CheckedOutDateTime) ? -1 : 0)
+            this.setState({
+                sortSwitch: true,
+                sortBy: 'Check Out',
+                attendances: attendancesSorted,
+                isLoading:false
             })
         }
 
@@ -107,10 +143,22 @@ class RegisterAttendanceList extends Component {
                 >
                     <Content style={styles.content}>
                         {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
-                        <Item regular style={styles.formItemCode}>
-                            <Input style={styles.inputText} onChangeText={this.onSearch} placeholder='Search' />
+                        {/* <View style={{ flex: 1, flexDirection: 'row', padding: 5 }}>
+                            <Button success full style={{ flex: 1 }} onPress={this.onSortByCheckIn}><Text>Check In</Text></Button>
+                            <Button danger full style={{ flex: 1 }} onPress={this.onSortByCheckOut}><Text>Check Out</Text></Button>
+                        </View> */}
 
+                        <Item regular style={styles.formItemCode}>
+                            <Input style={styles.inputText} onChangeText={this.onSearch} placeholder='Search by Name' />
                         </Item>
+                        <View style={styles.viewInline}>
+                            <View style={{ flex: 5 }}>
+                                <Text>Sort by {this.state.sortBy}</Text>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Switch onValueChange={this.onSort} value={this.state.sortSwitch} />
+                            </View>
+                        </View>
                         <Card>
                             <CardItem>
                                 <Body>
@@ -118,7 +166,7 @@ class RegisterAttendanceList extends Component {
                                 </Body>
                             </CardItem>
                         </Card>
-                        {attendances.sort((a, b) => new Date(a.CheckedInDateTime) < new Date(b.CheckedInDateTime)).map((attendance, i) =>
+                        {attendances.map((attendance, i) =>
                             <Card key={i} style={styles.cardAttendance}>
                                 <CardItem style={styles.cardItemFullname}>
                                     <Left>
@@ -158,7 +206,7 @@ class RegisterAttendanceList extends Component {
                         </Button>
                         <Button vertical onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-qr-scanner" />
-                            <Text>QR Code</Text>
+                            <Text>Scan</Text>
                         </Button>
                         <Button vertical active onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-people" />
@@ -210,6 +258,19 @@ const styles = StyleSheet.create({
         flex: 2
     },
     inputText: {
+        backgroundColor: '#FFFFFF'
+    },
+    viewInline: {
+        flex: 1,
+        flexDirection: 'row',
+        borderColor: '#E6E6E6',
+        borderBottomWidth: 1,
+        borderRadius: 0,
+        paddingBottom: 15,
+        paddingTop: 15,
+        paddingLeft: 7,
+        marginLeft: 3,
+        marginBottom: 15,
         backgroundColor: '#FFFFFF'
     },
 });

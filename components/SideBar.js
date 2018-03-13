@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, AsyncStorage } from 'react-native';
 import { Container, Header, Body, Left, Right, Title, Content, List, ListItem, Text, Icon, Footer, FooterTab, Button } from 'native-base'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux'
@@ -8,7 +8,8 @@ import { userDetailToStore } from '../store/actions/userDetail'
 // create a component
 class SideBar extends Component {
 
-    Logout = () => {
+    Logout = async () => {
+        await AsyncStorage.setItem('LoggedIn', 'false')
         this.props.userDetailToStore(null)
         Actions.login()
     }
