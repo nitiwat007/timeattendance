@@ -14,7 +14,7 @@ class AppHeaderBack extends Component {
 
     render() {
 
-        const { title, component } = this.props
+        const { title, component, eventid } = this.props
 
         return (
             <Header style={styles.header}>
@@ -27,11 +27,11 @@ class AppHeaderBack extends Component {
                     <Title style={styles.titleText}>{title}</Title>
                 </Body>
                 <Right>
-                    {/* {(component === undefined) ? null :
-                        <Button iconLeft transparent onPress={() => Actions[component].call()}>
+                    {(component === undefined) ? null :
+                        <Button iconLeft transparent onPress={() => Actions.jump(component, { EventID: eventid })}>
                             <Icon name='ios-add-circle-outline' />
                         </Button>
-                    } */}
+                    }
                 </Right>
             </Header>
         );
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     header: {
         marginTop: (Platform.OS === 'android') ? Expo.Constants.statusBarHeight : 0,
     },
-    titleText:{
+    titleText: {
         fontSize: 14,
         fontWeight: 'bold'
     }

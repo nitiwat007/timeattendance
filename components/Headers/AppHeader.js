@@ -22,9 +22,9 @@ class AppHeader extends Component {
                     <Title style={styles.title}>{title}</Title>
                 </Body>
                 <Right>
-                    {/* <Button iconLeft transparent onPress={() => Actions.newevent()}>
+                    <Button iconLeft transparent onPress={() => Actions.newevent()}>
                         <Icon name='ios-add-circle-outline' />
-                    </Button> */}
+                    </Button>
                 </Right>
             </Header>
         );

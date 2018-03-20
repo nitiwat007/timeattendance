@@ -6,6 +6,7 @@ import AppHeaderHome from '../Headers/AppHeaderHome'
 import { Actions } from 'react-native-router-flux'
 import AttendanceApi from '../../apis/attendance'
 import { connect } from 'react-redux'
+import ListBox from '../ListBox'
 
 // create a component
 class RegisterAttendanceList extends Component {
@@ -104,14 +105,14 @@ class RegisterAttendanceList extends Component {
     // }
 
     onSort = async () => {
-        this.setState({ isLoading: true })
+        this.setState({ isLoading: true, attendances: [] })
         if (this.state.sortSwitch) {
             let attendancesSorted = await this.state.attendances.sort((a, b) => new Date(a.CheckedInDateTime) > new Date(b.CheckedInDateTime) ? -1 : 0)
             this.setState({
                 sortSwitch: false,
                 sortBy: 'Check In',
                 attendances: attendancesSorted,
-                isLoading:false
+                isLoading: false
             })
         } else {
             let attendancesSorted = await this.state.attendances.sort((a, b) => new Date(a.CheckedOutDateTime) > new Date(b.CheckedOutDateTime) ? -1 : 0)
@@ -119,7 +120,7 @@ class RegisterAttendanceList extends Component {
                 sortSwitch: true,
                 sortBy: 'Check Out',
                 attendances: attendancesSorted,
-                isLoading:false
+                isLoading: false
             })
         }
 
@@ -159,42 +160,38 @@ class RegisterAttendanceList extends Component {
                                 <Switch onValueChange={this.onSort} value={this.state.sortSwitch} />
                             </View>
                         </View>
-                        <Card>
+                        <View
+                            style={{
+                                borderBottomColor: '#E6E6E6',
+                                borderBottomWidth: 1,
+                                marginBottom: 10
+                            }}
+                        />
+                        <Card style={{ marginBottom: 15 }}>
                             <CardItem>
                                 <Body>
                                     <Text>Number of registrations : {attendances.length}</Text>
                                 </Body>
                             </CardItem>
                         </Card>
+                        <View
+                            style={{
+                                borderBottomColor: '#E6E6E6',
+                                borderBottomWidth: 1,
+                                marginBottom: 10
+                            }}
+                        />
                         {attendances.map((attendance, i) =>
-                            <Card key={i} style={styles.cardAttendance}>
-                                <CardItem style={styles.cardItemFullname}>
-                                    <Left>
-                                        <Icon name="md-contact" />
-                                        <Body>
-                                            <Text style={styles.textFullname}>{attendance.AttendeeFullName}</Text>
-                                        </Body>
-                                    </Left>
-                                </CardItem>
-                                {(attendance.CheckedInDateTime !== null) &&
-                                    <CardItem style={styles.cardItem}>
-                                        <Left>
-                                            <Body>
-                                                <Text style={styles.textLabelCheckIn}>Check In  : <Text note>{attendance.CheckedInDateTime.split('T')[0]}</Text> Time : <Text note>{attendance.CheckedInDateTime.split('T')[1].split('.')[0]}</Text></Text>
-                                                <Text style={styles.textLabelCheckBy}>Check By : <Text note>{attendance.CheckedInBy}</Text></Text>
-                                            </Body>
-                                        </Left>
-                                    </CardItem>}
-                                {(attendance.CheckedOutDateTime !== null) &&
-                                    <CardItem style={styles.cardItem}>
-                                        <Left>
-                                            <Body>
-                                                <Text style={styles.textLabelCheckOut}>Check Out  : <Text note>{attendance.CheckedOutDateTime.split('T')[0]}</Text> Time : <Text note>{attendance.CheckedOutDateTime.split('T')[1].split('.')[0]}</Text></Text>
-                                                <Text style={styles.textLabelCheckBy}>Check By : <Text note>{attendance.CheckedOutBy}</Text></Text>
-                                            </Body>
-                                        </Left>
-                                    </CardItem>}
-                            </Card>
+                            <View>
+                                <ListBox
+                                    fullname={attendance.AttendeeFullName}
+                                    checkindatetime={attendance.CheckedInDateTime}
+                                    checkinby={attendance.CheckedInBy}
+                                    checkoutdatetime={attendance.CheckedOutDateTime}
+                                    checkoutby={attendance.CheckedOutBy}
+                                />
+                            </View>
+
                         )}
                     </Content>
                 </ScrollView>
@@ -225,7 +222,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     cardAttendance: {
-        marginBottom: 30
+        marginBottom: 10
     },
     cardItem: {
         borderColor: '#E6E6E6',
@@ -273,6 +270,9 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         backgroundColor: '#FFFFFF'
     },
+    ActivityIndicator: {
+        padding: 20
+    }
 });
 
 function mapStateToProps(state) {

@@ -4,6 +4,7 @@ import { View, StyleSheet, Image, Dimensions } from 'react-native';
 import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+import moment from 'moment'
 
 // create a component
 class EventBox extends Component {
@@ -34,20 +35,29 @@ class EventBox extends Component {
     render() {
 
         const { title, date, imgUri, eventID } = this.props
-        let dateEvent = new Date(date)
-
+        const dateEvent = moment(date)
+        //const dateNow = new Date()
+        //const diff = moment.duration(moment(dateEvent).diff(moment(dateNow).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 })))
+        // const diffDays = parseInt(diff.asDays())
+        // const diffHours = parseInt(diff.asHours()) - diffDays * 24
+        // const diffMinutes = parseInt(diff.asMinutes()) - (diffDays * 24 * 60 + diffHours * 60)
+        // console.log(moment(dateEvent))
+        // console.log(moment(moment(dateNow).utcOffset(0).set({hour:0,minute:0,second:0,millisecond:0})))
+        // console.log(diffDays)
+        // console.log(diffHours)
+        // console.log(diffMinutes)
         return (
-            <Content style={styles.eventContentBox}>
-                <Card>
-                    <CardItem style={{ flex: 1, flexDirection: 'row' }}>
-                        <Left style={{ flex: 8 }}>
-                            <Thumbnail style={styles.eventLogo} square source={require('../resources/images/50years.png')} />
-                            <Body>
-                                <Text>{title}</Text>
-                                <Text note>{dateEvent.toDateString()}</Text>
-                            </Body>
-                        </Left>
-                        {/* <Right style={{ flex: 1 }}>
+            //<Content style={styles.eventContentBox}>
+            <Card>
+                <CardItem style={{ flex: 1, flexDirection: 'row' }}>
+                    <Left style={{ flex: 8 }}>
+                        <Thumbnail style={styles.eventLogo} square source={require('../resources/images/50years.png')} />
+                        <Body>
+                            <Text>{title}</Text>
+                            <Text note>{dateEvent.format('DD MMMM YYYY')}</Text>
+                        </Body>
+                    </Left>
+                    {/* <Right style={{ flex: 1 }}>
                             <Menu
                                 ref={this.setMenuRef}
                                 button={
@@ -61,21 +71,21 @@ class EventBox extends Component {
                                 <MenuItem onPress={() => this.menuItemAction('remove')}>Remove</MenuItem>
                             </Menu>
                         </Right> */}
-                    </CardItem>
-                    <CardItem cardBody>
-                        {(imgUri != null)
-                            ? <Image style={styles.eventImage} source={{ uri: imgUri }} />
-                            : <Image style={styles.eventImage} source={require('../resources/images/no-image-available.jpg')} />}
-                    </CardItem>
-                    <CardItem cardBody>
-                        <Body>
-                            <Button full light onPress={() => this.onPress(eventID, title)}>
-                                <Text style={styles.textRegisterButton}>Select</Text>
-                            </Button>
-                        </Body>
-                    </CardItem>
-                </Card>
-            </Content>
+                </CardItem>
+                <CardItem cardBody>
+                    {(imgUri != null)
+                        ? <Image style={styles.eventImage} source={{ uri: imgUri }} />
+                        : <Image style={styles.eventImage} source={require('../resources/images/no-image-available.jpg')} />}
+                </CardItem>
+                <CardItem cardBody>
+                    <Body>
+                        <Button full light onPress={() => this.onPress(eventID, title)}>
+                            <Text style={styles.textRegisterButton}>Select</Text>
+                        </Button>
+                    </Body>
+                </CardItem>
+            </Card>
+            //</Content>
         );
     }
 }
@@ -93,7 +103,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     eventLogo: {
-        width:45,
+        width: 45,
         height: 45,
     },
     eventContentBox: {

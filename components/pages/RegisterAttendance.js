@@ -20,9 +20,10 @@ class RegisterAttendance extends Component {
 
     componentDidMount() {
         try {
-            setTimeout(() => {
-                this.requestCameraPermission()
-            }, 2000);
+            // setTimeout(() => {
+            //     this.requestCameraPermission()
+            // }, 0);
+            this.requestCameraPermission()
         } catch (error) {
             alert(error)
         }
@@ -37,6 +38,7 @@ class RegisterAttendance extends Component {
     }
 
     handleBarCodeRead = (result) => {
+        //alert(result.type)
         const { ScheduleID, ScheduleTitle, EventID } = this.props
         let { Registered } = this.state
         if (!Registered) {

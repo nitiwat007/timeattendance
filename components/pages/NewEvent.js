@@ -5,10 +5,11 @@ import { Container, Content, Form, Input, Item, Label, Switch, Button, Icon, Bod
 import DatePicker from 'react-native-datepicker'
 import { Permissions, ImagePicker } from 'expo'
 import { connect } from 'react-redux'
-import {Actions} from 'react-native-router-flux'
+import { Actions } from 'react-native-router-flux'
 
 import AppHeaderBack from '../Headers/AppHeaderBack'
 import EventApi from '../../apis/event'
+import EventBox from '../EventBox'
 
 // create a component
 class NewEvent extends Component {
@@ -21,12 +22,14 @@ class NewEvent extends Component {
             EventName: '',
             EventAcronym: '',
             EventLocationName: '',
-            EventDate: date.getFullYear() + '-' + parseInt(date.getMonth() + 1) + '-' + date.getDate(),
+            EventDate: ''
+            ,
             EventDescription: '',
             EventStatusID: false,
             AllowWalkIn: false,
             ErrorEventName: false,
             ErrorEventAcronym: false,
+            modalNewEventCompleteVisible: false
         }
     }
 
@@ -77,13 +80,16 @@ class NewEvent extends Component {
 
         formData.append('AllowWalkIn', AllowWalkIn)
         const uri = BannerUrl
-        let uriParts = uri.split('.');
-        let fileType = uriParts[uriParts.length - 1];
-        formData.append('Banner', {
-            uri,
-            name: `photo.${fileType}`,
-            type: `image/${fileType}`,
-        })
+        if (uri !== '') {
+            let uriParts = uri.split('.');
+            let fileType = uriParts[uriParts.length - 1];
+            formData.append('Banner', {
+                uri,
+                name: `photo.${fileType}`,
+                type: `image/${fileType}`,
+            })
+        }
+
 
         EventApi.createEvent(memberID, formData).then(response => {
             alert('Create Event Complete')
@@ -125,7 +131,7 @@ class NewEvent extends Component {
                 <AppHeaderBack title='New Event' />
                 <Content>
                     <Form style={styles.form}>
-                        <Label>ชื่อกิจกรรม</Label>
+                        <Label>Title</Label>
                         <Item error={ErrorEventName} regular style={styles.formItem}>
                             <Input ref={(c) => this.inputEventName = c} style={styles.inputText} onChangeText={(EventName) => this.setState({ EventName })} />
                         </Item>
@@ -142,6 +148,7 @@ class NewEvent extends Component {
                                 format="YYYY-MM-DD"
                                 confirmBtnText="Confirm"
                                 cancelBtnText="Cancel"
+                                placeholder="Select Date"
                                 customStyles={{
                                     dateInput: {
                                         borderColor: '#E6E6E6'
@@ -260,7 +267,6 @@ const styles = StyleSheet.create({
     datePicker: {
         width: null,
         backgroundColor: '#FFFFFF'
-
     },
     buttonSubmit: {
         margin: 10,
