@@ -9,8 +9,12 @@ import moment from 'moment'
 // create a component
 class EventBox extends Component {
 
-    onPress = (eventID, title) => {
+    onPressSchedule = (eventID, title) => {
         Actions.schedule({ EventID: eventID, EventName: title })
+    }
+
+    onPressAttendees = (eventID, title) => {
+        Actions.attendees({ EventID: eventID, EventName: title })
     }
 
     // setMenuRef = ref => {
@@ -78,11 +82,20 @@ class EventBox extends Component {
                         : <Image style={styles.eventImage} source={require('../resources/images/no-image-available.jpg')} />}
                 </CardItem>
                 <CardItem cardBody>
-                    <Body>
-                        <Button full light onPress={() => this.onPress(eventID, title)}>
-                            <Text style={styles.textRegisterButton}>Select</Text>
-                        </Button>
-                    </Body>
+                    <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <View style={{ flex: 1 }}>
+                            <Button full transparent success onPress={() => this.onPressSchedule(eventID, title)}>
+                                <Icon name='md-time' />
+                                <Text style={styles.textRegisterButton}>Schedule</Text>
+                            </Button>
+                        </View>
+                        <View style={{ flex: 1 }}>
+                            <Button full transparent info onPress={() => this.onPressAttendees(eventID, title)}>
+                                <Icon name='md-people' />
+                                <Text style={styles.textRegisterButton}>Attendees</Text>
+                            </Button>
+                        </View>
+                    </View>
                 </CardItem>
             </Card>
             //</Content>

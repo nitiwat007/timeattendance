@@ -76,12 +76,12 @@ class Schedule extends Component {
                             onRefresh={this.onRefresh.bind(this)}
                             title='loading data'
                         />
-                    }                   
+                    }
                 >
                     <Content style={styles.content}>
                         <View style={styles.contentHeader}>
                             <View style={styles.iconContainer}>
-                                <Icon name="md-clipboard" />
+                                <Icon name="md-time" style={{ color: '#5cb85c' }} />
                             </View>
                             <View style={styles.detailContainer}>
                                 <Text style={styles.EventName}>{EventName}</Text>
