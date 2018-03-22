@@ -45,7 +45,7 @@ class RegisterAttendance extends Component {
             this.setState({
                 Registered: true
             })
-            Actions.registattendanceform({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle, ID: result.data })
+            Actions.reset('registattendanceform',{ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle, ID: result.data })
             // Alert.alert(
             //     'Confirm Registration',
             //     'Do you want to regist ID : ' + result.data,

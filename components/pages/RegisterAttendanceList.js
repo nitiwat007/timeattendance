@@ -54,7 +54,11 @@ class RegisterAttendanceList extends Component {
         })
     }
 
-    onRefresh() {
+    onRefresh = () => {
+        this.setState({
+            attendances: [],
+            attendancesSearch: []
+        })
         const { memberID, ScheduleID, EventID, ScheduleTitle } = this.state
         AttendanceApi.getAttendances(memberID, EventID, ScheduleID).then(data => {
             this.setState({
@@ -63,7 +67,7 @@ class RegisterAttendanceList extends Component {
                 isLoading: false,
                 refreshing: false,
                 sortSwitch: false,
-                sortBy: 'Check In',
+                sortBy: 'Check In'
             })
         }).catch(error => {
             if (error.response.status = 404) {
@@ -96,13 +100,6 @@ class RegisterAttendanceList extends Component {
             })
         }
     }
-
-    // onSortByCheckIn = () => {
-    //     this.setState({
-    //         attendances: this.state.attendances.sort((a, b) => new Date(a.CheckedInDateTime) > new Date(b.CheckedInDateTime) ? -1 : 0)
-    //     })
-
-    // }
 
     onSort = async () => {
         this.setState({ isLoading: true, attendances: [] })
@@ -137,17 +134,13 @@ class RegisterAttendanceList extends Component {
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
-                            onRefresh={this.onRefresh.bind(this)}
+                            onRefresh={this.onRefresh}
                             title='loading data'
                         />
                     }
                 >
                     <Content style={styles.content}>
                         {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
-                        {/* <View style={{ flex: 1, flexDirection: 'row', padding: 5 }}>
-                            <Button success full style={{ flex: 1 }} onPress={this.onSortByCheckIn}><Text>Check In</Text></Button>
-                            <Button danger full style={{ flex: 1 }} onPress={this.onSortByCheckOut}><Text>Check Out</Text></Button>
-                        </View> */}
 
                         <Item regular style={styles.formItemCode}>
                             <Input style={styles.inputText} onChangeText={this.onSearch} placeholder='Search by Name' />
@@ -170,7 +163,7 @@ class RegisterAttendanceList extends Component {
                         <Card style={{ marginBottom: 15 }}>
                             <CardItem>
                                 <Body>
-                                    <Text>Number of registrations : {attendances.length}</Text>
+                                    <Text>Number of registrations : {attendances.filter((data) => (data.CheckedInDateTime === null && data.CheckedOutDateTime === null) ? 0 : 1).length}</Text>
                                 </Body>
                             </CardItem>
                         </Card>
@@ -181,14 +174,19 @@ class RegisterAttendanceList extends Component {
                                 marginBottom: 10
                             }}
                         />
-                        {attendances.map((attendance, i) =>
+                        {attendances.filter((data) => (data.CheckedInDateTime === null && data.CheckedOutDateTime === null) ? 0 : 1).map((attendance, i) =>
                             <View>
                                 <ListBox
+                                    eventid={attendance.EventID}
+                                    scheduleid={attendance.ScheduleID}
+                                    attendeeid={attendance.AttendeeID}
                                     fullname={attendance.AttendeeFullName}
                                     checkindatetime={attendance.CheckedInDateTime}
                                     checkinby={attendance.CheckedInBy}
                                     checkoutdatetime={attendance.CheckedOutDateTime}
                                     checkoutby={attendance.CheckedOutBy}
+                                    typelistbox='listresult'
+                                    loadingdata={this.onRefresh}
                                 />
                             </View>
 

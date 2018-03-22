@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, Dimensions } from 'react-native';
 import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
-import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
+// import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import moment from 'moment'
 
 // create a component
@@ -13,24 +13,24 @@ class EventBox extends Component {
         Actions.schedule({ EventID: eventID, EventName: title })
     }
 
-    setMenuRef = ref => {
-        this.menu = ref;
-    };
+    // setMenuRef = ref => {
+    //     this.menu = ref;
+    // };
 
-    menu = null;
+    // menu = null;
 
-    menuItemAction = (action) => {
-        if (action === 'edit') {
-            Actions.schedule()
-            this.menu.hide()
-        } else if (action === 'remove') {
-            this.menu.hide()
-        }
-    };
+    // menuItemAction = (action) => {
+    //     if (action === 'edit') {
+    //         Actions.schedule()
+    //         this.menu.hide()
+    //     } else if (action === 'remove') {
+    //         this.menu.hide()
+    //     }
+    // };
 
-    showMenu = () => {
-        this.menu.show();
-    };
+    // showMenu = () => {
+    //     this.menu.show();
+    // };
 
     render() {
 

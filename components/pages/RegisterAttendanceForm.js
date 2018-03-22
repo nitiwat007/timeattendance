@@ -52,7 +52,7 @@ class RegisterAttendanceForm extends Component {
                 const dateNow = new Date()
                 this.setState({
                     modalVisible: true,
-                    checkInDateTime: dateNow.getDate() + "-" + parseInt(dateNow.getMonth() + 1) + "-" + dateNow.getFullYear() + " Time " + dateNow.getHours() + ":" + (dateNow.getMinutes() < 10 ? '0' : '') + dateNow.getMinutes() + ":" + (dateNow.getSeconds() < 10 ? '0' : '') + dateNow.getSeconds(),
+                    checkInDateTime: dateNow,
                     action: 'checkin'
                 })
                 //Actions.registattendancelist({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })
@@ -81,7 +81,7 @@ class RegisterAttendanceForm extends Component {
                 const dateNow = new Date()
                 this.setState({
                     modalVisible: true,
-                    checkOutDateTime: dateNow.getDate() + "-" + parseInt(dateNow.getMonth() + 1) + "-" + dateNow.getFullYear() + " Time " + dateNow.getHours() + ":" + (dateNow.getMinutes() < 10 ? '0' : '') + dateNow.getMinutes() + ":" + (dateNow.getSeconds() < 10 ? '0' : '') + dateNow.getSeconds(),
+                    checkOutDateTime: dateNow,
                     action: 'checkout'
                 })
                 //Actions.registattendancelist({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })
@@ -214,6 +214,7 @@ class RegisterAttendanceForm extends Component {
                                 checkoutdatetime={checkOutDateTime}
                                 checkoutby={memberID}
                                 action={action}
+                                typelistbox='showresult'
                             />
                             <View style={{ flex: 1, flexDirection: 'row' }}>
                                 <View style={{ flex: 1, marginRight: 10 }}>

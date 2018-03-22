@@ -17,5 +17,11 @@ export default {
             .then(response => response.data),
     getAttendances: (memberID, EventID, ScheduleID) =>
         axios.get(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/events/' + EventID + '/schedules/' + ScheduleID + '/attendances', config)
+            .then(response => response.data),
+    deleteCheckIn: (memberID, EventID, ScheduleID, attendeeID) =>
+        axios.delete(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/events/' + EventID + '/schedules/' + ScheduleID + '/checkIn/' + attendeeID, config)
+            .then(response => response.data),
+    deleteCheckOut: (memberID, EventID, ScheduleID, attendeeID) =>
+        axios.delete(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/events/' + EventID + '/schedules/' + ScheduleID + '/checkOut/' + attendeeID, config)
             .then(response => response.data)
 }
