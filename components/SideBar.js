@@ -11,7 +11,7 @@ class SideBar extends Component {
     Logout = async () => {
         await AsyncStorage.setItem('LoggedIn', 'false')
         this.props.userDetailToStore(null)
-        Actions.login()
+        Actions.reset('login')
     }
 
     onPress = (key) => {
@@ -51,7 +51,7 @@ class SideBar extends Component {
                 <Content>
                     <Header style={styles.contentHeader}>
                         <View style={styles.iconContainer}>
-                            <Icon name="md-happy" />
+                            <Icon style={{ color: '#5cb85c' }} name="md-happy" />
                         </View>
                         <View style={styles.detailContainer}>
                             <Text>{fullname}</Text>

@@ -21,6 +21,9 @@ class Schedule extends Component {
     }
 
     onRefresh() {
+        this.setState({
+            schedules: []
+        })
         const memberID = this.props.userDetail[0]
         const { EventID } = this.props
         ScheduleApi.getScheduleByEventID(memberID, EventID).then(data => {

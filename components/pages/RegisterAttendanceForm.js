@@ -28,7 +28,11 @@ class RegisterAttendanceForm extends Component {
             ScheduleID: this.props.ScheduleID,
             ScheduleTitle: this.props.ScheduleTitle,
             isLoading: false,
+            isLoadingCheckIn: false,
+            isLoadingCheckOut: false,
             disabledButtonPassport: false,
+            disabledButtonCheckIn: false,
+            disabledButtonCheckOut: false,
             modalVisible: false,
             checkInDateTime: '',
             checkOutDateTime: '',
@@ -37,6 +41,10 @@ class RegisterAttendanceForm extends Component {
     }
 
     onCheckIn = () => {
+        this.setState({
+            isLoadingCheckIn: true,
+            disabledButtonCheckIn: true
+        })
         const { memberID, code, attendeeID, fullname, email, phonenumber, note } = this.state
         const { ScheduleID, EventID, ScheduleTitle } = this.state
 
@@ -53,19 +61,32 @@ class RegisterAttendanceForm extends Component {
                 this.setState({
                     modalVisible: true,
                     checkInDateTime: dateNow,
-                    action: 'checkin'
+                    action: 'checkin',
+                    isLoadingCheckIn: false,
+                    disabledButtonCheckIn: false
                 })
                 //Actions.registattendancelist({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })
             }).catch(error => {
+                this.setState({
+                    isLoadingCheckIn: false,
+                    disabledButtonCheckIn: false
+                })
                 alert(error.response.data.Message)
             })
         } else {
+            this.setState({
+                isLoadingCheckIn: false,
+                disabledButtonCheckIn: false
+            })
             alert('Please enter Code and Fullname.')
         }
     }
 
     onCheckOut = () => {
-
+        this.setState({
+            isLoadingCheckOut: true,
+            disabledButtonCheckOut: true
+        })
         const { memberID, code, attendeeID, fullname, email, phonenumber, note } = this.state
         const { ScheduleID, EventID, ScheduleTitle } = this.state
 
@@ -82,13 +103,22 @@ class RegisterAttendanceForm extends Component {
                 this.setState({
                     modalVisible: true,
                     checkOutDateTime: dateNow,
-                    action: 'checkout'
+                    action: 'checkout',
+                    isLoadingCheckOut: false,
+                    disabledButtonCheckOut: false
                 })
-                //Actions.registattendancelist({ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })
             }).catch(error => {
+                this.setState({
+                    isLoadingCheckOut: false,
+                    disabledButtonCheckOut: false
+                })
                 alert(error.response.data.Message)
             })
         } else {
+            this.setState({
+                isLoadingCheckOut: false,
+                disabledButtonCheckOut: false
+            })
             alert('Please enter Code and Fullname.')
         }
     }
@@ -115,6 +145,19 @@ class RegisterAttendanceForm extends Component {
             note: ''
         })
         Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })
+    }
+
+    closeModalList = () => {
+        const { ScheduleID, EventID, ScheduleTitle } = this.props
+        this.setState({
+            modalVisible: false,
+            code: '',
+            fullname: '',
+            email: '',
+            phonenumber: '',
+            note: ''
+        })
+        Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })
     }
 
     onSearch = () => {
@@ -191,7 +234,7 @@ class RegisterAttendanceForm extends Component {
 
     render() {
         const { ScheduleID, EventID, ScheduleTitle } = this.props
-        const { memberID, code, attendeeID, fullname, email, phonenumber, note, disabledButtonPassport, checkInDateTime, checkOutDateTime, action } = this.state
+        const { memberID, code, attendeeID, fullname, email, phonenumber, note, disabledButtonPassport, disabledButtonCheckIn, disabledButtonCheckOut, checkInDateTime, checkOutDateTime, action } = this.state
         return (
             <Container style={styles.container}>
                 <AppHeaderHome title={ScheduleTitle} />
@@ -224,15 +267,21 @@ class RegisterAttendanceForm extends Component {
                                     </Button>
                                 </View>
                                 <View style={{ flex: 1 }}>
-                                    <Button style={{ marginTop: 10 }} full primary onPress={this.closeModal}>
-                                        <Icon name="md-close" />
-                                        <Text style={styles.textButtonSubmit}>CLOSE</Text>
+                                    <Button style={{ marginTop: 10 }} full primary onPress={this.closeModalList}>
+                                        <Icon name="md-people" />
+                                        <Text style={styles.textButtonSubmit}>LIST</Text>
                                     </Button>
                                 </View>
                             </View>
                         </View>
-
                     </Content>
+                    <Footer>
+                        <FooterTab style={{ backgroundColor: "#FFF" }}>
+                            <Button full warning onPress={this.closeModal}>
+                                <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>CLOSE</Text>
+                            </Button>
+                        </FooterTab>
+                    </Footer>
                 </Modal>
                 <Content>
                     <Form style={styles.form}>
@@ -264,15 +313,15 @@ class RegisterAttendanceForm extends Component {
                         </Item>
                         <View style={{ flex: 1, flexDirection: 'row', marginTop: 10 }}>
                             <View style={{ flex: 1, marginRight: 10 }}>
-                                <Button full success onPress={this.onCheckIn}>
+                                <Button disabled={disabledButtonCheckIn} full success onPress={this.onCheckIn}>
                                     <Icon name="ios-checkmark-circle-outline" />
-                                    <Text style={styles.textButtonSubmit}>CHECK IN</Text>
+                                    {(this.state.isLoadingCheckIn) ? (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#FFFFFF' />) : <Text style={styles.textButtonSubmit}>CHECK IN</Text>}
                                 </Button>
                             </View>
                             <View style={{ flex: 1 }}>
-                                <Button full danger onPress={this.onCheckOut}>
+                                <Button disabled={disabledButtonCheckOut} full danger onPress={this.onCheckOut}>
                                     <Icon name="md-checkmark-circle" />
-                                    <Text style={styles.textButtonSubmit}>CHECK OUT</Text>
+                                    {(this.state.isLoadingCheckOut) ? (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#FFFFFF' />) : <Text style={styles.textButtonSubmit}>CHECK OUT</Text>}
                                 </Button>
                             </View>
                         </View>
@@ -281,15 +330,15 @@ class RegisterAttendanceForm extends Component {
                 </Content>
                 <Footer>
                     <FooterTab style={{ backgroundColor: "#FFF" }}>
-                        <Button vertical active onPress={() => Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full active onPress={() => Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-document" />
                             <Text>Form</Text>
                         </Button>
-                        <Button vertical onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-qr-scanner" />
                             <Text>Scan</Text>
                         </Button>
-                        <Button vertical onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-people" />
                             <Text>List</Text>
                         </Button>

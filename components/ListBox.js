@@ -143,7 +143,7 @@ class ListBox extends Component {
                 </Modal>
                 <Card style={styles.cardAttendance}>
                     <CardItem style={styles.cardItemFullname}>
-                        <Left>
+                        <Left style={{ flex: 5 }}>
                             <Icon name="md-contact" />
                             <Body>
                                 <Text>{fullname}</Text>

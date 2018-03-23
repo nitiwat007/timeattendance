@@ -22,6 +22,9 @@ class ResponsibleEvent extends Component {
     }
 
     onRefresh() {
+        this.setState({
+            events: []
+        })
         const memberID = this.props.userDetail[0]
         this.setState({ refreshing: true })
         EventApi.getResponsible(memberID).then(data => {
@@ -88,17 +91,17 @@ class ResponsibleEvent extends Component {
                     <Content>
                         {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
                         {(events.sort((a, b) => new Date(a.EventDate) < new Date(b.EventDate) ? -1 : 0).sort((a, b) =>
-                                (moment.duration(moment(a.EventDate).diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
-                                    >
-                                    (moment.duration(moment(b.EventDate).diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
-                                    ? -1 : 0)
-                                .map((event, i) =>
-                                    <EventBox key={i} title={event.EventNameEN} date={event.EventDate} imgUri={event.EventBannerLink} eventID={event.EventID} />
-                                ))}
+                            (moment.duration(moment(a.EventDate).diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
+                                >
+                                (moment.duration(moment(b.EventDate).diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
+                                ? -1 : 0)
+                            .map((event, i) =>
+                                <EventBox key={i} title={event.EventNameEN} date={event.EventDate} imgUri={event.EventBannerLink} eventID={event.EventID} />
+                            ))}
                     </Content>
                 </ScrollView>
                 <Footer>
-                    <FooterTab style={{backgroundColor:"#FFF"}}>
+                    <FooterTab style={{ backgroundColor: "#FFF" }}>
                         <Button vertical onPress={() => Actions.main()}>
                             <Icon name="md-home" />
                             <Text>My Events</Text>

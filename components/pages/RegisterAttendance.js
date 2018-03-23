@@ -45,7 +45,7 @@ class RegisterAttendance extends Component {
             this.setState({
                 Registered: true
             })
-            Actions.reset('registattendanceform',{ EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle, ID: result.data })
+            Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle, ID: result.data })
             // Alert.alert(
             //     'Confirm Registration',
             //     'Do you want to regist ID : ' + result.data,
@@ -97,15 +97,15 @@ class RegisterAttendance extends Component {
                 </ScrollView>
                 <Footer>
                     <FooterTab style={{ backgroundColor: "#FFF" }}>
-                        <Button vertical onPress={() => Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full onPress={() => Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-document" />
                             <Text>Form</Text>
                         </Button>
-                        <Button vertical active onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full active onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-qr-scanner" />
                             <Text>Scan</Text>
                         </Button>
-                        <Button vertical onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
                             <Icon name="md-people" />
                             <Text>List</Text>
                         </Button>

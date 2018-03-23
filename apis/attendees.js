@@ -10,4 +10,6 @@ const config = {
 export default {
     getAttendeesByID: (memberID, EventID, attendeeID) =>
         axios.get(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/events/' + EventID + '/attendees?code=' + attendeeID, config).then(response => response.data),
+    getAttendees: (memberID, EventID) =>
+        axios.get(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/events/' + EventID + '/attendees', config).then(response => response.data)
 }

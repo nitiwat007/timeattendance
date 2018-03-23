@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#2c3e50',
     },
     scheduleContentBox: {
-        padding: 2
+        padding: 5
     },
     scheduleTitleItem: {
         borderColor: '#E6E6E6',
@@ -135,8 +135,13 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 16,
         fontWeight: 'bold',
-        color:'#2E86C1'
-    }
+        color: '#2E86C1'
+    },
+    textRegisterButton: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        fontSize: 16
+    },
 });
 
 //make this component available to the app

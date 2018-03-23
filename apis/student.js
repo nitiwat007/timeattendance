@@ -16,6 +16,7 @@ const config = {
 export default {
     getStudentInfo: (StudentID) =>
         axios.get(STUDENT_INFO_API_TOKEN_URL, config).then(response => response.data.AccessToken).then(AccessToken =>
-            axios.get(STUDENT_INFO_API_URL + '/sis/students/' + StudentID + '/', { headers: { 'accessToken': AccessToken } }).then(response => response.data)
+            axios.get(STUDENT_INFO_API_URL + '/sis/students/' + StudentID + '/', { headers: { 'accessToken': AccessToken } })
+                .then(response => response.data)
         )
 }

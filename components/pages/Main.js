@@ -59,6 +59,9 @@ class Main extends Component {
     }
 
     onRefresh() {
+        this.setState({
+            events: []
+        })
         const memberID = this.props.userDetail[0]
         this.setState({ refreshing: true })
         EventApi.getByMemberID(memberID).then(data => {
@@ -118,11 +121,11 @@ class Main extends Component {
                     </ScrollView>
                     <Footer>
                         <FooterTab style={{ backgroundColor: "#FFF" }}>
-                            <Button vertical active onPress={() => Actions.main()}>
+                            <Button vertical full active onPress={() => Actions.main()}>
                                 <Icon name="md-home" />
                                 <Text>My Events</Text>
                             </Button>
-                            <Button vertical onPress={() => Actions.responsibleevent()}>
+                            <Button vertical full onPress={() => Actions.responsibleevent()}>
                                 <Icon name="md-browsers" />
                                 <Text>Responsible Events</Text>
                             </Button>
