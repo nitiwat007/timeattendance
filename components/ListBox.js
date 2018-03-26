@@ -6,7 +6,6 @@ import moment from 'moment'
 import { connect } from 'react-redux'
 import AttendanceApi from '../apis/attendance'
 
-// create a component
 class ListBox extends Component {
     constructor(props) {
         super(props)
@@ -197,13 +196,9 @@ class ListBox extends Component {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        // backgroundColor: '#2c3e50',
     },
     content: {
 
@@ -257,6 +252,4 @@ function mapStateToProps(state) {
         userDetail: state.userDetail
     }
 }
-
-//make this component available to the app
 export default connect(mapStateToProps, null)(ListBox);

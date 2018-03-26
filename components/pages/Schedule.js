@@ -71,7 +71,7 @@ class Schedule extends Component {
 
         return (
             <Container style={styles.container}>
-                <AppHeaderBack title='Schedule' component='newschedule' eventid={EventID} />
+                <AppHeaderBack title='Schedules' component='newschedule' eventid={EventID} />
                 <ScrollView
                     refreshControl={
                         <RefreshControl
@@ -92,7 +92,7 @@ class Schedule extends Component {
                         </View>
                         <View>
                             {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
-                            {schedules.map((schedule, i) =>
+                            {schedules.sort((a,b)=> new Date(a.ScheduleTo)> new Date(b.ScheduleTo) ? -1 : 0).map((schedule, i) =>
                                 <ScheduleBox
                                     key={i}
                                     EventID={EventID}
@@ -113,13 +113,9 @@ class Schedule extends Component {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
-        //backgroundColor: '#FFFFFF',
+        flex: 1
     },
     contentHeader: {
         flex: 1,
@@ -157,6 +153,4 @@ function mapStateToProps(state) {
         userDetail: state.userDetail
     }
 }
-
-//make this component available to the app
 export default connect(mapStateToProps, null)(Schedule);

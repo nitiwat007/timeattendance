@@ -72,8 +72,14 @@ class ScheduleBox extends Component {
                     <CardItem style={styles.scheduleDateTimeItem}>
                         <Left>
                             <Body>
-                                <Text>Date : <Text note>{ScheduleDateFrom}</Text> - <Text note>{ScheduleDateTo}</Text></Text>
-                                <Text>Time : <Text note>{ScheduleDateTimeFrom}</Text> - <Text note>{ScheduleDateTimeTo}</Text></Text>
+                                <View style={{ flexDirection: 'row', flex: 1 }}>
+                                    <Icon name='md-calendar' style={{ flex: 1, fontSize:20 }} />
+                                    <Text style={{ flex: 9 }}><Text note>{ScheduleDateFrom}</Text> - <Text note>{ScheduleDateTo}</Text></Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', flex: 1 }}>
+                                    <Icon name='md-time' style={{ flex: 1, fontSize:20 }} />
+                                    <Text style={{ flex: 9 }}><Text note>{ScheduleDateTimeFrom}</Text> - <Text note>{ScheduleDateTimeTo}</Text></Text>
+                                </View>
                             </Body>
                         </Left>
                     </CardItem>

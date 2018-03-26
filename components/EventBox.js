@@ -86,7 +86,7 @@ class EventBox extends Component {
                         <View style={{ flex: 1 }}>
                             <Button full transparent success onPress={() => this.onPressSchedule(eventID, title)}>
                                 <Icon name='md-time' />
-                                <Text style={styles.textRegisterButton}>Schedule</Text>
+                                <Text style={styles.textRegisterButton}>Schedules</Text>
                             </Button>
                         </View>
                         <View style={{ flex: 1 }}>

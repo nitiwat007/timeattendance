@@ -24,7 +24,8 @@ class RegisterAttendanceList extends Component {
             refreshing: false,
             searchData: '',
             sortSwitch: false,
-            sortBy: 'Check In'
+            sortBy: 'Check In',
+            searchMenu: false
         }
     }
 
@@ -123,9 +124,31 @@ class RegisterAttendanceList extends Component {
 
     }
 
+    onSearchMenuChange = async () => {
+        this.setState({ attendances: [] })
+        let attendancesSorted = await this.state.attendances.sort((a, b) => new Date(a.CheckedInDateTime) > new Date(b.CheckedInDateTime) ? -1 : 0)
+        this.setState({
+            attendances: attendancesSorted
+        })
+    }
+
+    onSearchMenu = () => {
+        if (this.state.searchMenu) {
+            this.setState({
+                searchMenu: false
+            })
+            this.onSearchMenuChange()
+        } else {
+            this.setState({
+                searchMenu: true
+            })
+            this.onSearchMenuChange()
+        }
+    }
+
     render() {
 
-        const { ScheduleID, EventID, ScheduleTitle, attendances, isLoading, refreshing, searchData } = this.state
+        const { ScheduleID, EventID, ScheduleTitle, attendances, isLoading, refreshing, searchData, searchMenu } = this.state
 
         return (
             <Container style={styles.container}>
@@ -141,56 +164,68 @@ class RegisterAttendanceList extends Component {
                 >
                     <Content style={styles.content}>
                         {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
-
-                        <Item regular style={styles.formItemCode}>
-                            <Input style={styles.inputText} onChangeText={this.onSearch} placeholder='Search by Name' />
-                        </Item>
-                        <View style={styles.viewInline}>
-                            <View style={{ flex: 5 }}>
-                                <Text>Sort by {this.state.sortBy}</Text>
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <Switch onValueChange={this.onSort} value={this.state.sortSwitch} />
-                            </View>
-                        </View>
-                        <View
-                            style={{
-                                borderBottomColor: '#E6E6E6',
-                                borderBottomWidth: 1,
-                                marginBottom: 10
-                            }}
-                        />
-                        <Card style={{ marginBottom: 15 }}>
-                            <CardItem>
-                                <Body>
-                                    <Text>Number of registrations : {attendances.filter((data) => (data.CheckedInDateTime === null && data.CheckedOutDateTime === null) ? 0 : 1).length}</Text>
-                                </Body>
-                            </CardItem>
-                        </Card>
-                        <View
-                            style={{
-                                borderBottomColor: '#E6E6E6',
-                                borderBottomWidth: 1,
-                                marginBottom: 10
-                            }}
-                        />
-                        {attendances.filter((data) => (data.CheckedInDateTime === null && data.CheckedOutDateTime === null) ? 0 : 1).map((attendance, i) =>
+                        {(searchMenu) &&
                             <View>
-                                <ListBox
-                                    eventid={attendance.EventID}
-                                    scheduleid={attendance.ScheduleID}
-                                    attendeeid={attendance.AttendeeID}
-                                    fullname={attendance.AttendeeFullName}
-                                    checkindatetime={attendance.CheckedInDateTime}
-                                    checkinby={attendance.CheckedInBy}
-                                    checkoutdatetime={attendance.CheckedOutDateTime}
-                                    checkoutby={attendance.CheckedOutBy}
-                                    typelistbox='listresult'
-                                    loadingdata={this.onRefresh}
+                                <Item regular style={styles.formItemCode}>
+                                    <Input style={styles.inputText} onChangeText={this.onSearch} placeholder='Search by Name' />
+                                </Item>
+                                <View style={styles.viewInline}>
+                                    <View style={{ flex: 5 }}>
+                                        <Text>Sort by {this.state.sortBy}</Text>
+                                    </View>
+                                    <View style={{ flex: 1 }}>
+                                        <Switch onValueChange={this.onSort} value={this.state.sortSwitch} />
+                                    </View>
+                                </View>
+                                <View
+                                    style={{
+                                        borderBottomColor: '#E6E6E6',
+                                        borderBottomWidth: 1,
+                                        marginBottom: 10
+                                    }}
                                 />
                             </View>
+                        }
+                        {
+                            <View>
+                                <Card style={{ marginBottom: 15 }}>
+                                    <CardItem>
+                                        <Body>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <Text style={{ flex: 6, marginTop: 13 }}>Number of registrations : {attendances.filter((data) => (data.CheckedInDateTime === null && data.CheckedOutDateTime === null) ? 0 : 1).length}</Text>
+                                                <Button onPress={this.onSearchMenu} light style={{ flex: 1 }}>
+                                                    <Icon name='md-search' />
+                                                </Button>
+                                            </View>
 
-                        )}
+                                        </Body>
+                                    </CardItem>
+                                </Card>
+                                <View
+                                    style={{
+                                        borderBottomColor: '#E6E6E6',
+                                        borderBottomWidth: 1,
+                                        marginBottom: 10
+                                    }}
+                                />
+                                {attendances.filter((data) => (data.CheckedInDateTime === null && data.CheckedOutDateTime === null) ? 0 : 1).map((attendance, i) =>
+                                    <View>
+                                        <ListBox
+                                            eventid={attendance.EventID}
+                                            scheduleid={attendance.ScheduleID}
+                                            attendeeid={attendance.AttendeeID}
+                                            fullname={attendance.AttendeeFullName}
+                                            checkindatetime={attendance.CheckedInDateTime}
+                                            checkinby={attendance.CheckedInBy}
+                                            checkoutdatetime={attendance.CheckedOutDateTime}
+                                            checkoutby={attendance.CheckedOutBy}
+                                            typelistbox='listresult'
+                                            loadingdata={this.onRefresh}
+                                        />
+                                    </View>
+
+                                )}
+                            </View>}
                     </Content>
                 </ScrollView>
                 <Footer>
