@@ -193,8 +193,11 @@ class RegisterAttendanceList extends Component {
                                         <Body>
                                             <View style={{ flexDirection: 'row' }}>
                                                 <Text style={{ flex: 6, marginTop: 13 }}>Number of registrations : {attendances.filter((data) => (data.CheckedInDateTime === null && data.CheckedOutDateTime === null) ? 0 : 1).length}</Text>
-                                                <Button onPress={this.onSearchMenu} light style={{ flex: 1 }}>
-                                                    <Icon name='md-search' />
+                                                <Button onPress={this.onSearchMenu} light style={{ flex: 2 }}>
+                                                    <Body>
+                                                        <Icon name='md-search' />
+                                                    </Body>
+
                                                 </Button>
                                             </View>
 
@@ -225,7 +228,9 @@ class RegisterAttendanceList extends Component {
                                     </View>
 
                                 )}
-                            </View>}
+                            </View>
+
+                        }
                     </Content>
                 </ScrollView>
                 <Footer>

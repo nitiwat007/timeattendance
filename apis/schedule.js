@@ -13,4 +13,6 @@ export default {
         axios.get(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/events/' + EventID + '/schedules', config).then(response => response.data),
     createSchedule: (memberID, EventID, data) =>
         axios.post(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/events/' + EventID + '/schedules', data, config).then(response => response.data),
+    updateSchedule: (memberID, EventID, ScheduleID, data) =>
+        axios.put(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/events/' + EventID + '/schedules/' + ScheduleID, data, config).then(response => response.data)
 }

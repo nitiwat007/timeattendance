@@ -88,7 +88,7 @@ class ResponsibleEvent extends Component {
                         />
                     }
                 >
-                    <Content>
+                    <Content style={{ padding: 5 }}>
                         {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
                         {(events.sort((a, b) => new Date(a.EventDate) < new Date(b.EventDate) ? -1 : 0).sort((a, b) =>
                             (moment.duration(moment(a.EventDate).diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
@@ -122,6 +122,7 @@ class ResponsibleEvent extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#F2F2F2'
     },
     ActivityIndicator: {
         paddingTop: 20

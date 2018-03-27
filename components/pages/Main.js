@@ -94,7 +94,7 @@ class Main extends Component {
 
         return (
             <Drawer ref={(ref) => { this.drawer = ref }} content={<SideBar closeDrawer={this.closeDrawer.bind(this)} />} onClose={() => this.closeDrawer()}>
-                <Container>
+                <Container style={styles.container}>
                     <AppHeader title='My Events' openDrawer={this.openDrawer.bind(this)} />
                     <ScrollView
                         refreshControl={
@@ -105,7 +105,7 @@ class Main extends Component {
                             />
                         }
                     >
-                        <Content>
+                        <Content style={{ padding: 5 }}>
 
                             {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
 
@@ -136,12 +136,10 @@ class Main extends Component {
         );
     }
 }
-
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#E6E6E6'
+        backgroundColor: '#F2F2F2'
     },
     ActivityIndicator: {
         paddingTop: 20

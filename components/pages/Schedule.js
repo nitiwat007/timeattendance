@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Label, Switch, Button, Icon, Body, Thumbnail } from 'native-base'
 import { connect } from 'react-redux';
+import moment from 'moment'
 
 import AppHeaderBack from '../Headers/AppHeaderBack'
 import ScheduleBox from '../ScheduleBox'
@@ -20,7 +21,7 @@ class Schedule extends Component {
         }
     }
 
-    onRefresh() {
+    onRefresh = () => {
         this.setState({
             schedules: []
         })
@@ -67,7 +68,7 @@ class Schedule extends Component {
     render() {
 
         const { EventID, EventName } = this.props
-        const { refreshing, schedules, isLoading } = this.state
+        const { refreshing, schedules, isLoading, EditScheduleVisible } = this.state
 
         return (
             <Container style={styles.container}>
@@ -92,17 +93,25 @@ class Schedule extends Component {
                         </View>
                         <View>
                             {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
-                            {schedules.sort((a,b)=> new Date(a.ScheduleTo)> new Date(b.ScheduleTo) ? -1 : 0).map((schedule, i) =>
-                                <ScheduleBox
-                                    key={i}
-                                    EventID={EventID}
-                                    ScheduleTitle={schedule.ScheduleTitle}
-                                    ScheduleFrom={schedule.ScheduleFrom}
-                                    ScheduleTo={schedule.ScheduleTo}
-                                    ScheduleNote={schedule.ScheduleNote}
-                                    ScheduleID={schedule.ScheduleID}
-                                />
-                            )}
+
+                            {schedules.sort((a, b) => (moment.duration(moment(a.ScheduleTo).add(5, 'hours').diff(moment(new Date()))) < 0 ? 0 : 1)
+                                > (moment.duration(moment(b.ScheduleTo).add(5, 'hours').diff(moment(new Date()))) < 0 ? 0 : 1) ? -1 : 0)
+                                .map((schedule, i) =>
+                                    <ScheduleBox
+                                        key={i}
+                                        EventID={EventID}
+                                        ScheduleTitle={schedule.ScheduleTitle}
+                                        ScheduleFrom={schedule.ScheduleFrom}
+                                        ScheduleTo={schedule.ScheduleTo}
+                                        ScheduleNote={schedule.ScheduleNote}
+                                        ScheduleID={schedule.ScheduleID}
+                                        AvailableForAttendanceFrom={schedule.AvailableForAttendanceFrom}
+                                        AvailableForAttendanceTo={schedule.AvailableForAttendanceTo}
+                                        AllowSelfTimeStamp={schedule.AllowSelfTimeStamp}
+                                        loadingdata={this.onRefresh}
+                                        CreatedBy={schedule.CreatedBy}
+                                    />
+                                )}
 
                         </View>
                     </Content>
@@ -115,7 +124,8 @@ class Schedule extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#F2F2F2'
     },
     contentHeader: {
         flex: 1,

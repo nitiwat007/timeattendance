@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, Dimensions } from 'react-native';
 import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
-// import Menu, { MenuItem, MenuDivider } from 'react-native-material-menu';
 import moment from 'moment'
 
 // create a component
@@ -17,24 +16,7 @@ class EventBox extends Component {
         Actions.attendees({ EventID: eventID, EventName: title })
     }
 
-    // setMenuRef = ref => {
-    //     this.menu = ref;
-    // };
-
-    // menu = null;
-
-    // menuItemAction = (action) => {
-    //     if (action === 'edit') {
-    //         Actions.schedule()
-    //         this.menu.hide()
-    //     } else if (action === 'remove') {
-    //         this.menu.hide()
-    //     }
-    // };
-
-    // showMenu = () => {
-    //     this.menu.show();
-    // };
+    
 
     render() {
 
@@ -53,7 +35,7 @@ class EventBox extends Component {
         return (
             //<Content style={styles.eventContentBox}>
             <Card>
-                <CardItem style={{ flex: 1, flexDirection: 'row' }}>
+                <CardItem style={{ flex: 1, flexDirection: 'row' }} button onPress={() => Actions.eventdetail({ EventID: eventID, EventName: title })}>
                     <Left style={{ flex: 8 }}>
                         <Thumbnail style={styles.eventLogo} square source={require('../resources/images/50years.png')} />
                         <Body>
@@ -61,22 +43,11 @@ class EventBox extends Component {
                             <Text note>{dateEvent.format('DD MMMM YYYY')}</Text>
                         </Body>
                     </Left>
-                    {/* <Right style={{ flex: 1 }}>
-                            <Menu
-                                ref={this.setMenuRef}
-                                button={
-                                    <Button transparent style={styles.buttonMoreMenu} full large dark onPress={this.showMenu}>
-                                        <Icon name='md-more' />
-                                    </Button>
-                                }
-                            >
-                                <MenuItem onPress={() => this.menuItemAction('edit')}>Edit</MenuItem>
-                                <MenuDivider />
-                                <MenuItem onPress={() => this.menuItemAction('remove')}>Remove</MenuItem>
-                            </Menu>
-                        </Right> */}
+                    <Right style={{ flex: 1 }}>
+
+                    </Right>
                 </CardItem>
-                <CardItem cardBody>
+                <CardItem cardBody button onPress={() => Actions.eventdetail({ EventID: eventID, EventName: title })}>
                     {(imgUri != null)
                         ? <Image style={styles.eventImage} source={{ uri: imgUri }} />
                         : <Image style={styles.eventImage} source={require('../resources/images/no-image-available.jpg')} />}
@@ -120,7 +91,7 @@ const styles = StyleSheet.create({
         height: 45,
     },
     eventContentBox: {
-        padding: 2
+        padding: 5
     },
     textRegisterButton: {
         color: '#585858',
