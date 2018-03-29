@@ -232,7 +232,12 @@ class ScheduleBox extends Component {
                                 </View>
                                 <View style={{ flexDirection: 'row', flex: 1 }}>
                                     <Icon name='md-time' style={{ flex: 1, fontSize: 20 }} />
-                                    <Text style={{ flex: 9 }}><Text note>{ScheduleDateTimeFrom}</Text> - <Text note>{ScheduleDateTimeTo}</Text><Text> ({moment(ScheduleFrom).fromNow()})</Text></Text>
+                                    {(moment.duration(moment(ScheduleTo).diff(moment(new Date()))) < 0) ?
+                                        <Text style={{ flex: 9 }}><Text note>{ScheduleDateTimeFrom}</Text> - <Text note>{ScheduleDateTimeTo}</Text><Text style={{ color: 'red' }}> ({moment(ScheduleFrom).fromNow()})</Text></Text>
+                                        :
+                                        <Text style={{ flex: 9 }}><Text note>{ScheduleDateTimeFrom}</Text> - <Text note>{ScheduleDateTimeTo}</Text><Text> ({moment(ScheduleFrom).fromNow()})</Text></Text>
+                                    }
+
                                 </View>
                             </Body>
                         </Left>

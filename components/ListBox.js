@@ -95,7 +95,7 @@ class ListBox extends Component {
     render() {
         let { attendeeid, fullname, checkindatetime, checkinby, checkoutdatetime, checkoutby, action, typelistbox } = this.props
         return (
-            <Content style={styles.content}>
+            <View style={styles.content}>
                 <Modal
                     animationType='slide'
                     transparent={false}
@@ -189,9 +189,10 @@ class ListBox extends Component {
                                             <Text style={styles.textLabelCheckBy}>CHECKED BY : <Text note>{checkoutby}</Text></Text>
                                         </Body>
                                     </Left>
-                                </CardItem></View>}
+                                </CardItem>
+                            </View>}
                 </Card>
-            </Content>
+            </View>
         );
     }
 }

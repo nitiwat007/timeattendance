@@ -16,6 +16,7 @@ class RegisterAttendanceList extends Component {
         this.state = {
             attendances: [],
             attendancesSearch: [],
+            attendancesCount: [],
             memberID: this.props.userDetail[0],
             EventID: this.props.EventID,
             ScheduleID: this.props.ScheduleID,
@@ -25,7 +26,9 @@ class RegisterAttendanceList extends Component {
             searchData: '',
             sortSwitch: false,
             sortBy: 'Check In',
-            searchMenu: false
+            searchMenu: false,
+            indexStart: 0,
+            indexStop: 0
         }
     }
 
@@ -34,10 +37,13 @@ class RegisterAttendanceList extends Component {
         AttendanceApi.getAttendances(memberID, EventID, ScheduleID).then(data => {
             //console.log(data)
             this.setState({
-                attendances: data,
+                attendances: data.slice(0, 10),
                 attendancesSearch: data,
+                attendancesCount: data,
                 isLoading: false,
-                refreshing: false
+                refreshing: false,
+                indexStart: 10,
+                indexStop: 20
             })
         }).catch(error => {
             if (error.response.status = 404) {
@@ -63,12 +69,13 @@ class RegisterAttendanceList extends Component {
         const { memberID, ScheduleID, EventID, ScheduleTitle } = this.state
         AttendanceApi.getAttendances(memberID, EventID, ScheduleID).then(data => {
             this.setState({
-                attendances: data,
+                attendances: data.slice(0, 10),
                 attendancesSearch: data,
+                attendancesCount: data,
                 isLoading: false,
                 refreshing: false,
-                sortSwitch: false,
-                sortBy: 'Check In'
+                indexStart: 10,
+                indexStop: 20
             })
         }).catch(error => {
             if (error.response.status = 404) {
@@ -109,16 +116,20 @@ class RegisterAttendanceList extends Component {
             this.setState({
                 sortSwitch: false,
                 sortBy: 'Check In',
-                attendances: attendancesSorted,
-                isLoading: false
+                attendances: attendancesSorted.slice(0, 10),
+                isLoading: false,
+                indexStart: 10,
+                indexStop: 20
             })
         } else {
             let attendancesSorted = await this.state.attendances.sort((a, b) => new Date(a.CheckedOutDateTime) > new Date(b.CheckedOutDateTime) ? -1 : 0)
             this.setState({
                 sortSwitch: true,
                 sortBy: 'Check Out',
-                attendances: attendancesSorted,
-                isLoading: false
+                attendances: attendancesSorted.slice(0, 10),
+                isLoading: false,
+                indexStart: 10,
+                indexStop: 20
             })
         }
 
@@ -128,7 +139,9 @@ class RegisterAttendanceList extends Component {
         this.setState({ attendances: [] })
         let attendancesSorted = await this.state.attendances.sort((a, b) => new Date(a.CheckedInDateTime) > new Date(b.CheckedInDateTime) ? -1 : 0)
         this.setState({
-            attendances: attendancesSorted
+            attendances: attendancesSorted.slice(0, 10),
+            indexStart: 10,
+            indexStop: 20
         })
     }
 
@@ -146,14 +159,26 @@ class RegisterAttendanceList extends Component {
         }
     }
 
+    onScroll = () => {
+        let { indexStart, indexStop } = this.state
+        this.setState({
+            attendances: [...this.state.attendances, ...this.state.attendancesSearch.slice(indexStart, indexStop)],
+            indexStart: this.state.indexStop,
+            indexStop: ((this.state.indexStop + 10 < this.state.attendancesSearch.length) ? this.state.indexStop + 10 : this.state.indexStop + ((this.state.attendancesSearch.length - this.state.indexStop)))
+        })
+        //console.log(this.state.attendances.length)
+    }
+
     render() {
 
-        const { ScheduleID, EventID, ScheduleTitle, attendances, isLoading, refreshing, searchData, searchMenu } = this.state
+        const { ScheduleID, EventID, ScheduleTitle, attendances, isLoading, refreshing, searchData, searchMenu, attendancesCount } = this.state
 
         return (
             <Container style={styles.container}>
                 <AppHeaderHome title={ScheduleTitle} />
                 <ScrollView
+                    pagingEnabled={false}
+                    onScrollEndDrag={this.onScroll}
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
@@ -192,7 +217,7 @@ class RegisterAttendanceList extends Component {
                                     <CardItem>
                                         <Body>
                                             <View style={{ flexDirection: 'row' }}>
-                                                <Text style={{ flex: 6, marginTop: 13 }}>Number of registrations : {attendances.filter((data) => (data.CheckedInDateTime === null && data.CheckedOutDateTime === null) ? 0 : 1).length}</Text>
+                                                <Text style={{ flex: 6, marginTop: 13 }}>Number of registrations : {attendancesCount.filter((data) => (data.CheckedInDateTime === null && data.CheckedOutDateTime === null) ? 0 : 1).length}</Text>
                                                 <Button onPress={this.onSearchMenu} light style={{ flex: 2 }}>
                                                     <Body>
                                                         <Icon name='md-search' />
