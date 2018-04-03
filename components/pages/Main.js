@@ -95,8 +95,9 @@ class Main extends Component {
         return (
             <Drawer ref={(ref) => { this.drawer = ref }} content={<SideBar closeDrawer={this.closeDrawer.bind(this)} />} onClose={() => this.closeDrawer()}>
                 <Container style={styles.container}>
-                    <AppHeader title='My Events' openDrawer={this.openDrawer.bind(this)} />
+                    <AppHeader title='My Event' openDrawer={this.openDrawer.bind(this)} />
                     <ScrollView
+                        ref='scrollView'
                         refreshControl={
                             <RefreshControl
                                 refreshing={refreshing}
@@ -115,13 +116,17 @@ class Main extends Component {
                                     (moment.duration(moment(b.EventDate).diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
                                     ? -1 : 0)
                                 .map((event, i) =>
-                                    <EventBox key={i} title={event.EventNameEN} date={event.EventDate} imgUri={event.EventBannerLink} eventID={event.EventID} />
+                                    <EventBox
+                                        key={i}
+                                        EventInfo={event}
+                                    />
                                 ))}
                         </Content>
                     </ScrollView>
                     <Footer>
                         <FooterTab style={{ backgroundColor: "#FFF" }}>
-                            <Button vertical full active onPress={() => Actions.main()}>
+                            {/* <Button vertical full active onPress={() => Actions.main()}> */}
+                            <Button vertical full active onPress={() => this.refs.scrollView.scrollTo({ x: 0, y: 0, animated: true })}>
                                 <Icon name="md-home" />
                                 <Text>My Events</Text>
                             </Button>

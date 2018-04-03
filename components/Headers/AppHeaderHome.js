@@ -9,7 +9,9 @@ import Expo from 'expo'
 class AppHeaderHome extends Component {
 
     OnSelect = () => {
-        Actions.main()
+        Actions.reset('schedule')
+        Actions.push('main')
+        Actions.push('schedule')          
     }
 
     render() {
@@ -20,7 +22,7 @@ class AppHeaderHome extends Component {
             <Header style={styles.header}>
                 <Left>
                     <Button transparent onPress={this.OnSelect}>
-                        <Icon name='md-home' />
+                        <Icon name='arrow-back' />
                     </Button>
                 </Left>
                 <Body>

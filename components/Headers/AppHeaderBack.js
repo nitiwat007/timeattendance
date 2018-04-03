@@ -27,11 +27,11 @@ class AppHeaderBack extends Component {
                     <Title style={styles.titleText}>{title}</Title>
                 </Body>
                 <Right>
-                    {/* {(component === undefined) ? null :
+                    {(component === undefined) ? null :
                         <Button iconLeft transparent onPress={() => Actions.jump(component, { EventID: eventid })}>
                             <Icon name='ios-add-circle-outline' />
                         </Button>
-                    } */}
+                    }
                 </Right>
             </Header>
         );

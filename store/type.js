@@ -1,1 +1,3 @@
 export const USER_DETAIL = 'USER_DETAIL'
+export const EVENT_SELECT = 'EVENT_SELECT'
+export const SCHEDULE_SELECT = 'SCHEDULE_SELECT'

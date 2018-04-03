@@ -152,6 +152,12 @@ class NewEvent extends Component {
                                 customStyles={{
                                     dateInput: {
                                         borderColor: '#E6E6E6'
+                                    },
+                                    btnTextConfirm: {
+                                        height: 20
+                                    },
+                                    btnTextCancel: {
+                                        height: 20
                                     }
                                 }}
                                 onDateChange={(EventDate) => { this.setState({ EventDate }) }}

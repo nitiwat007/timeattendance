@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import { composeWithDevTools } from 'remote-redux-devtools'
+// import { composeWithDevTools } from 'remote-redux-devtools'
 
 import rootReducer from './store/rootReducer'
 import { Router } from 'react-native-router-flux'

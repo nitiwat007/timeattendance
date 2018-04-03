@@ -26,8 +26,8 @@ class Schedule extends Component {
             schedules: []
         })
         const memberID = this.props.userDetail[0]
-        const { EventID } = this.props
-        ScheduleApi.getScheduleByEventID(memberID, EventID).then(data => {
+        const { eventSelect } = this.props
+        ScheduleApi.getScheduleByEventID(memberID, eventSelect.EventID).then(data => {
             this.setState({
                 isLoading: false,
                 schedules: data,
@@ -47,8 +47,8 @@ class Schedule extends Component {
 
     componentDidMount() {
         const memberID = this.props.userDetail[0]
-        const { EventID } = this.props
-        ScheduleApi.getScheduleByEventID(memberID, EventID).then(data => {
+        const { eventSelect } = this.props
+        ScheduleApi.getScheduleByEventID(memberID, eventSelect.EventID).then(data => {
             this.setState({
                 schedules: data,
                 isLoading: false
@@ -63,17 +63,22 @@ class Schedule extends Component {
                 alert(error.response)
             }
         })
+        //console.log(this.props.eventSelect)
     }
 
     render() {
 
-        const { EventID, EventName } = this.props
+        const { eventSelect } = this.props
         const { refreshing, schedules, isLoading, EditScheduleVisible } = this.state
+        const memberID = this.props.userDetail[0]
 
         return (
             <Container style={styles.container}>
-                <AppHeaderBack title='Schedules' component='newschedule' eventid={EventID} />
+                {(memberID === eventSelect.CreatedBy) ?
+                    <AppHeaderBack title={'Schedules'} component='newschedule' eventid={eventSelect.EventID} />
+                    : <AppHeaderBack title='Schedules' eventid={eventSelect.EventID} />}
                 <ScrollView
+                    ref='scrollView'
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
@@ -82,13 +87,13 @@ class Schedule extends Component {
                         />
                     }
                 >
-                    <Content style={styles.content}>
+                    <View style={styles.content}>
                         <View style={styles.contentHeader}>
                             <View style={styles.iconContainer}>
-                                <Icon name="md-time" style={{ color: '#5cb85c' }} />
+                                <Icon name="md-time" style={{ color: '#178fd6' }} />
                             </View>
                             <View style={styles.detailContainer}>
-                                <Text style={styles.EventName}>{EventName}</Text>
+                                <Text style={styles.EventName}>{eventSelect.EventNameEN}</Text>
                             </View>
                         </View>
                         <View>
@@ -99,7 +104,8 @@ class Schedule extends Component {
                                 .map((schedule, i) =>
                                     <ScheduleBox
                                         key={i}
-                                        EventID={EventID}
+                                        EventID={eventSelect.EventID}
+                                        EventCreatedBy={eventSelect.CreatedBy}
                                         ScheduleTitle={schedule.ScheduleTitle}
                                         ScheduleFrom={schedule.ScheduleFrom}
                                         ScheduleTo={schedule.ScheduleTo}
@@ -110,13 +116,13 @@ class Schedule extends Component {
                                         AllowSelfTimeStamp={schedule.AllowSelfTimeStamp}
                                         loadingdata={this.onRefresh}
                                         CreatedBy={schedule.CreatedBy}
+                                        ScheduleInfo={schedule}
                                     />
                                 )}
 
                         </View>
-                    </Content>
+                    </View>
                 </ScrollView>
-
             </Container>
         );
     }
@@ -125,7 +131,7 @@ class Schedule extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F2F2F2'
+        backgroundColor: '#fffcf6'
     },
     contentHeader: {
         flex: 1,
@@ -148,7 +154,7 @@ const styles = StyleSheet.create({
     },
     EventName: {
         fontSize: 16,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     ActivityIndicator: {
         paddingTop: 20
@@ -160,7 +166,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        userDetail: state.userDetail
+        userDetail: state.userDetail,
+        eventSelect: state.eventSelect
     }
 }
 export default connect(mapStateToProps, null)(Schedule);

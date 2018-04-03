@@ -21,9 +21,9 @@ class Attendees extends Component {
     }
 
     componentDidMount() {
-        const { EventID, EventName } = this.props
+        const { eventSelect } = this.props
         const memberID = this.props.userDetail[0]
-        AttendeesApi.getAttendees(memberID, EventID)
+        AttendeesApi.getAttendees(memberID, eventSelect.EventID)
             .then(data => {
                 this.setState({
                     attendees: data,
@@ -53,8 +53,8 @@ class Attendees extends Component {
             attendeesSearch: []
         })
         const memberID = this.props.userDetail[0]
-        const { EventID } = this.props
-        AttendeesApi.getAttendees(memberID, EventID).then(data => {
+        const { eventSelect } = this.props
+        AttendeesApi.getAttendees(memberID, eventSelect.EventID).then(data => {
             this.setState({
                 isLoading: false,
                 attendees: data,
@@ -80,11 +80,11 @@ class Attendees extends Component {
     }
 
     render() {
-        const { EventID, EventName } = this.props
+        const { eventSelect } = this.props
         const { isLoading, attendees, refreshing } = this.state
         return (
             <Container style={styles.container}>
-                <AppHeaderBack title='Attendees' component='attendees' eventid={EventID} />
+                <AppHeaderBack title='Attendees' eventid={eventSelect.EventID} />
                 <ScrollView
                     refreshControl={
                         <RefreshControl
@@ -97,10 +97,10 @@ class Attendees extends Component {
                     <Content style={styles.content}>
                         <View style={styles.contentHeader}>
                             <View style={styles.iconContainer}>
-                                <Icon style={{ color: '#62B1F6' }} name="md-people" />
+                                <Icon style={{ color: '#f9acbb' }} name="md-people" />
                             </View>
                             <View style={styles.detailContainer}>
-                                <Text style={styles.EventName}>{EventName}</Text>
+                                <Text style={styles.EventName}>{eventSelect.EventNameEN}</Text>
                             </View>
                             <View style={styles.detailContainer2}>
                                 <Text>{attendees.length} persons</Text>
@@ -116,13 +116,13 @@ class Attendees extends Component {
                                     <ListItem icon button onPress={() => Actions.attendeedetail({ Code: attendee.Code, FullName: attendee.FullName })}>
                                         {/* <ListItem icon> */}
                                         <Left>
-                                            <Icon name='ios-contact-outline' />
+                                            <Icon name='ios-contact-outline' style={{color:'#0f7e9b'}}/>
                                         </Left>
                                         <Body>
                                             <Text>{attendee.FullName}</Text>
                                         </Body>
                                         <Right>
-                                            <Icon name="md-barcode" />
+                                            <Icon name="md-barcode" style={{color:'#92d7ef'}}/>
                                         </Right>
                                     </ListItem>
                                 )}
@@ -185,7 +185,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        userDetail: state.userDetail
+        userDetail: state.userDetail,
+        eventSelect: state.eventSelect
     }
 }
 

@@ -18,9 +18,9 @@ class RegisterAttendanceList extends Component {
             attendancesSearch: [],
             attendancesCount: [],
             memberID: this.props.userDetail[0],
-            EventID: this.props.EventID,
-            ScheduleID: this.props.ScheduleID,
-            ScheduleTitle: this.props.ScheduleTitle,
+            EventID: this.props.scheduleSelect.EventID,
+            ScheduleID: this.props.scheduleSelect.ScheduleID,
+            ScheduleTitle: this.props.scheduleSelect.ScheduleTitle,
             isLoading: true,
             refreshing: false,
             searchData: '',
@@ -179,6 +179,7 @@ class RegisterAttendanceList extends Component {
                 <ScrollView
                     pagingEnabled={false}
                     onScrollEndDrag={this.onScroll}
+                    ref='scrollView'
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
@@ -260,15 +261,16 @@ class RegisterAttendanceList extends Component {
                 </ScrollView>
                 <Footer>
                     <FooterTab style={{ backgroundColor: "#FFF" }}>
-                        <Button vertical full onPress={() => Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full onPress={() => Actions.reset('registattendanceform')}>
                             <Icon name="md-document" />
                             <Text>Form</Text>
                         </Button>
-                        <Button vertical full onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full onPress={() => Actions.reset('registattendance')}>
                             <Icon name="md-qr-scanner" />
                             <Text>Scan</Text>
                         </Button>
-                        <Button vertical full active onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        {/* <Button vertical full active onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}> */}
+                        <Button vertical full active onPress={() => this.refs.scrollView.scrollTo({ x: 0, y: 0, animated: true })}>
                             <Icon name="md-people" />
                             <Text>List</Text>
                         </Button>
@@ -340,7 +342,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        userDetail: state.userDetail
+        userDetail: state.userDetail,
+        scheduleSelect: state.scheduleSelect
     }
 }
 

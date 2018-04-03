@@ -5,6 +5,7 @@ import { Container, Content, Text, Footer, FooterTab, Button, Icon } from 'nativ
 import AppHeaderHome from '../Headers/AppHeaderHome'
 import { BarCodeScanner, Permissions } from 'expo';
 import { Actions } from 'react-native-router-flux'
+import { connect } from 'react-redux'
 
 // create a component
 class RegisterAttendance extends Component {
@@ -27,6 +28,7 @@ class RegisterAttendance extends Component {
         } catch (error) {
             alert(error)
         }
+        //console.log(this.props.scheduleSelect)
     }
 
     requestCameraPermission = async () => {
@@ -39,13 +41,13 @@ class RegisterAttendance extends Component {
 
     handleBarCodeRead = (result) => {
         //alert(result.type)
-        const { ScheduleID, ScheduleTitle, EventID } = this.props
+        const { ScheduleID, ScheduleTitle, EventID, scheduleSelect } = this.props
         let { Registered } = this.state
         if (!Registered) {
             this.setState({
                 Registered: true
             })
-            Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle, ID: result.data })
+            Actions.reset('registattendanceform', { ID: result.data })
             // Alert.alert(
             //     'Confirm Registration',
             //     'Do you want to regist ID : ' + result.data,
@@ -72,7 +74,7 @@ class RegisterAttendance extends Component {
     }
 
     render() {
-        const { ScheduleID, ScheduleTitle, EventID } = this.props
+        const { ScheduleID, ScheduleTitle, EventID, scheduleSelect } = this.props
         const { hasCameraPermission, isLoading } = this.state
         return (
             <Container>
@@ -97,15 +99,15 @@ class RegisterAttendance extends Component {
                 </ScrollView>
                 <Footer>
                     <FooterTab style={{ backgroundColor: "#FFF" }}>
-                        <Button vertical full onPress={() => Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full onPress={() => Actions.reset('registattendanceform')}>
                             <Icon name="md-document" />
                             <Text>Form</Text>
                         </Button>
-                        <Button vertical full active onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full active onPress={() => Actions.reset('registattendance')}>
                             <Icon name="md-qr-scanner" />
                             <Text>Scan</Text>
                         </Button>
-                        <Button vertical full onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full onPress={() => Actions.reset('registattendancelist')}>
                             <Icon name="md-people" />
                             <Text>List</Text>
                         </Button>
@@ -127,5 +129,11 @@ const styles = StyleSheet.create({
     }
 });
 
+function mapStateToProps(state) {
+    return {
+        scheduleSelect: state.scheduleSelect
+    }
+}
+
 //make this component available to the app
-export default RegisterAttendance;
+export default connect(mapStateToProps, null)(RegisterAttendance);

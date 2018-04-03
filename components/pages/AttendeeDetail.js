@@ -18,7 +18,7 @@ class AttendeeDetail extends Component {
                     <Content>
                         <View style={styles.contentHeader}>
                             <View style={styles.iconContainer}>
-                                <Icon style={{ color: '#62B1F6' }} name="md-people" />
+                                <Icon style={{ color: '#f9acbb' }} name="md-people" />
                             </View>
                             <View style={styles.detailContainer}>
                                 <Text style={styles.EventName}>{FullName}</Text>
@@ -28,6 +28,7 @@ class AttendeeDetail extends Component {
                             <QRCode
                                 value={Code}
                                 size={300}
+                                bgColor='#0f7e9b'
                             />
                         </View>
                         <View style={{ alignItems: 'center', marginTop: 10 }}>

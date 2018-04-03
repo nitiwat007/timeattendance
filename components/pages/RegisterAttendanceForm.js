@@ -24,9 +24,9 @@ class RegisterAttendanceForm extends Component {
             email: '',
             phonenumber: '',
             note: '',
-            EventID: this.props.EventID,
-            ScheduleID: this.props.ScheduleID,
-            ScheduleTitle: this.props.ScheduleTitle,
+            EventID: this.props.scheduleSelect.EventID,
+            ScheduleID: this.props.scheduleSelect.ScheduleID,
+            ScheduleTitle: this.props.scheduleSelect.ScheduleTitle,
             isLoading: false,
             isLoadingCheckIn: false,
             isLoadingCheckOut: false,
@@ -135,7 +135,7 @@ class RegisterAttendanceForm extends Component {
     }
 
     closeModalScan = () => {
-        const { ScheduleID, EventID, ScheduleTitle } = this.props
+        
         this.setState({
             modalVisible: false,
             code: '',
@@ -144,11 +144,11 @@ class RegisterAttendanceForm extends Component {
             phonenumber: '',
             note: ''
         })
-        Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })
+        Actions.reset('registattendance')
     }
 
     closeModalList = () => {
-        const { ScheduleID, EventID, ScheduleTitle } = this.props
+        
         this.setState({
             modalVisible: false,
             code: '',
@@ -157,7 +157,7 @@ class RegisterAttendanceForm extends Component {
             phonenumber: '',
             note: ''
         })
-        Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })
+        Actions.reset('registattendancelist')
     }
 
     onSearch = () => {
@@ -233,11 +233,11 @@ class RegisterAttendanceForm extends Component {
     }
 
     render() {
-        const { ScheduleID, EventID, ScheduleTitle } = this.props
+        const { scheduleSelect } = this.props
         const { memberID, code, attendeeID, fullname, email, phonenumber, note, disabledButtonPassport, disabledButtonCheckIn, disabledButtonCheckOut, checkInDateTime, checkOutDateTime, action } = this.state
         return (
             <Container style={styles.container}>
-                <AppHeaderHome title={ScheduleTitle} />
+                <AppHeaderHome title={scheduleSelect.ScheduleTitle} />
                 <Modal
                     animationType="slide"
                     transparent={false}
@@ -330,15 +330,15 @@ class RegisterAttendanceForm extends Component {
                 </Content>
                 <Footer>
                     <FooterTab style={{ backgroundColor: "#FFF" }}>
-                        <Button vertical full active onPress={() => Actions.reset('registattendanceform', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full active onPress={() => Actions.reset('registattendanceform')}>
                             <Icon name="md-document" />
                             <Text>Form</Text>
                         </Button>
-                        <Button vertical full onPress={() => Actions.reset('registattendance', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full onPress={() => Actions.reset('registattendance')}>
                             <Icon name="md-qr-scanner" />
                             <Text>Scan</Text>
                         </Button>
-                        <Button vertical full onPress={() => Actions.reset('registattendancelist', { EventID: EventID, ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle })}>
+                        <Button vertical full onPress={() => Actions.reset('registattendancelist')}>
                             <Icon name="md-people" />
                             <Text>List</Text>
                         </Button>
@@ -415,7 +415,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        userDetail: state.userDetail
+        userDetail: state.userDetail,
+        scheduleSelect: state.scheduleSelect
     }
 }
 

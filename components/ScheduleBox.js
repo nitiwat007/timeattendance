@@ -1,12 +1,13 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, StyleSheet, Modal, ActivityIndicator } from 'react-native';
-import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button, Icon, Header, Form, Input, Item, Label, Switch, Footer, FooterTab } from 'native-base';
+import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button, Icon, Header, Form, Input, Item, Label, Switch, Footer, FooterTab, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import moment from 'moment'
 import DatePicker from 'react-native-datepicker'
 import ScheduleApi from '../apis/schedule'
 import { connect } from 'react-redux'
+import { scheduleSelectToStore } from '../store/actions/scheduleSelect'
 // create a component
 class ScheduleBox extends Component {
 
@@ -14,13 +15,13 @@ class ScheduleBox extends Component {
         super(props);
         this.state = {
             isModalVisible: false,
-            ScheduleTitleEdit: this.props.ScheduleTitle,
-            ScheduleFromEdit: this.props.ScheduleFrom,
-            ScheduleToEdit: this.props.ScheduleTo,
-            ScheduleNoteEdit: this.props.ScheduleNote,
-            AvailableForAttendanceFromEdit: this.props.AvailableForAttendanceFrom,
-            AvailableForAttendanceToEdit: this.props.AvailableForAttendanceTo,
-            AllowSelfTimeStampEdit: this.props.AllowSelfTimeStamp,
+            ScheduleTitleEdit: this.props.ScheduleInfo.ScheduleTitle,
+            ScheduleFromEdit: this.props.ScheduleInfo.ScheduleFrom,
+            ScheduleToEdit: this.props.ScheduleInfo.ScheduleTo,
+            ScheduleNoteEdit: this.props.ScheduleInfo.ScheduleNote,
+            AvailableForAttendanceFromEdit: this.props.ScheduleInfo.AvailableForAttendanceFrom,
+            AvailableForAttendanceToEdit: this.props.ScheduleInfo.AvailableForAttendanceTo,
+            AllowSelfTimeStampEdit: this.props.ScheduleInfo.AllowSelfTimeStamp,
             isLoading: false,
             disabledButtonSave: false
         }
@@ -33,6 +34,7 @@ class ScheduleBox extends Component {
     };
 
     onPress = (ScheduleID, ScheduleTitle, EventID) => {
+        this.props.scheduleSelectToStore(this.props.ScheduleInfo)
         Actions.registattendance({ ScheduleID: ScheduleID, ScheduleTitle: ScheduleTitle, EventID: EventID })
     }
 
@@ -42,14 +44,16 @@ class ScheduleBox extends Component {
             disabledButtonSave: true
         })
         const memberID = this.props.userDetail[0]
-        const { EventID, ScheduleID } = this.props
+        const { eventSelect, ScheduleInfo } = this.props
         const data = {
             'ScheduleTitle': this.state.ScheduleTitleEdit,
             'ScheduleFrom': this.state.ScheduleFromEdit,
             'ScheduleTo': this.state.ScheduleToEdit,
-            'ScheduleNote': this.state.ScheduleNoteEdit
+            'ScheduleNote': this.state.ScheduleNoteEdit,
+            'AvailableForAttendanceFrom': this.state.AvailableForAttendanceFromEdit,
+            'AvailableForAttendanceTo': this.state.AvailableForAttendanceToEdit
         }
-        ScheduleApi.updateSchedule(memberID, EventID, ScheduleID, data)
+        ScheduleApi.updateSchedule(memberID, eventSelect.EventID, ScheduleInfo.ScheduleID, data)
             .then(data => {
                 this.props.loadingdata()
                 this.setState({
@@ -65,15 +69,16 @@ class ScheduleBox extends Component {
     render() {
 
         const { ScheduleTitle, ScheduleFrom, ScheduleTo, ScheduleNote, ScheduleID, EventID, AvailableForAttendanceFrom, AvailableForAttendanceTo, AllowSelfTimeStamp, CreatedBy } = this.props
+        const { eventSelect, ScheduleInfo } = this.props
         const memberID = this.props.userDetail[0]
         const { isModalVisible } = this.state
         const { ScheduleTitleEdit, ScheduleFromEdit, ScheduleToEdit, ScheduleNoteEdit, AvailableForAttendanceFromEdit, AvailableForAttendanceToEdit, AllowSelfTimeStampEdit } = this.state
         let ScheduleDateTo, ScheduleDateFrom, ScheduleDateTimeTo, ScheduleDateTimeFrom
         try {
-            ScheduleDateFrom = ScheduleFrom.split('T')[0]
-            ScheduleDateTo = ScheduleTo.split('T')[0]
-            ScheduleDateTimeFrom = ScheduleFrom.split('T')[1]
-            ScheduleDateTimeTo = ScheduleTo.split('T')[1]
+            ScheduleDateFrom = ScheduleInfo.ScheduleFrom.split('T')[0]
+            ScheduleDateTo = ScheduleInfo.ScheduleTo.split('T')[0]
+            ScheduleDateTimeFrom = ScheduleInfo.ScheduleFrom.split('T')[1]
+            ScheduleDateTimeTo = ScheduleInfo.ScheduleTo.split('T')[1]
         } catch (error) {
             alert(error)
         }
@@ -93,7 +98,7 @@ class ScheduleBox extends Component {
                             </Button>
                         </Left>
                         <Body>
-                            <Text style={{ fontWeight: 'bold' }}>Edit Schedule</Text>
+                            <Title style={{ fontWeight: 'bold' }}>Edit Schedule</Title>
                         </Body>
                         <Right>
 
@@ -105,7 +110,7 @@ class ScheduleBox extends Component {
                             <Item regular style={styles.formItem}>
                                 <Input style={styles.inputText} value={ScheduleTitleEdit} onChangeText={(ScheduleTitleEdit) => this.setState({ ScheduleTitleEdit })} />
                             </Item>
-                            <Label>Schedule Start</Label>
+                            <Label>From</Label>
                             <View style={styles.formItem}>
                                 <DatePicker
                                     style={styles.datePicker}
@@ -119,12 +124,18 @@ class ScheduleBox extends Component {
                                     customStyles={{
                                         dateInput: {
                                             borderColor: '#E6E6E6'
+                                        },
+                                        btnTextConfirm: {
+                                            height: 20
+                                        },
+                                        btnTextCancel: {
+                                            height: 20
                                         }
                                     }}
                                     onDateChange={(ScheduleFromEdit) => { this.setState({ ScheduleFromEdit }) }}
                                 />
                             </View>
-                            <Label>Schedule End</Label>
+                            <Label>To</Label>
                             <View style={styles.formItem}>
                                 <DatePicker
                                     style={styles.datePicker}
@@ -138,12 +149,18 @@ class ScheduleBox extends Component {
                                     customStyles={{
                                         dateInput: {
                                             borderColor: '#E6E6E6'
+                                        },
+                                        btnTextConfirm: {
+                                            height: 20
+                                        },
+                                        btnTextCancel: {
+                                            height: 20
                                         }
                                     }}
                                     onDateChange={(ScheduleToEdit) => { this.setState({ ScheduleToEdit }) }}
                                 />
                             </View>
-                            {/* <Label>Available for Attendance From</Label>
+                            <Label>Available for Attendance From</Label>
                             <View style={styles.formItem}>
                                 <DatePicker
                                     style={styles.datePicker}
@@ -157,6 +174,12 @@ class ScheduleBox extends Component {
                                     customStyles={{
                                         dateInput: {
                                             borderColor: '#E6E6E6'
+                                        },
+                                        btnTextConfirm: {
+                                            height: 20
+                                        },
+                                        btnTextCancel: {
+                                            height: 20
                                         }
                                     }}
                                     onDateChange={(AvailableForAttendanceFromEdit) => { this.setState({ AvailableForAttendanceFromEdit }) }}
@@ -176,11 +199,17 @@ class ScheduleBox extends Component {
                                     customStyles={{
                                         dateInput: {
                                             borderColor: '#E6E6E6'
+                                        },
+                                        btnTextConfirm: {
+                                            height: 20
+                                        },
+                                        btnTextCancel: {
+                                            height: 20
                                         }
                                     }}
                                     onDateChange={(AvailableForAttendanceToEdit) => { this.setState({ AvailableForAttendanceToEdit }) }}
                                 />
-                            </View> */}
+                            </View>
                             {/* <View style={styles.viewInline}>
                                 <View style={styles.viewLabelInline}>
                                     {(AllowSelfTimeStampEdit == false)
@@ -207,59 +236,60 @@ class ScheduleBox extends Component {
                         </FooterTab>
                     </Footer>
                 </Modal>
-                <Card>
-                    <CardItem style={styles.scheduleTitleItem}>
-                        <Left style={{ flex: 8 }}>
-                            <Body >
-                                <Text style={styles.titleText}>{ScheduleTitle}</Text>
-                            </Body>
-                        </Left>
-                        <Right style={{ flex: 1 }}>
-                            {(memberID === CreatedBy) &&
-                                <Button transparent style={styles.buttonMoreMenu} full large dark onPress={this.showMenu}>
-                                    <Icon name='md-create' />
+                <View>
+                    <Card>
+                        <CardItem style={styles.scheduleTitleItem}>
+                            <Left style={{ flex: 8 }}>
+                                <Body >
+                                    <Text style={styles.titleText}>{ScheduleInfo.ScheduleTitle}</Text>
+                                </Body>
+                            </Left>
+                            <Right style={{ flex: 1 }}>
+                                {(memberID === eventSelect.CreatedBy) &&
+                                    <Button transparent style={styles.buttonMoreMenu} full large dark onPress={this.showMenu}>
+                                        <Icon name='md-create' />
+                                    </Button>
+                                }
+                            </Right>
+                        </CardItem>
+                        <CardItem style={styles.scheduleDateTimeItem}>
+                            <Left>
+                                <Body>
+                                    <View style={{ flexDirection: 'row', flex: 1 }}>
+                                        <Icon name='md-calendar' style={{ flex: 1, fontSize: 20 }} />
+                                        <Text style={{ flex: 9 }}><Text note>{ScheduleDateFrom}</Text> - <Text note>{ScheduleDateTo}</Text></Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', flex: 1 }}>
+                                        <Icon name='md-time' style={{ flex: 1, fontSize: 20 }} />
+                                        {(moment.duration(moment(ScheduleInfo.ScheduleTo).diff(moment(new Date()))) < 0) ?
+                                            <Text style={{ flex: 9 }}><Text note>{ScheduleDateTimeFrom}</Text> - <Text note>{ScheduleDateTimeTo}</Text><Text style={{ color: 'red' }}> ({moment(ScheduleInfo.ScheduleFrom).fromNow()})</Text></Text>
+                                            :
+                                            <Text style={{ flex: 9 }}><Text note>{ScheduleDateTimeFrom}</Text> - <Text note>{ScheduleDateTimeTo}</Text><Text> ({moment(ScheduleInfo.ScheduleFrom).fromNow()})</Text></Text>
+                                        }
+
+                                    </View>
+                                </Body>
+                            </Left>
+                        </CardItem>
+                        <CardItem style={styles.scheduleNoteItem}>
+                            <Left>
+                                <Body>
+                                    <Text>Note</Text>
+                                    <Text note>
+                                        {ScheduleInfo.ScheduleNote}
+                                    </Text>
+                                </Body>
+                            </Left>
+                        </CardItem>
+                        <CardItem cardBody style={styles.scheduleSelectItem}>
+                            <Body>
+                                <Button full style={{ backgroundColor: '#034488' }} onPress={() => this.onPress(ScheduleID, ScheduleTitle, EventID)}>
+                                    <Text style={styles.textRegisterButton}>Select</Text>
                                 </Button>
-                            }
-
-                        </Right>
-                    </CardItem>
-                    <CardItem style={styles.scheduleDateTimeItem}>
-                        <Left>
-                            <Body>
-                                <View style={{ flexDirection: 'row', flex: 1 }}>
-                                    <Icon name='md-calendar' style={{ flex: 1, fontSize: 20 }} />
-                                    <Text style={{ flex: 9 }}><Text note>{ScheduleDateFrom}</Text> - <Text note>{ScheduleDateTo}</Text></Text>
-                                </View>
-                                <View style={{ flexDirection: 'row', flex: 1 }}>
-                                    <Icon name='md-time' style={{ flex: 1, fontSize: 20 }} />
-                                    {(moment.duration(moment(ScheduleTo).diff(moment(new Date()))) < 0) ?
-                                        <Text style={{ flex: 9 }}><Text note>{ScheduleDateTimeFrom}</Text> - <Text note>{ScheduleDateTimeTo}</Text><Text style={{ color: 'red' }}> ({moment(ScheduleFrom).fromNow()})</Text></Text>
-                                        :
-                                        <Text style={{ flex: 9 }}><Text note>{ScheduleDateTimeFrom}</Text> - <Text note>{ScheduleDateTimeTo}</Text><Text> ({moment(ScheduleFrom).fromNow()})</Text></Text>
-                                    }
-
-                                </View>
                             </Body>
-                        </Left>
-                    </CardItem>
-                    <CardItem style={styles.scheduleNoteItem}>
-                        <Left>
-                            <Body>
-                                <Text>Note</Text>
-                                <Text note>
-                                    {ScheduleNote}
-                                </Text>
-                            </Body>
-                        </Left>
-                    </CardItem>
-                    <CardItem cardBody style={styles.scheduleSelectItem}>
-                        <Body>
-                            <Button full success onPress={() => this.onPress(ScheduleID, ScheduleTitle, EventID)}>
-                                <Text style={styles.textRegisterButton}>Select</Text>
-                            </Button>
-                        </Body>
-                    </CardItem>
-                </Card>
+                        </CardItem>
+                    </Card>
+                </View>
             </Content>
         );
     }
@@ -300,7 +330,7 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#2E86C1'
+        color: '#178fd6'
     },
     textRegisterButton: {
         color: '#FFFFFF',
@@ -359,9 +389,10 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        userDetail: state.userDetail
+        userDetail: state.userDetail,
+        eventSelect: state.eventSelect
     }
 }
 
 //make this component available to the app
-export default connect(mapStateToProps, null)(ScheduleBox);
+export default connect(mapStateToProps, { scheduleSelectToStore })(ScheduleBox);

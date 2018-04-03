@@ -2,7 +2,7 @@
   "expo": {
     "name": "Time Attendance",
     "icon": "./resources/images/50years.png",
-    "sdkVersion": "25.0.0",
+    "sdkVersion": "26.0.0",
     "version": "1.0.5",
     "splash": {
       "image": "./resources/images/splash50.png",

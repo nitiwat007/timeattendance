@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Label, Switch, Button, Icon, Body, Thumbnail } from 'native-base'
 import AppHeaderBack from '../Headers/AppHeaderBack'
 import DatePicker from 'react-native-datepicker'
@@ -18,38 +18,64 @@ class NewSchedule extends Component {
             ScheduleTitle: '',
             ScheduleFromDate: '',
             ScheduleToDate: '',
-            ScheduleFromTime: '',
-            ScheduleToTime: '',
+            ScheduleFromTime: '00:00',
+            ScheduleToTime: '00:00',
             ScheduleNote: '',
             EventID: this.props.EventID,
             AllowSelfTimeStamp: false,
-            IsAvailable: true
+            IsAvailable: true,
+            isLoading: false,
+            disabledButtonSave: false,
+            AvailableForAttendanceFromDate: '',
+            AvailableForAttendanceToDate: '',
+            AvailableForAttendanceFromTime: '00:00',
+            AvailableForAttendanceToTime: '00:00'
         }
     }
 
     onSubmit = () => {
-        const { memberID, ScheduleTitle, ScheduleFromDate, ScheduleToDate, ScheduleFromTime, ScheduleToTime, ScheduleNote, EventID, AllowSelfTimeStamp } = this.state
+        this.setState({
+            isLoading: true,
+            disabledButtonSave: true
+        })
+        const { memberID, ScheduleTitle, ScheduleFromDate, ScheduleToDate, ScheduleFromTime, ScheduleToTime,
+            ScheduleNote, EventID, AllowSelfTimeStamp, AvailableForAttendanceFromDate, AvailableForAttendanceToDate,
+            AvailableForAttendanceFromTime, AvailableForAttendanceToTime } = this.state
         const ScheduleFrom = ScheduleFromDate + 'T' + ScheduleFromTime
         const ScheduleTo = ScheduleToDate + 'T' + ScheduleToTime
+        const AvailableForAttendanceFrom = AvailableForAttendanceFromDate + 'T' + AvailableForAttendanceFromTime
+        const AvailableForAttendanceTo = AvailableForAttendanceToDate + 'T' + AvailableForAttendanceToTime
         const data = {
             EventID: EventID,
             ScheduleTitle: ScheduleTitle,
             ScheduleFrom: ScheduleFrom,
             ScheduleTo: ScheduleTo,
+            AvailableForAttendanceFrom: AvailableForAttendanceFrom,
+            AvailableForAttendanceTo: AvailableForAttendanceTo,
             ScheduleNote: ScheduleNote,
-            AllowSelfTimeStamp: AllowSelfTimeStamp,
+            //AllowSelfTimeStamp: AllowSelfTimeStamp,
             IsAvailable: true
         }
         ScheduleApi.createSchedule(memberID, EventID, data).then(data => {
+            this.setState({
+                isLoading: false,
+                disabledButtonSave: false
+            })
             alert('Create schedule success')
             Actions.main()
         }).catch(error => {
+            this.setState({
+                isLoading: false,
+                disabledButtonSave: false
+            })
             alert(error.response.data.Message)
         })
     }
 
     render() {
-        const { ScheduleTitle, ScheduleFromDate, ScheduleToDate, ScheduleFromTime, ScheduleToTime, ScheduleNote, EventID, AllowSelfTimeStamp } = this.state
+        const { ScheduleTitle, ScheduleFromDate, ScheduleToDate, ScheduleFromTime, ScheduleToTime, ScheduleNote, EventID, AllowSelfTimeStamp,
+            AvailableForAttendanceFromDate, AvailableForAttendanceToDate,
+            AvailableForAttendanceFromTime, AvailableForAttendanceToTime } = this.state
         return (
             <Container style={styles.container}>
                 <AppHeaderBack title='New Schedule' />
@@ -73,6 +99,12 @@ class NewSchedule extends Component {
                                 customStyles={{
                                     dateInput: {
                                         borderColor: '#E6E6E6'
+                                    },
+                                    btnTextConfirm: {
+                                        height: 20
+                                    },
+                                    btnTextCancel: {
+                                        height: 20
                                     }
                                 }}
                                 onDateChange={(ScheduleFromDate) => { this.setState({ ScheduleFromDate }) }}
@@ -89,6 +121,12 @@ class NewSchedule extends Component {
                                 customStyles={{
                                     dateInput: {
                                         borderColor: '#E6E6E6'
+                                    },
+                                    btnTextConfirm: {
+                                        height: 20
+                                    },
+                                    btnTextCancel: {
+                                        height: 20
                                     }
                                 }}
                                 onDateChange={(ScheduleFromTime) => { this.setState({ ScheduleFromTime }) }}
@@ -108,6 +146,12 @@ class NewSchedule extends Component {
                                 customStyles={{
                                     dateInput: {
                                         borderColor: '#E6E6E6'
+                                    },
+                                    btnTextConfirm: {
+                                        height: 20
+                                    },
+                                    btnTextCancel: {
+                                        height: 20
                                     }
                                 }}
                                 onDateChange={(ScheduleToDate) => { this.setState({ ScheduleToDate }) }}
@@ -124,16 +168,116 @@ class NewSchedule extends Component {
                                 customStyles={{
                                     dateInput: {
                                         borderColor: '#E6E6E6'
+                                    },
+                                    btnTextConfirm: {
+                                        height: 20
+                                    },
+                                    btnTextCancel: {
+                                        height: 20
                                     }
                                 }}
                                 onDateChange={(ScheduleToTime) => { this.setState({ ScheduleToTime }) }}
+                            />
+                        </View>
+                        <Label>Available Attendance From</Label>
+                        <View style={styles.formItem}>
+                            <DatePicker
+                                style={styles.datePicker}
+                                date={AvailableForAttendanceFromDate}
+                                mode='date'
+                                format="YYYY-MM-DD"
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                placeholder="Select Date"
+                                showIcon={false}
+                                customStyles={{
+                                    dateInput: {
+                                        borderColor: '#E6E6E6'
+                                    },
+                                    btnTextConfirm: {
+                                        height: 20
+                                    },
+                                    btnTextCancel: {
+                                        height: 20
+                                    }
+                                }}
+                                onDateChange={(AvailableForAttendanceFromDate) => { this.setState({ AvailableForAttendanceFromDate }) }}
+                            />
+                            <DatePicker
+                                style={styles.datePicker}
+                                date={AvailableForAttendanceFromTime}
+                                mode='time'
+                                format="HH:mm"
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                placeholder="Select Time"
+                                showIcon={false}
+                                customStyles={{
+                                    dateInput: {
+                                        borderColor: '#E6E6E6'
+                                    },
+                                    btnTextConfirm: {
+                                        height: 20
+                                    },
+                                    btnTextCancel: {
+                                        height: 20
+                                    }
+                                }}
+                                onDateChange={(AvailableForAttendanceFromTime) => { this.setState({ AvailableForAttendanceFromTime }) }}
+                            />
+                        </View>
+                        <Label>Available Attendance To</Label>
+                        <View style={styles.formItem}>
+                            <DatePicker
+                                style={styles.datePicker}
+                                date={AvailableForAttendanceToDate}
+                                mode='date'
+                                format="YYYY-MM-DD"
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                placeholder="Select Date"
+                                showIcon={false}
+                                customStyles={{
+                                    dateInput: {
+                                        borderColor: '#E6E6E6'
+                                    },
+                                    btnTextConfirm: {
+                                        height: 20
+                                    },
+                                    btnTextCancel: {
+                                        height: 20
+                                    }
+                                }}
+                                onDateChange={(AvailableForAttendanceToDate) => { this.setState({ AvailableForAttendanceToDate }) }}
+                            />
+                            <DatePicker
+                                style={styles.datePicker}
+                                date={AvailableForAttendanceToTime}
+                                mode='time'
+                                format="HH:mm"
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                placeholder="Select Time"
+                                showIcon={false}
+                                customStyles={{
+                                    dateInput: {
+                                        borderColor: '#E6E6E6'
+                                    },
+                                    btnTextConfirm: {
+                                        height: 20
+                                    },
+                                    btnTextCancel: {
+                                        height: 20
+                                    }
+                                }}
+                                onDateChange={(AvailableForAttendanceToTime) => { this.setState({ AvailableForAttendanceToTime }) }}
                             />
                         </View>
                         <Label>Note</Label>
                         <Item regular style={styles.formItem}>
                             <Input style={styles.inputMultiline} multiline={true} numberOfLines={8} onChangeText={(ScheduleNote) => this.setState({ ScheduleNote })} />
                         </Item>
-                        <View style={styles.viewInline}>
+                        {/* <View style={styles.viewInline}>
                             <View style={styles.viewLabelInline}>
                                 {(AllowSelfTimeStamp == false)
                                     ? <Label>Self Registration<Label style={styles.AllowSelfTimeStampNo}>(Not Allow)</Label></Label>
@@ -142,9 +286,10 @@ class NewSchedule extends Component {
                             <View>
                                 <Switch onValueChange={(AllowSelfTimeStamp) => { this.setState({ AllowSelfTimeStamp }) }} value={AllowSelfTimeStamp} />
                             </View>
-                        </View>
-                        <Button full success style={styles.buttonSubmit} onPress={this.onSubmit}>
-                            <Text style={styles.textButtonSubmit}>Submit</Text>
+                        </View> */}
+                        <Button full disabled={this.state.disabledButtonSave} success style={styles.buttonSubmit} onPress={this.onSubmit}>
+                            {(this.state.isLoading) ? (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#FFFFFF' />) : <Text style={styles.textButtonSubmit}>Submit</Text>}
+
                         </Button>
                     </Form>
                 </Content>

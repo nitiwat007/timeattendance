@@ -23,7 +23,9 @@ class ListBox extends Component {
 
     onSelectRemoveAction = (removeAction) => {
         let { attendeeid, fullname, checkindatetime, checkinby, checkoutdatetime, checkoutby, action, typelistbox } = this.props
-
+        this.setState({
+            modalVisible: false
+        })
         Alert.alert(
             'Confirmation Remove',
             'Do you want to Remove ' + removeAction + ' data ?',

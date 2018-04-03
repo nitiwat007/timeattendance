@@ -3,43 +3,42 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, Dimensions } from 'react-native';
 import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button, Icon } from 'native-base';
 import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux'
+import { eventSelectToStore } from '../store/actions/eventSelect'
 import moment from 'moment'
 
 // create a component
 class EventBox extends Component {
 
-    onPressSchedule = (eventID, title) => {
-        Actions.schedule({ EventID: eventID, EventName: title })
+    onPressSchedule = () => {
+        this.props.eventSelectToStore(this.props.EventInfo)
+        Actions.schedule()
     }
 
-    onPressAttendees = (eventID, title) => {
-        Actions.attendees({ EventID: eventID, EventName: title })
+    onPressAttendees = () => {
+        this.props.eventSelectToStore(this.props.EventInfo)
+        Actions.attendees()
     }
 
-    
+    onEventDetail = ()=>{
+        this.props.eventSelectToStore(this.props.EventInfo)
+        Actions.eventdetail()
+    }
+
+
 
     render() {
 
-        const { title, date, imgUri, eventID } = this.props
-        const dateEvent = moment(date)
-        //const dateNow = new Date()
-        //const diff = moment.duration(moment(dateEvent).diff(moment(dateNow).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 })))
-        // const diffDays = parseInt(diff.asDays())
-        // const diffHours = parseInt(diff.asHours()) - diffDays * 24
-        // const diffMinutes = parseInt(diff.asMinutes()) - (diffDays * 24 * 60 + diffHours * 60)
-        // console.log(moment(dateEvent))
-        // console.log(moment(moment(dateNow).utcOffset(0).set({hour:0,minute:0,second:0,millisecond:0})))
-        // console.log(diffDays)
-        // console.log(diffHours)
-        // console.log(diffMinutes)
+        //const { title, date, imgUri, eventID, CreatedBy } = this.props
+        const { EventInfo } = this.props
+        const dateEvent = moment(EventInfo.EventDate)
         return (
-            //<Content style={styles.eventContentBox}>
             <Card>
-                <CardItem style={{ flex: 1, flexDirection: 'row' }} button onPress={() => Actions.eventdetail({ EventID: eventID, EventName: title })}>
+                <CardItem style={{ flex: 1, flexDirection: 'row' }} button onPress={() => this.onEventDetail()}>
                     <Left style={{ flex: 8 }}>
                         <Thumbnail style={styles.eventLogo} square source={require('../resources/images/50years.png')} />
                         <Body>
-                            <Text>{title}</Text>
+                            <Text>{EventInfo.EventNameEN}</Text>
                             <Text note>{dateEvent.format('DD MMMM YYYY')}</Text>
                         </Body>
                     </Left>
@@ -47,30 +46,30 @@ class EventBox extends Component {
 
                     </Right>
                 </CardItem>
-                <CardItem cardBody button onPress={() => Actions.eventdetail({ EventID: eventID, EventName: title })}>
-                    {(imgUri != null)
-                        ? <Image style={styles.eventImage} source={{ uri: imgUri }} />
+                <CardItem cardBody button onPress={() => this.onEventDetail()}>
+                    {(EventInfo.EventBannerLink != null)
+                        ? <Image style={styles.eventImage} source={{ uri: EventInfo.EventBannerLink }} />
                         : <Image style={styles.eventImage} source={require('../resources/images/no-image-available.jpg')} />}
                 </CardItem>
                 <CardItem cardBody>
                     <View style={{ flex: 1, flexDirection: 'row' }}>
                         <View style={{ flex: 1 }}>
-                            <Button full transparent success onPress={() => this.onPressSchedule(eventID, title)}>
-                                <Icon name='md-time' />
+                            <Button full transparent onPress={() => this.onPressSchedule()}>
+                                <Icon name='md-time' style={{ color: '#178fd6' }} />
                                 <Text style={styles.textRegisterButton}>Schedules</Text>
                             </Button>
                         </View>
                         <View style={{ flex: 1 }}>
-                            <Button full transparent info onPress={() => this.onPressAttendees(eventID, title)}>
-                                <Icon name='md-people' />
+                            <Button full transparent info onPress={() => this.onPressAttendees()}>
+                                <Icon name='md-people' style={{ color: '#f9acbb' }} />
                                 <Text style={styles.textRegisterButton}>Attendees</Text>
                             </Button>
                         </View>
                     </View>
                 </CardItem>
             </Card>
-            //</Content>
         );
+
     }
 }
 
@@ -103,4 +102,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default EventBox;
+export default connect(null, { eventSelectToStore })(EventBox);
