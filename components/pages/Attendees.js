@@ -3,7 +3,9 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Label, Switch, Button, Icon, Body, Left, Right, Thumbnail, List, ListItem } from 'native-base'
 import AppHeaderBack from '../Headers/AppHeaderBack'
+import AppHeaderSegment from '../Headers/AppHeaderSegment'
 import AttendeesApi from '../../apis/attendees'
+import RegistrarsApi from '../../apis/registrars'
 import { connect } from 'react-redux'
 import { Actions } from 'react-native-router-flux';
 
@@ -16,11 +18,39 @@ class Attendees extends Component {
             attendees: [],
             attendeesSearch: [],
             isLoading: true,
-            refreshing: true
+            refreshing: false,
+            type: 'attendees'
         }
     }
 
     componentDidMount() {
+        this.getAttendees()
+    }
+
+    getData = (type) => {
+        this.setState({
+            isLoading: true,
+            type: type
+        })
+        switch (type) {
+            case 'attendees':
+                this.getAttendees()
+                break
+            //this.getAttendees()
+            case 'registrars':
+                this.getRegistrars()
+                break
+            //this.getRegistrars()
+        }
+        //this.getRegistrars()
+        //alert(type)
+    }
+
+    getAttendees = () => {
+        this.setState({
+            attendees: [],
+            attendeesSearch: [],
+        })
         const { eventSelect } = this.props
         const memberID = this.props.userDetail[0]
         AttendeesApi.getAttendees(memberID, eventSelect.EventID)
@@ -34,12 +64,51 @@ class Attendees extends Component {
             }).catch(error => {
                 if (error.response.status = 404) {
                     this.setState({
+                        attendees: [],
+                        attendeesSearch: [],
                         isLoading: false,
                         refreshing: false
                     })
                 } else {
                     alert(error.response.data.Message)
                     this.setState({
+                        attendees: [],
+                        attendeesSearch: [],
+                        isLoading: false,
+                        refreshing: false
+                    })
+                }
+            })
+    }
+
+    getRegistrars = () => {
+        this.setState({
+            attendees: [],
+            attendeesSearch: [],
+        })
+        const { eventSelect } = this.props
+        const memberID = this.props.userDetail[0]
+        RegistrarsApi.getRegistrars(memberID, eventSelect.EventID)
+            .then(data => {
+                this.setState({
+                    attendees: data,
+                    attendeesSearch: data,
+                    isLoading: false,
+                    refreshing: false
+                })
+            }).catch(error => {
+                if (error.response.status = 404) {
+                    this.setState({
+                        attendees: [],
+                        attendeesSearch: [],
+                        isLoading: false,
+                        refreshing: false
+                    })
+                } else {
+                    alert(error.response.data.Message)
+                    this.setState({
+                        attendees: [],
+                        attendeesSearch: [],
                         isLoading: false,
                         refreshing: false
                     })
@@ -50,32 +119,45 @@ class Attendees extends Component {
     onRefresh = () => {
         this.setState({
             attendees: [],
-            attendeesSearch: []
+            attendeesSearch: [],
+            refreshing: true
         })
-        const memberID = this.props.userDetail[0]
-        const { eventSelect } = this.props
-        AttendeesApi.getAttendees(memberID, eventSelect.EventID).then(data => {
-            this.setState({
-                isLoading: false,
-                attendees: data,
-                attendeesSearch: data,
-                refreshing: false
-            })
-        }).catch(error => {
-            if (error.response.status = 404) {
-                this.setState({
-                    isLoading: false,
-                    refreshing: false
-                })
-            } else {
-                alert(error.response)
-            }
-        })
+        switch (this.state.type) {
+            case 'attendees':
+                this.getAttendees()
+                break
+            case 'registrars':
+                this.getRegistrars()
+                break
+        }
+        // this.setState({
+        //     attendees: [],
+        //     attendeesSearch: []
+        // })
+        // const memberID = this.props.userDetail[0]
+        // const { eventSelect } = this.props
+        // AttendeesApi.getAttendees(memberID, eventSelect.EventID).then(data => {
+        //     this.setState({
+        //         isLoading: false,
+        //         attendees: data,
+        //         attendeesSearch: data,
+        //         refreshing: false
+        //     })
+        // }).catch(error => {
+        //     if (error.response.status = 404) {
+        //         this.setState({
+        //             isLoading: false,
+        //             refreshing: false
+        //         })
+        //     } else {
+        //         alert(error.response)
+        //     }
+        // })
     }
 
     onSearch = (event) => {
         this.setState({
-            attendees: this.state.attendeesSearch.filter(x => x.FullName.match(event))
+            attendees: this.state.attendeesSearch.filter(x => x.FullName !== null).filter(x => x.FullName.match(event))
         })
     }
 
@@ -84,8 +166,9 @@ class Attendees extends Component {
         const { isLoading, attendees, refreshing } = this.state
         return (
             <Container style={styles.container}>
-                <AppHeaderBack title='Attendees' eventid={eventSelect.EventID} />
+                <AppHeaderSegment title='Attendees' eventid={eventSelect.EventID} actionType={this.getData} />
                 <ScrollView
+                    keyboardDismissMode='on-drag'
                     refreshControl={
                         <RefreshControl
                             refreshing={refreshing}
@@ -94,42 +177,42 @@ class Attendees extends Component {
                         />
                     }
                 >
-                    <Content style={styles.content}>
-                        <View style={styles.contentHeader}>
-                            <View style={styles.iconContainer}>
-                                <Icon style={{ color: '#f9acbb' }} name="md-people" />
-                            </View>
-                            <View style={styles.detailContainer}>
-                                <Text style={styles.EventName}>{eventSelect.EventNameEN}</Text>
-                            </View>
-                            <View style={styles.detailContainer2}>
-                                <Text>{attendees.length} persons</Text>
-                            </View>
+                    {/* <Content style={styles.content}> */}
+                    <View style={styles.contentHeader}>
+                        <View style={styles.iconContainer}>
+                            <Icon style={{ color: '#f9acbb' }} name="md-people" />
                         </View>
-                        <View>
-                            <Item regular style={styles.formItemCode}>
-                                <Input style={styles.inputText} onChangeText={this.onSearch} placeholder='Search by Name' />
-                            </Item>
-                            {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
-                            <List style={{ backgroundColor: '#FFFFFF', marginTop: 10 }}>
-                                {attendees.sort((a, b) => a.Code < b.Code ? -1 : 0).map((attendee, i) =>
-                                    <ListItem icon button onPress={() => Actions.attendeedetail({ Code: attendee.Code, FullName: attendee.FullName })}>
-                                        {/* <ListItem icon> */}
-                                        <Left>
-                                            <Icon name='ios-contact-outline' style={{color:'#0f7e9b'}}/>
-                                        </Left>
-                                        <Body>
-                                            <Text>{attendee.FullName}</Text>
-                                        </Body>
-                                        <Right>
-                                            <Icon name="md-barcode" style={{color:'#92d7ef'}}/>
-                                        </Right>
-                                    </ListItem>
-                                )}
+                        <View style={styles.detailContainer}>
+                            <Text style={styles.EventName}>{eventSelect.EventNameEN}</Text>
+                        </View>
+                        <View style={styles.detailContainer2}>
+                            <Text>{attendees.length} persons</Text>
+                        </View>
+                    </View>
+                    <View style={{ paddingBottom: 10 }}>
+                        <Item regular style={styles.formItemCode}>
+                            <Input style={styles.inputText} onChangeText={this.onSearch} placeholder='Search by Name' />
+                        </Item>
+                        {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
+                        <List style={{ backgroundColor: '#FFFFFF', marginTop: 10 }}>
+                            {attendees.sort((a, b) => a.Code < b.Code ? -1 : 0).map((attendee, i) =>
+                                <ListItem icon button onPress={() => Actions.attendeedetail({ Code: attendee.Code, FullName: attendee.FullName })}>
+                                    {/* <ListItem icon> */}
+                                    <Left>
+                                        <Icon name='ios-contact-outline' style={{ color: '#0f7e9b' }} />
+                                    </Left>
+                                    <Body>
+                                        <Text>{attendee.FullName}</Text>
+                                    </Body>
+                                    <Right>
+                                        <Icon name="md-barcode" style={{ color: '#92d7ef' }} />
+                                    </Right>
+                                </ListItem>
+                            )}
 
-                            </List>
-                        </View>
-                    </Content>
+                        </List>
+                    </View>
+                    {/* </Content> */}
                 </ScrollView>
             </Container>
         );
@@ -142,7 +225,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     content: {
-        paddingBottom: 10
+        paddingTop: 10,
+        paddingBottom: 10,
     },
     contentHeader: {
         flex: 1,
