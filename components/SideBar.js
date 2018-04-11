@@ -10,7 +10,7 @@ class SideBar extends Component {
 
     Logout = async () => {
         await AsyncStorage.setItem('LoggedIn', 'false')
-        this.props.userDetailToStore(null)
+        //this.props.userDetailToStore('')
         Actions.reset('login')
     }
 

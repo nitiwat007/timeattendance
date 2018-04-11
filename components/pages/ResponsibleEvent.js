@@ -91,10 +91,10 @@ class ResponsibleEvent extends Component {
                 >
                     <Content style={{ padding: 5 }}>
                         {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
-                        {(events.sort((a, b) => new Date(a.EventDate) < new Date(b.EventDate) ? -1 : 0).sort((a, b) =>
-                            (moment.duration(moment(a.EventDate).diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
+                        {(events.sort((a, b) =>
+                            (moment.duration(moment(a.EventDate).add(1, 'days').diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
                                 >
-                                (moment.duration(moment(b.EventDate).diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
+                                (moment.duration(moment(b.EventDate).add(1, 'days').diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
                                 ? -1 : 0)
                             .map((event, i) =>
                                 <EventBox

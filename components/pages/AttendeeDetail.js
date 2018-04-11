@@ -9,7 +9,7 @@ import QRCode from 'react-native-qrcode'
 class AttendeeDetail extends Component {
     render() {
 
-        const { Code, FullName } = this.props
+        const { Code, FullName, TYPE, ID } = this.props
 
         return (
             <Container style={styles.container}>
@@ -21,7 +21,7 @@ class AttendeeDetail extends Component {
                                 <Icon style={{ color: '#f9acbb' }} name="md-people" />
                             </View>
                             <View style={styles.detailContainer}>
-                                <Text style={styles.EventName}>{FullName}</Text>
+                                <Text style={styles.EventName}>{(FullName == null) ? ID : FullName}</Text>
                             </View>
                         </View>
                         <View style={{ alignItems: 'center', marginTop: 20, padding: 10 }}>
@@ -33,7 +33,7 @@ class AttendeeDetail extends Component {
                         </View>
                         <View style={{ alignItems: 'center', marginTop: 10 }}>
                             <Text>
-                                {Code}
+                                {(TYPE == 'attendees') ? Code : ID}
                             </Text>
                         </View>
                     </Content>

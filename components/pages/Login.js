@@ -48,7 +48,6 @@ class Login extends Component {
 
     async componentDidMount() {
         const LoggedIn = await AsyncStorage.getItem('LoggedIn')
-
         if (LoggedIn === 'true') {
             const userDetail = await AsyncStorage.getItem('userDetail')
             this.props.userDetailToStore(JSON.parse(userDetail))

@@ -21,4 +21,6 @@ export default {
         axios.post(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/events', formData, configMultipart).then(response => response.data),
     getResponsible: (memberID) =>
         axios.get(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/responsible-events', config).then(response => response.data),
+    updateEvent: (memberID, EventID, formData) =>
+        axios.put(TIME_ATTENDANCE_API_HOST + '/api/' + memberID + '/events/' + EventID, formData, configMultipart).then(response => response.data)
 }

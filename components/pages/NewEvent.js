@@ -22,8 +22,7 @@ class NewEvent extends Component {
             EventName: '',
             EventAcronym: '',
             EventLocationName: '',
-            EventDate: ''
-            ,
+            EventDate: '',
             EventDescription: '',
             EventStatusID: false,
             AllowWalkIn: false,

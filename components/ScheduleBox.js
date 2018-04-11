@@ -1,6 +1,6 @@
 //import liraries
 import React, { Component } from 'react';
-import { View, StyleSheet, Modal, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Modal, ActivityIndicator, Platform } from 'react-native';
 import { Container, Content, Card, CardItem, Body, Left, Right, Thumbnail, Text, Button, Icon, Header, Form, Input, Item, Label, Switch, Footer, FooterTab, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import moment from 'moment'
@@ -31,7 +31,7 @@ class ScheduleBox extends Component {
         this.setState({
             isModalVisible: true
         })
-    };
+    }
 
     onPress = (ScheduleID, ScheduleTitle, EventID) => {
         this.props.scheduleSelectToStore(this.props.ScheduleInfo)
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     headerModal: {
-        marginTop: (Platform.OS === 'android') ? Expo.Constants.statusBarHeight : 0,
+        //marginTop: (Platform.OS === 'android') ? Expo.Constants.statusBarHeight : 0,
     },
     form: {
         padding: 10

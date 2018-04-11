@@ -58,7 +58,7 @@ class Main extends Component {
         })
     }
 
-    onRefresh() {
+    onRefresh = () => {
         this.setState({
             events: []
         })
@@ -101,7 +101,7 @@ class Main extends Component {
                         refreshControl={
                             <RefreshControl
                                 refreshing={refreshing}
-                                onRefresh={this.onRefresh.bind(this)}
+                                onRefresh={this.onRefresh}
                                 title='loading data'
                             />
                         }
@@ -110,15 +110,16 @@ class Main extends Component {
 
                             {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
 
-                            {(events.sort((a, b) => moment(a.EventDate) < moment(b.EventDate) ? -1 : 0).sort((a, b) =>
-                                (moment.duration(moment(a.EventDate).diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
+                            {(events.sort((a, b) =>
+                                (moment.duration(moment(a.EventDate).add(1, 'days').diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
                                     >
-                                    (moment.duration(moment(b.EventDate).diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
+                                    (moment.duration(moment(b.EventDate).add(1, 'days').diff(moment(new Date()).utcOffset(0).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }))) < 0 ? 0 : 1)
                                     ? -1 : 0)
                                 .map((event, i) =>
                                     <EventBox
                                         key={i}
                                         EventInfo={event}
+                                        EventRefresh={this.onRefresh}
                                     />
                                 ))}
                         </Content>

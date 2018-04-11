@@ -53,6 +53,7 @@ class Schedule extends Component {
                 schedules: data,
                 isLoading: false
             })
+            //console.log(data)
         }).catch(error => {
             if (error.response.status = 404) {
                 this.setState({

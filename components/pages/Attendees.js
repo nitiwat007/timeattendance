@@ -130,29 +130,7 @@ class Attendees extends Component {
                 this.getRegistrars()
                 break
         }
-        // this.setState({
-        //     attendees: [],
-        //     attendeesSearch: []
-        // })
-        // const memberID = this.props.userDetail[0]
-        // const { eventSelect } = this.props
-        // AttendeesApi.getAttendees(memberID, eventSelect.EventID).then(data => {
-        //     this.setState({
-        //         isLoading: false,
-        //         attendees: data,
-        //         attendeesSearch: data,
-        //         refreshing: false
-        //     })
-        // }).catch(error => {
-        //     if (error.response.status = 404) {
-        //         this.setState({
-        //             isLoading: false,
-        //             refreshing: false
-        //         })
-        //     } else {
-        //         alert(error.response)
-        //     }
-        // })
+
     }
 
     onSearch = (event) => {
@@ -196,13 +174,13 @@ class Attendees extends Component {
                         {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
                         <List style={{ backgroundColor: '#FFFFFF', marginTop: 10 }}>
                             {attendees.sort((a, b) => a.Code < b.Code ? -1 : 0).map((attendee, i) =>
-                                <ListItem icon button onPress={() => Actions.attendeedetail({ Code: attendee.Code, FullName: attendee.FullName })}>
+                                <ListItem icon button onPress={() => Actions.attendeedetail({ Code: attendee.Code, FullName: attendee.FullName, TYPE: this.state.type, ID: attendee.ID })}>
                                     {/* <ListItem icon> */}
                                     <Left>
                                         <Icon name='ios-contact-outline' style={{ color: '#0f7e9b' }} />
                                     </Left>
                                     <Body>
-                                        <Text>{attendee.FullName}</Text>
+                                        <Text>{(attendee.FullName == null) ? attendee.ID : attendee.FullName}</Text>
                                     </Body>
                                     <Right>
                                         <Icon name="md-barcode" style={{ color: '#92d7ef' }} />
