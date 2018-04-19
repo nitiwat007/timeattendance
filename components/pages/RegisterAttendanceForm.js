@@ -1,7 +1,7 @@
 //import liraries
 import React, { Component } from 'react';
 import { View, StyleSheet, Keyboard, ActivityIndicator, Modal } from 'react-native';
-import { Container, Content, Text, Footer, FooterTab, Icon, Form, Input, Item, Label, Switch, Button, Alert, Card, CardItem, Left, Right, Body } from 'native-base'
+import { Container, Content, Text, Footer, FooterTab, Icon, Form, Input, Item, Label, Switch, Button, Alert, Card, CardItem, Left, Right, Body, Header, Title, List, ListItem } from 'native-base'
 import AppHeaderHome from '../Headers/AppHeaderHome'
 import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
@@ -34,9 +34,12 @@ class RegisterAttendanceForm extends Component {
             disabledButtonCheckIn: false,
             disabledButtonCheckOut: false,
             modalVisible: false,
+            modalFullnameVisible: false,
             checkInDateTime: '',
             checkOutDateTime: '',
-            action: ''
+            action: '',
+            SearchFullnameData: [],
+            SearchFullnameSelect: {}
         }
     }
 
@@ -135,7 +138,7 @@ class RegisterAttendanceForm extends Component {
     }
 
     closeModalScan = () => {
-        
+
         this.setState({
             modalVisible: false,
             code: '',
@@ -148,7 +151,7 @@ class RegisterAttendanceForm extends Component {
     }
 
     closeModalList = () => {
-        
+
         this.setState({
             modalVisible: false,
             code: '',
@@ -158,6 +161,46 @@ class RegisterAttendanceForm extends Component {
             note: ''
         })
         Actions.reset('registattendancelist')
+    }
+
+    searchFullnameTextChange = (searchFullname) => {
+
+        EmployeeApi.getEmployeeByName(searchFullname).then(data => {
+            this.setState({
+                SearchFullnameData: data.result.slice(0, 10),
+                isLoading: false
+            })
+        }).catch(error => {
+            if (error.response.status = 404) {
+                this.setState({
+                    SearchFullnameData: [],
+                    isLoading: false
+                })
+            }
+
+        })
+    }
+
+    onSearchFullnameSelect = (account_name, fullname) => [
+        this.setState({
+            modalFullnameVisible: false,
+            SearchFullnameData: [],
+            code: account_name,
+            fullname: fullname
+        })
+    ]
+
+    onSearchFullname = () => {
+        this.setState({
+            modalFullnameVisible: true
+        })
+    }
+
+    onCloseFullname = () => {
+        this.setState({
+            modalFullnameVisible: false,
+            SearchFullnameData: []
+        })
     }
 
     onSearch = () => {
@@ -234,10 +277,55 @@ class RegisterAttendanceForm extends Component {
 
     render() {
         const { scheduleSelect } = this.props
-        const { memberID, code, attendeeID, fullname, email, phonenumber, note, disabledButtonPassport, disabledButtonCheckIn, disabledButtonCheckOut, checkInDateTime, checkOutDateTime, action } = this.state
+        const { memberID, code, attendeeID, fullname, email, phonenumber, note, disabledButtonPassport, disabledButtonCheckIn, disabledButtonCheckOut, checkInDateTime, checkOutDateTime, action, SearchFullnameData } = this.state
         return (
             <Container style={styles.container}>
                 <AppHeaderHome title={scheduleSelect.ScheduleTitle} />
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalFullnameVisible}
+                    onShow={() => { this.textInput._root.focus() }}
+                    onRequestClose={() => {
+                        alert('Modal has been closed.');
+                    }}>
+                    <Header style={styles.headerModal}>
+                        <Left>
+                            <Button transparent large onPress={this.onCloseFullname}>
+                                <Icon name='md-close' />
+                            </Button>
+                        </Left>
+                        <Body>
+                            <Title style={{ fontWeight: 'bold' }}>Search</Title>
+                        </Body>
+                        <Right>
+
+                        </Right>
+                    </Header>
+                    <Content>
+                        <View style={styles.formItemSearchFullname}>
+                            <Input ref={(input) => { this.textInput = input }} style={styles.inputTextSearchFullname} placeholder='Enter Fullname' onChangeText={(searchFullname) => this.searchFullnameTextChange(searchFullname)} />
+                        </View>
+                        <View>
+                            {this.state.isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
+                            <List style={styles.listSearchFullname}>
+                                {SearchFullnameData.map((data, i) =>
+                                    <ListItem key={i} button onPress={() => this.onSearchFullnameSelect(data.account_name, data.fullname)}>
+                                        <Left style={{ flex: 4 }}>
+                                            <Text>{data.fullname}</Text>
+                                        </Left>
+                                        <Body>
+
+                                        </Body>
+                                        <Right>
+                                            <Icon name="arrow-forward" />
+                                        </Right>
+                                    </ListItem>
+                                )}
+                            </List>
+                        </View>
+                    </Content>
+                </Modal>
                 <Modal
                     animationType="slide"
                     transparent={false}
@@ -296,9 +384,14 @@ class RegisterAttendanceForm extends Component {
                             </Button>
                         </View>
                         <Label>Fullname</Label>
-                        <Item regular style={styles.formItem}>
-                            <Input style={styles.inputText} value={fullname} onChangeText={(fullname) => this.setState({ fullname })} />
-                        </Item>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            <Item regular style={styles.formItemFullname}>
+                                <Input style={styles.inputText} value={fullname} onChangeText={(fullname) => this.setState({ fullname })} />
+                            </Item>
+                            <Button disabled={disabledButtonPassport} full info style={{ flex: 1, height: 52 }} onPress={this.onSearchFullname}>
+                                {(this.state.isLoading) ? (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#FFFFFF' />) : <Text><Icon iconLeft style={{ color: '#FFFFFF', fontSize: 18 }} name='md-search' /></Text>}
+                            </Button>
+                        </View>
                         <Label>Email</Label>
                         <Item regular style={styles.formItem}>
                             <Input style={styles.inputText} value={email} onChangeText={(email) => this.setState({ email })} />
@@ -364,6 +457,10 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         flex: 2
     },
+    formItemFullname: {
+        marginBottom: 15,
+        flex: 4
+    },
     inputText: {
         backgroundColor: '#FFFFFF'
     },
@@ -394,6 +491,18 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderRadius: 0,
     },
+    formItemSearchFullname: {
+        padding: 10
+    },
+    listSearchFullname: {
+        paddingRight: 10
+    },
+    inputTextSearchFullname: {
+        borderColor: '#E6E6E6',
+        borderWidth: 1,
+        borderRadius: 0,
+        backgroundColor: '#FAFAFA'
+    },
     cardItemFullname: {
         borderColor: '#E6E6E6',
         borderBottomWidth: 1,
@@ -410,6 +519,9 @@ const styles = StyleSheet.create({
         padding: 20,
         fontWeight: 'bold',
         color: '#424242'
+    },
+    headerModalSearchFullname: {
+
     }
 });
 

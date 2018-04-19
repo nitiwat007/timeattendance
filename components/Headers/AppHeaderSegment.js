@@ -48,11 +48,11 @@ class AppHeaderSegment extends Component {
                         <Icon name='arrow-back' />
                     </Button>
                 </Left>
-                <Body>
+                <Body style={{ flex: 4 }}>
                     <View style={{ paddingTop: 5 }}>
                         <Segment style={{ alignItems: 'center' }}>
-                            <Button first active={segmentFirst} onPress={() => this.onSegment('first')}><Text>Attendees</Text></Button>
-                            <Button last active={segmentLast} onPress={() => this.onSegment('last')}><Text>Registrar</Text></Button>
+                            <Button first active={segmentFirst} onPress={() => this.onSegment('first')}><Text style={styles.segmentButtonText}>Attendees</Text></Button>
+                            <Button last active={segmentLast} onPress={() => this.onSegment('last')}><Text style={styles.segmentButtonText}>Registrar</Text></Button>
                         </Segment>
                     </View>
                 </Body>
@@ -77,6 +77,9 @@ const styles = StyleSheet.create({
     header: {
         marginTop: (Platform.OS === 'android') ? Expo.Constants.statusBarHeight : 0,
         height: 90
+    },
+    segmentButton: {
+        fontSize: 10
     }
 });
 

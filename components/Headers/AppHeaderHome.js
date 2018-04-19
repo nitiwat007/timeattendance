@@ -11,7 +11,7 @@ class AppHeaderHome extends Component {
     OnSelect = () => {
         Actions.reset('schedule')
         Actions.push('main')
-        Actions.push('schedule')          
+        Actions.push('schedule')
     }
 
     render() {
@@ -20,12 +20,12 @@ class AppHeaderHome extends Component {
 
         return (
             <Header style={styles.header}>
-                <Left>
+                <Left style={{ flex: 1 }}>
                     <Button transparent onPress={this.OnSelect}>
                         <Icon name='arrow-back' />
                     </Button>
                 </Left>
-                <Body>
+                <Body style={{ flex: 6 }}>
                     <Title style={styles.titleText}>{title}</Title>
                 </Body>
                 <Right>

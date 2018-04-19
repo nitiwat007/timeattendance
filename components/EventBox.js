@@ -277,7 +277,8 @@ class EventBox extends Component {
                     </Footer>
                 </Modal>
                 <Card>
-                    <CardItem style={{ flex: 1, flexDirection: 'row' }} button onPress={() => this.onEventDetail()}>
+                    {/* <CardItem style={{ flex: 1, flexDirection: 'row' }} button onPress={() => this.onEventDetail()}> */}
+                    <CardItem style={{ flex: 1, flexDirection: 'row' }} >
                         <Left style={{ flex: 8 }}>
                             <Thumbnail style={styles.eventLogo} square source={require('../resources/images/50years.png')} />
                             <Body>
@@ -293,7 +294,8 @@ class EventBox extends Component {
                             }
                         </Right>
                     </CardItem>
-                    <CardItem cardBody button onPress={() => this.onEventDetail()}>
+                    {/* <CardItem cardBody button onPress={() => this.onEventDetail()}> */}
+                    <CardItem cardBody >
                         {(EventInfo.EventBannerLink != null)
                             ? <Image style={styles.eventImage} source={{ uri: EventInfo.EventBannerLink }} />
                             : <Image style={styles.eventImage} source={require('../resources/images/no-image-available.jpg')} />}
