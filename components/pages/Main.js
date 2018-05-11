@@ -107,7 +107,6 @@ class Main extends Component {
                         }
                     >
                         <Content style={{ padding: 5 }}>
-
                             {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
 
                             {(events.sort((a, b) =>

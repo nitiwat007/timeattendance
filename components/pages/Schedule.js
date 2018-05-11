@@ -100,8 +100,8 @@ class Schedule extends Component {
                         <View>
                             {isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}
 
-                            {schedules.sort((a, b) => (moment.duration(moment(a.ScheduleTo).add(5, 'hours').diff(moment(new Date()))) < 0 ? 0 : 1)
-                                > (moment.duration(moment(b.ScheduleTo).add(5, 'hours').diff(moment(new Date()))) < 0 ? 0 : 1) ? -1 : 0)
+                            {/* {schedules.sort((a, b) => (moment.duration(moment(a.ScheduleTo).add(5, 'hours').diff(moment(new Date()))) < 0 ? Math.abs(moment.duration(moment(a.ScheduleTo).add(5, 'hours').diff(moment(new Date()))).asMinutes()) : moment.duration(moment(a.ScheduleTo).add(5, 'hours').diff(moment(new Date()))).asMinutes())
+                                < (moment.duration(moment(b.ScheduleTo).add(5, 'hours').diff(moment(new Date()))) < 0 ? Math.abs(moment.duration(moment(b.ScheduleTo).add(5, 'hours').diff(moment(new Date()))).asMinutes()) : moment.duration(moment(b.ScheduleTo).add(5, 'hours').diff(moment(new Date()))).asMinutes()) ? -1 : 0)
                                 .map((schedule, i) =>
                                     <ScheduleBox
                                         key={i}
@@ -119,6 +119,30 @@ class Schedule extends Component {
                                         CreatedBy={schedule.CreatedBy}
                                         ScheduleInfo={schedule}
                                     />
+                                )} */}
+                            {schedules.sort((a, b) => {
+                                let aScheduleTo = moment.duration(moment(a.ScheduleTo).add(5, 'hours').diff(moment(new Date()))).asMinutes()
+                                let bScheduleTo = moment.duration(moment(b.ScheduleTo).add(5, 'hours').diff(moment(new Date()))).asMinutes()
+                                return ((aScheduleTo < 0 ? Math.abs(aScheduleTo) : aScheduleTo) < (bScheduleTo < 0 ? Math.abs(bScheduleTo) : bScheduleTo) ? -1 : 0)
+                            })
+                                .map((schedule, i) =>
+                                    <ScheduleBox
+                                        key={i}
+                                        EventID={eventSelect.EventID}
+                                        EventCreatedBy={eventSelect.CreatedBy}
+                                        ScheduleTitle={schedule.ScheduleTitle}
+                                        ScheduleFrom={schedule.ScheduleFrom}
+                                        ScheduleTo={schedule.ScheduleTo}
+                                        ScheduleNote={schedule.ScheduleNote}
+                                        ScheduleID={schedule.ScheduleID}
+                                        AvailableForAttendanceFrom={schedule.AvailableForAttendanceFrom}
+                                        AvailableForAttendanceTo={schedule.AvailableForAttendanceTo}
+                                        AllowSelfTimeStamp={schedule.AllowSelfTimeStamp}
+                                        loadingdata={this.onRefresh}
+                                        CreatedBy={schedule.CreatedBy}
+                                        ScheduleInfo={schedule}
+                                    />
+                                    //console.log("diff : ",moment.duration(moment(schedule.ScheduleTo).add(5, 'hours').diff(moment(new Date()))).asMinutes(), "Date : ", schedule.ScheduleTo)
                                 )}
 
                         </View>

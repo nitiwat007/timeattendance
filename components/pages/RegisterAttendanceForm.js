@@ -304,7 +304,7 @@ class RegisterAttendanceForm extends Component {
                     </Header>
                     <Content>
                         <View style={styles.formItemSearchFullname}>
-                            <Input ref={(input) => { this.textInput = input }} style={styles.inputTextSearchFullname} placeholder='Enter Fullname' onChangeText={(searchFullname) => this.searchFullnameTextChange(searchFullname)} />
+                            <Input ref={(input) => { this.textInput = input }} style={styles.inputTextSearchFullname} placeholder='Enter name (PSU Phuket Staff only)' onChangeText={(searchFullname) => this.searchFullnameTextChange(searchFullname)} />
                         </View>
                         <View>
                             {this.state.isLoading && (<ActivityIndicator style={styles.ActivityIndicator} size='large' color='#5DADE2' />)}

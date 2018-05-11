@@ -3,7 +3,7 @@
     "name": "Time Attendance",
     "icon": "./resources/images/50years.png",
     "sdkVersion": "26.0.0",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "splash": {
       "image": "./resources/images/splash50.png",
       "resizeMode": "cover"
@@ -12,7 +12,7 @@
       "bundleIdentifier": "com.psuphuket.timeattendance"
     },
     "android": {
-      "versionCode": 5,
+      "versionCode": 6,
       "package": "com.psuphuket.timeattendance"
     }
   }
